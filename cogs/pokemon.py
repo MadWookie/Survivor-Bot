@@ -9,15 +9,12 @@ import discord
 
 from cogs.menus import Menus, ARROWS, DONE, CANCEL
 from utils.json import Dict, List
+from utils.utils import wrap
 from utils import errors
 
 ITEMS = [{'price': 10, 'name': 'pokeballs', 'display': lambda c: discord.utils.get(c.guild.emojis, name='Pokeball')},
          {'price': 100, 'name': 'ultraballs', 'display': lambda c: discord.utils.get(c.guild.emojis, name='Ultraball')},
          {'price': 500, 'name': 'masterballs', 'display': lambda c: discord.utils.get(c.guild.emojis, name='Masterball')}]
-
-
-def wrap(to_wrap, wrap_with, sep=' '):
-    return "{1}{2}{0}{2}{1}".format(to_wrap, wrap_with, sep)
 
 
 def pokechannel():
@@ -83,8 +80,8 @@ class Pokemon(Menus):
     @pokechannel()
     async def inventory(self, ctx):
         inv = self.get_player(ctx.author.id)['inventory']
-        em = discord.Embed(title='{.name} | {}\ua750'.format(ctx.author, inv['money']))
-        items = ['{} | {}'.format(item['display'](ctx), inv[item['name']]) for item in ITEMS]
+        em = discord.Embed(title=f'{ctx.author.name} | {inv["money"]}\ua750')
+        items = [f'{item["display"](ctx)} | {inv[item["name"]]}' for item in ITEMS]
         em.add_field(name='Inventory', value='\n'.join(items))
         await ctx.send(embed=em, delete_after=60)
 
@@ -112,7 +109,7 @@ class Pokemon(Menus):
             userdata['inventory']['pokeballs'] += 5
         elif reward_bullet == 5:
             userdata['inventory']['ultraballs'] += 1
-        await ctx.send('{} has recived **{}**!'.format(player_name, self.rewards[reward_bullet - 1]), delete_after=60)
+        await ctx.send(f'{player_name} has recived **{self.rewards[reward_bullet - 1]}**!', delete_after=60)
         await self.found_pokemon.save()
 
 ###################
@@ -132,7 +129,7 @@ class Pokemon(Menus):
         mon = self.poke_info[poke_bullet]
         userdata = self.get_player(player_id)
         balls = [item['display'](ctx) for item in ITEMS]
-        msg = await ctx.send('*{}*,\nA wild **{}** appears!\nUse a {} to catch it!'.format(player_name, mon['name'], balls[0]),
+        msg = await ctx.send(f'*{player_name}*,\nA wild **{mon["name"]}** appears!\nUse a {balls[0]} to catch it!',
                              file=discord.File(open(self.image_path.format(poke_bullet), 'rb')))
         can_react_with = []
         for item, emoji in zip(('pokeballs', 'ultraballs', 'masterballs'), balls):
@@ -148,21 +145,21 @@ class Pokemon(Menus):
                         user == ctx.author)
             reaction, _ = await self.bot.wait_for('reaction_add', check=check, timeout=20)
         except asyncio.TimeoutError:
-            await msg.edit(content='*{}*,\n**{}** escaped because you took too long! :stopwatch:'.format(player_name, mon['name']), delete_after=60)
+            await msg.edit(content=f'*{player_name}*,\n**{mon["name"]}** escaped because you took too long! :stopwatch:', delete_after=60)
             await msg.clear_reactions()
             return
         if reaction.emoji in balls:
             if catch(mon, balls.index(reaction.emoji)):
-                await msg.edit(content='{0} *{1}* has caught **{2}** successfully! {0}'.format(reaction.emoji, player_name, mon['name']), delete_after=60)
+                await msg.edit(content=wrap(f'*{player_name}* has caught **{mon["name"]}** successfully!', reaction.emoji), delete_after=60)
                 await msg.clear_reactions()
                 userdata['pokemon'][poke_bullet] += 1
             else:
-                await msg.edit(content='*{}*,\n**{}** has escaped!'.format(player_name, mon['name']), delete_after=60)
+                await msg.edit(content=f'*{player_name}*,\n**{mon["name"]}** has escaped!', delete_after=60)
             item = reaction.emoji.name.lower() + 's'
             userdata['inventory'][item] -= 1
             await self.found_pokemon.save()
         else:
-            await msg.edit(content=':chicken: *{}* ran away from **{}**! :chicken:'.format(player_name, mon['name']), delete_after=60)
+            await msg.edit(content=f':chicken: *{player_name}* ran away from **{mon["name"]}**! :chicken:', delete_after=60)
 
 ###################
 #                 #
@@ -183,7 +180,7 @@ class Pokemon(Menus):
             total = len(found)
             remaining = len(self.poke_info)
             legendaries = sum(1 for p in found if self.poke_info[p]['legendary'])
-            header = "__{0.name}'s Pokedex__".format(player)
+            header = f"__{player.name}'s Pokedex__"
             if total == 0:
                 header += " __is empty.__"
             header = wrap(header, pokedex_emote)
@@ -191,14 +188,14 @@ class Pokemon(Menus):
                 await ctx.send(header, delete_after=60)
                 return
             spacer = '-=-=-=--=-=-=--=-=-=--=-=-=-=-=-=-=-=-=-=-=-=-=-=-'
-            key = '{0[0]} Click to go back a page.\n{0[1]} Click to go forward a page.\n{1} Click to exit your pokedex.'.format(ARROWS, CANCEL)
-            counts = wrap('**{}** Pokémon out of {}, **{}** Normals, **{}** Legendaries'.format(total, remaining, total - legendaries, legendaries), spacer, sep='\n')
+            key = f'{ARROWS[0]} Click to go back a page.\n{ARROWS[1]} Click to go forward a page.\n{CANCEL} Click to exit your pokedex.'
+            counts = wrap(f'**{total}** Pokémon out of {remaining}, **{total - legendaries}** Normals, **{legendaries}** Legendaries', spacer, sep='\n')
             header = '\n'.join([header, 'Use **!pokedex ``#``** to take a closer look at your Pokémon!', key, counts])
-            options = ['**{}.** {[name]}{}'.format(mon, self.poke_info[mon], ' *x{}*'.format(found[mon]) if found[mon] > 1 else '') for mon in found_sorted]
+            options = ['**{}.** {[name]}{}'.format(mon, self.poke_info[mon], f' *x{found[mon]}*' if found[mon] > 1 else '') for mon in found_sorted]
             await self.reaction_menu(options, ctx.author, ctx.channel, 0, per_page=20, code=False, header=header)
         else:
             evo = self.poke_info[user_or_num]['evolutions'].format(ething='é', evolved=':ballot_box_with_check:', not_evolved=':arrow_right:')
-            await ctx.send('{0} __{1[name]}\'s Information__ {0}\n**Type:** {1[type]}\n**Evolutions:** {2}'.format(pokedex_emote, self.poke_info, evo),
+            await ctx.send('{0} __{1[name]}\'s Information__ {0}\n**Type:** {1[type]}\n**Evolutions:** {2}'.format(pokedex_emote, self.poke_info[user_or_num], evo),
                            file=discord.File(open(self.image_path.format(user_or_num), 'rb')), delete_after=120)
 
 ###################
@@ -214,8 +211,8 @@ class Pokemon(Menus):
             return
         player_name = ctx.author.name
         userdata = self.get_player(ctx.author.id)
-        title = '{} | {}\ua750'.format(player_name, userdata['inventory']['money'])
-        description = 'Select items to buy{}.'.format(' in multiples of %d' % multiple if multiple > 1 else '')
+        title = f'{player_name} | {userdata["inventory"]["money"]}\ua750'
+        description = 'Select items to buy{}.'.format(f' in multiples of {multiple}' if multiple > 1 else '')
         options = ['{} {[price]}\ua750 **|** Inventory: {}'.format(data['display'](ctx), data, userdata['inventory'][data['name']]) for data in ITEMS]
         balls = [item['display'](ctx) for item in ITEMS]
         selected = await self.embed_menu(options, 'Shop', ctx.author, ctx.channel, -1, description=description, title=title, return_from=list(range(len(ITEMS))), multi=True, display=balls)
@@ -234,15 +231,15 @@ class Pokemon(Menus):
             userdata['inventory']['money'] = after
             userdata['inventory'][ITEMS[item]['name']] += count
         if total == 0:
-            await ctx.send("{} didn't buy anything because they're too poor.".format(player_name), delete_after=60)
+            await ctx.send(f"{player_name} didn't buy anything because they're too poor.", delete_after=60)
         else:
             display = []
             for item in set(bought):
                 display.append(str(ITEMS[item]['display'](ctx)))
                 count = bought.count(item)
                 if count > 1:
-                    display[-1] += ' x{}'.format(count)
-            await ctx.send('{} bought the following for {}\ua750:\n'.format(player_name, total) + '\n'.join(display), delete_after=60)
+                    display[-1] += f' x{count}'
+            await ctx.send(f'{player_name} bought the following for {total}\ua750:\n' + '\n'.join(display), delete_after=60)
             await self.found_pokemon.save()
 
 ###################
@@ -258,8 +255,8 @@ class Pokemon(Menus):
         userdata = self.get_player(ctx.author.id)
         found = {k: v for k, v in userdata['pokemon'].items() if v}
         found_sorted = sorted(found)
-        header = '**{}**,\nSelect Pokemon to sell.\nNormal = 100\ua750\nLegendary = 600\ua750'.format(player_name)
-        options = ['**{}.** {[name]}{}'.format(mon, self.poke_info[mon], ' *x{}*'.format(found[mon]) if found[mon] > 1 else '') for mon in found_sorted]
+        header = f'**{player_name}**,\nSelect Pokemon to sell.\nNormal = 100\ua750\nLegendary = 600\ua750'
+        options = ['**{}.** {[name]}{}'.format(mon, self.poke_info[mon], f' *x{found[mon]}*' if found[mon] > 1 else '') for mon in found_sorted]
         if not options:
             await ctx.send("You don't have any pokemon to sell.", delete_after=60)
             return
@@ -276,10 +273,10 @@ class Pokemon(Menus):
             userdata['pokemon'][mon] -= count
             if not userdata['pokemon'][mon]:
                 userdata['pokemon'].pop(mon)
-            sold.append('**{[name]}**{}'.format(self.poke_info[mon], ' *x{}*'.format(count) if count > 1 else ''))
+            sold.append('**{[name]}**{}'.format(self.poke_info[mon], f' *x{count}*' if count > 1 else ''))
         userdata['inventory']['money'] += total
         await self.found_pokemon.save()
-        await ctx.send('{} sold the following for {}\ua750:\n'.format(player_name, total) + '\n'.join(sold), delete_after=60)
+        await ctx.send(f'{player_name} sold the following for {total}\ua750:\n' + '\n'.join(sold), delete_after=60)
 
 ###################
 #                 #
@@ -301,11 +298,11 @@ class Pokemon(Menus):
         a_data = self.get_player(author.id)['pokemon']
         a_found = {k: v for k, v in a_data.items() if v}
         a_sorted = sorted(a_found)
-        a_options = [fmt.format(mon, self.poke_info[mon], ' *x{}*'.format(a_found[mon]) if a_found[mon] > 1 else '') for mon in a_sorted]
+        a_options = [fmt.format(mon, self.poke_info[mon], f' *x{a_found[mon]}*' if a_found[mon] > 1 else '') for mon in a_sorted]
         b_data = self.get_player(user.id)['pokemon']
         b_found = {k: v for k, v in b_data.items() if v}
         b_sorted = sorted(b_found)
-        b_options = [fmt.format(mon, self.poke_info[mon], ' *x{}*'.format(b_found[mon]) if b_found[mon] > 1 else '') for mon in b_sorted]
+        b_options = [fmt.format(mon, self.poke_info[mon], f' *x{b_found[mon]}*' if b_found[mon] > 1 else '') for mon in b_sorted]
         header = '**{.name}**,\nSelect the pokemon you wish to trade with **{.name}**'
         selected = await asyncio.gather(self.reaction_menu(a_options, author, channel, -1, code=False, header=header.format(author, user), return_from=a_sorted, allow_none=True, multi=True),
                                         self.reaction_menu(b_options, user, channel, -1, code=False, header=header.format(user, author), return_from=b_sorted, allow_none=True, multi=True))
@@ -321,7 +318,7 @@ class Pokemon(Menus):
         for selections, found, member in zip(selected, (a_found, b_found), (author, user)):
             for mon in set(selections):
                 if selections.count(mon) > found[mon]:
-                    await ctx.send('{.name} selected more {[name]} than they have.'.format(member, self.poke_info[mon]), delete_after=60)
+                    await ctx.send(f'{member.name} selected more {self.poke_info[mon]["name"]} than they have.', delete_after=60)
                     return
         accept_msg = await ctx.send("**{.name}**'s offer: {}\n**{.name}**'s offer: {}\nDo you accept?".format(
             author, ', '.join(fmt.format(mon, self.poke_info[mon], '') for mon in selected[0]) or 'None',
@@ -366,7 +363,7 @@ class Pokemon(Menus):
             if reacted and u not in reacted:
                 accepted[u.id] = False
             if not accepted[u.id]:
-                await ctx.send('**{.name}** declined the trade.'.format(u), delete_after=60)
+                await ctx.send(f'**{u.name}** declined the trade.', delete_after=60)
                 return
         for mon in selected[0]:
             a_data[mon] -= 1
@@ -379,7 +376,7 @@ class Pokemon(Menus):
                 b_data.pop(mon)
             a_data[mon] += 1
         await self.found_pokemon.save()
-        await ctx.send('Completed trade between **{.name}** and **{.name}**.'.format(author, user), delete_after=60)
+        await ctx.send(f'Completed trade between **{author.name}** and **{user.name}**.', delete_after=60)
 
 
 def setup(bot):

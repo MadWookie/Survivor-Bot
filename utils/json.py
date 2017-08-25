@@ -23,7 +23,7 @@ class JsonIO:
             self._loop.create_task(self.load())
 
     def _to_file(self):
-        temp = os.path.join(self.data_path, '{}-{}.tmp'.format(uuid.uuid4(), self.filename))
+        temp = os.path.join(self.data_path, f'{uuid.uuid4()}-{self.filename}.tmp')
         with open(temp, 'w', encoding='utf-8') as fp:
             json.dump(self, fp, indent=4, ensure_ascii=True)
         os.replace(temp, self.file)

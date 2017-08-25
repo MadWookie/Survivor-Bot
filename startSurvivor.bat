@@ -1,3 +1,3 @@
 chcp 65001
-python survivor.py
+py -3.6 survivor.py
 pause

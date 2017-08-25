@@ -2,6 +2,6 @@
 chcp 65001
 
 :Start
-python survivor.py
+py -3.6 survivor.py
 timeout 3
 goto Start

@@ -72,10 +72,10 @@ class Utility:
             return
         if not message.content:
             content = 'Attachments:'
-            content += '\n'.join('{0[filename]} {0[url]}'.format(attach) for attach in message.attachments)
+            content += '\n'.join(f'{attach[filename]} {attach[url]}' for attach in message.attachments)
         else:
             content = message.content
-        description = '{.channel.mention}\n{}'.format(message, content)
+        description = f'{message.channel.mention}\n{content}'
         embed = discord.Embed(colour=discord.Colour.red(), description='**[MESSAGE DELETED]**\n' + description)
         embed.set_author(name=str(message.author), icon_url=message.author.avatar_url)
         embed.timestamp = datetime.datetime.utcnow()
@@ -93,12 +93,12 @@ class Utility:
         embed.set_author(name=str(member), icon_url=member.avatar_url)
         embed.timestamp = datetime.datetime.utcnow()
         if len(message.content) + len(edit.content) >= 1964:
-            embed.description = '**[MESSAGE EDITED 1/2]**\n{0.channel.mention}\n**OLD ⮞** {}'.format(message)
+            embed.description = '**[MESSAGE EDITED 1/2]**\n{0.channel.mention}\n**OLD ⮞** {0.content}'.format(message)
             await logging_channel.send(embed=embed)
-            embed.description = '**[MESSAGE EDITED 2/2]**\n{0.channel.mention}\n**NEW ⮞** {}'.format(edit)
+            embed.description = '**[MESSAGE EDITED 2/2]**\n{0.channel.mention}\n**NEW ⮞** {0.content}'.format(edit)
             await logging_channel.send(embed=embed)
         else:
-            embed.description = '**[MESSAGE EDITED]**\n{0.channel.mention}\n**OLD ⮞** {0.content} \n**NEW ⮞** {1.content}'.format(message, edit)
+            embed.description = '**[MESSAGE EDITED]**\n{0.channel.mention}\n**OLD ⮞** {0.content}\n**NEW ⮞** {1.content}'.format(message, edit)
             await logging_channel.send(embed=embed)
 
 ###################
@@ -153,7 +153,7 @@ class Utility:
         author = ctx.author
         channel = ctx.channel
         logging.info("{0.name}({0.id}) deleted {1} messages made by {2.name}({2.id}) in channel {3}".format(
-            author, number, user, message.channel.name))
+            author, number, user, message.channel.mention))
 
         def is_user(m):
             return m.id == message.id or m.author == user
@@ -174,7 +174,7 @@ class Utility:
         author = ctx.author
         channel = ctx.channel
         logging.info("{}({}) deleted {} messages in channel {}".format(
-            author.name, author.id, number, channel.name))
+            author.name, author.id, number, channel.mention))
         try:
             await channel.purge(limit=number + 1)
         except discord.errors.Forbidden:
@@ -191,7 +191,7 @@ class Utility:
     async def reload(self, ctx, *, ext):
         """Reload a cog."""
         if not ext.startswith('cogs.'):
-            ext = 'cogs.' + ext
+            ext = f'cogs.{ext}'
         try:
             self.bot.unload_extension(ext)
         except:
@@ -201,33 +201,33 @@ class Utility:
         except Exception as e:
             await ctx.send(e)
         else:
-            await ctx.send('Cog {} reloaded.'.format(ext))
+            await ctx.send(f'Cog {ext} reloaded.')
 
     @commands.command(hidden=True)
     @commands.is_owner()
     async def load(self, ctx, *, ext):
         """Load a cog."""
         if not ext.startswith('cogs.'):
-            ext = 'cogs.' + ext
+            ext = f'cogs.{ext}'
         try:
             self.bot.load_extension(ext)
         except Exception as e:
             await ctx.send(e)
         else:
-            await ctx.send('Cog {} loaded.'.format(ext))
+            await ctx.send(f'Cog {ext} loaded.')
 
     @commands.command(hidden=True)
     @commands.is_owner()
     async def unload(self, ctx, *, ext):
         """Unload a cog."""
         if not ext.startswith('cogs.'):
-            ext = 'cogs.' + ext
+            ext = f'cogs.{ext}'
         try:
             self.bot.unload_extension(ext)
         except:
-            await ctx.send('Cog {} is not loaded.')
+            await ctx.send(f'Cog {ext} is not loaded.')
         else:
-            await ctx.send('Cog {} unloaded.')
+            await ctx.send(f'Cog {ext} unloaded.')
 
 
 def setup(bot):

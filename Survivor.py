@@ -46,7 +46,7 @@ class SurvivorBot(commands.Bot):
         self.uptime = int(time.perf_counter())
         self.ready = True
         print('------')
-        print('{} active cogs with {} commands'.format(len(self.cogs), len(self.commands)))
+        print(f'{len(self.cogs)} active cogs with {len(self.commands)} commands')
         print('------')
 
     async def on_message(self, message):
@@ -62,17 +62,17 @@ class SurvivorBot(commands.Bot):
             hours, minutes = map(int, divmod(minutes, 60))
             fmt = []
             if hours:
-                fmt.append('{h}h')
+                fmt.append(f'{hours}h')
             if minutes:
-                fmt.append('{m}m')
+                fmt.append(f'{minutes}m')
             if seconds:
-                fmt.append('{s}s')
-            left = ' '.join(fmt).format(h=hours, m=minutes, s=seconds)
-            await ctx.send('You are on cooldown. Try again in {}.'.format(left), delete_after=10)
+                fmt.append(f'{seconds}s')
+            left = ' '.join(fmt)
+            await ctx.send(f'You are on cooldown. Try again in {left}.', delete_after=10)
             await ctx.message.delete()
         elif isinstance(error, errors.WrongChannel):
             if error.channel is not None:
-                msg = ":x: **You can't do that here.**\nPlease do this in {.mention}".format(error.channel)
+                msg = f":x: **You can't do that here.**\nPlease do this in {error.channel.mention}"
             else:
                 msg = "You can't use that command in this server."
             await ctx.send(msg, delete_after=10)
@@ -80,7 +80,7 @@ class SurvivorBot(commands.Bot):
             pass
         else:
             exc = getattr(error, 'original', error)
-            msg = 'Error with message\n{.message.content}'.format(ctx)
+            msg = f'Error with message\n{ctx.message.content}'
             tb = ''.join(traceback.format_exception(type(exc), exc, exc.__traceback__))
             print('\n'.join((msg, tb)))
             await ctx.send(str(exc))
@@ -88,7 +88,7 @@ class SurvivorBot(commands.Bot):
 
 formatter = commands.HelpFormatter(show_check_failure=True)
 
-initial_extensions = ['cogs.{}'.format(cog) for cog in
+initial_extensions = [f'cogs.{ext}' for ext in
                       ('exp', 'ltp', 'main', 'pokemon', 'utility')]
 
 description = 'Survivor Bot - Created by MadWookie & sgtlaggy.'
@@ -100,7 +100,7 @@ for ext in initial_extensions:
     try:
         bot.load_extension(ext)
     except Exception as e:
-        print('Failed loading cog {} on startup.'.format(ext))
+        print('Failed loading cog {ext} on startup.')
         print(e)
 
 

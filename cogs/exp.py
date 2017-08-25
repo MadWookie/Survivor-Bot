@@ -64,9 +64,9 @@ class Exp(Menus):
                 if self.xp[uid]['level'] == 30:
                     self.xp[uid]['level'] = 0
                     self.xp[uid]['prestige'] += 1
-                    await message.channel.send('**{}** has prestiged and is now prestige level **{}**!'.format(message.author.name, self.xp[uid]['prestige']))
+                    await message.channel.send(f'**{message.author.name}** has prestiged and is now prestige level **{self.xp[uid]["prestige"]}**!')
                     return
-                await message.channel.send('**{}** has reached level **{}**!'.format(message.author.name, self.xp[uid]['level']))
+                await message.channel.send(f'**{message.author.name}** has reached level **{self.xp[uid]["level"]}**!')
             await self.xp.save()
 
 ###################
@@ -89,14 +89,14 @@ class Exp(Menus):
             needed = level_req(level + 1)
         else:
             level, cur_xp, needed, prestige = (0, 0, 0, 0)
-        thumbnail = 'http://unitedsurvivorsgaming.com/P{}.png'.format(prestige)
+        thumbnail = f'http://unitedsurvivorsgaming.com/P{prestige}.png'
         print(len(str(cur_xp)))
         print(len(str(needed)))
         embed = discord.Embed(title='', colour=0xffffff)
         embed.set_author(name=name, icon_url=user.avatar_url)
         embed.set_thumbnail(url=thumbnail)
         embed.add_field(name='LEVEL', value=level)
-        embed.add_field(name='XP', value='{}/{}'.format(cur_xp, needed))
+        embed.add_field(name='XP', value=f'{cur_xp}/{needed}')
         await ctx.send(embed=embed)
 
 ###################
@@ -117,7 +117,7 @@ class Exp(Menus):
                 continue
             if options[-1][0]['value']:
                 options[-1][0]['value'] += '\n'
-            options[-1][0]['value'] += '#{}'.format(ind)
+            options[-1][0]['value'] += f'#{ind}'
             if options[-1][1]['value']:
                 options[-1][1]['value'] += '\n'
             options[-1][1]['value'] += member.name
@@ -126,7 +126,7 @@ class Exp(Menus):
                 options.append([{'name': 'Rank', 'value': ''}, {'name': 'User', 'value': ''}])
                 on_cur_page = 0
         title = '**Leaderboard**'
-        description = '{0[0]} Click to go back a page.\n{0[1]} Click to go forward a page.\n{1} Click to exit the list.'.format(ARROWS, CANCEL)
+        description = f'{ARROWS[0]} Click to go back a page.\n{ARROWS[1]} Click to go forward a page.\n{CANCEL} Click to exit the list.'
         await self.embed_reaction_menu(options, ctx.author, ctx.channel, 0, timeout=120, title=title, description=description)
 
 ###################

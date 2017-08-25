@@ -44,12 +44,12 @@ class Main:
                 text_channels += 1
             elif isinstance(chan, discord.VoiceChannel):
                 voice_channels += 1
-        title = '**{0.name}**'.format(guild)
+        title = f'**{guild.name}**'
         description = guild.created_at.strftime('Created on %B %d{} %Y')
         day = guild.created_at.day
         description = description.format("th" if 4 <= day % 100 <= 20 else
                                          {1: "st", 2: "nd", 3: "rd"}.get(day % 10, "th"))
-        footer = '{0} ID: {1.id}'.format(ctx.invoked_with.title(), guild)
+        footer = f'{ctx.invoked_with.title()} ID: {guild.id}'
         embed = discord.Embed(colour=discord.Colour(0xffffff), title=title, description=description)
         embed.set_thumbnail(url=thumbnail)
         embed.add_field(name='Region', value=guild.region)
@@ -65,7 +65,7 @@ class Main:
     async def invites(self, ctx):
         guild = ctx.guild
         thumbnail = 'http://unitedsurvivorsgaming.com/logo.png'
-        title = '**{.name}**'.format(guild)
+        title = f'**{guild.name}**'
         description = 'Recruitment Stats'
         footer = 'These stats are for Recruiters+ to see how many people they have invited.'
         embed = discord.Embed(colour=discord.Colour(0xffffff), title=title, description=description)
@@ -111,10 +111,11 @@ class Main:
         if guild.id not in self.settings:
             self.settings[guild.id] = DEFAULT_SETTINGS
             await self.settings.save()
+        settings = self.settings[guild.id]
         if ctx.invoked_subcommand is None:
-            msg = "```"
-            msg += 'GREETING: {}\n'.format(self.settings[guild.id]['GREETING'])
-            msg += 'ON: {}\n'.format(self.settings[guild.id]['ON'])
+            msg = "```\n"
+            msg += f'GREETING: {settings["GREETING"]}\n'
+            msg += f'ON: {settings["ON"]}\n'
             msg += '```'
             await ctx.send(msg)
 
@@ -160,13 +161,13 @@ class Main:
     async def send_testing_msg(self, ctx):
         guild = ctx.guild
         channel = self.get_welcome_channel(guild)
-        await ctx.channel.send('Sending a testing message to {0.mention}'.format(channel))
+        await ctx.channel.send(f'Sending a testing message to {channel.mention}')
         try:
             await channel.send(self.settings[guild.id]['GREETING'].format(ctx.author, guild))
         except AttributeError:
             await ctx.channel.send('Channel does not exist.')
         except discord.DiscordException as e:
-            await ctx.channel.send('`{}`'.format(e))
+            await ctx.channel.send(f'`{e}`')
 
 ###################
 #                 #
@@ -184,7 +185,7 @@ class Main:
     async def uptime(self, ctx):
         up = abs(self.bot.uptime - int(time.perf_counter()))
         up = datetime.timedelta(seconds=up)
-        await ctx.send("`Uptime: {}`".format(up))
+        await ctx.send(f'`Uptime: {up}`')
 
 
 def setup(bot):

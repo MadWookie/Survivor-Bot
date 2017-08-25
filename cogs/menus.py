@@ -62,7 +62,7 @@ class Menus:
             raise ValueError('display length must match that of options')
         if count:
             reactions = (*DIGITS, *ARROWS, CANCEL, UNDO, DONE)
-            if count > len(options):
+            if count > len(options) and not multi:
                 count = len(options)
             per_page = 10
         else:
@@ -74,7 +74,7 @@ class Menus:
                 pag.close_page()
                 page_len = 0
             if count:
-                pag.add_line('{}. {}'.format(ind % 10 + 1, line))
+                pag.add_line(f'{ind % 10 + 1}. {line}')
             else:
                 pag.add_line(line)
             page_len += 1
@@ -155,7 +155,7 @@ class Menus:
             raise ValueError('display length must match that of options')
         if count:
             reactions = (*DIGITS, *ARROWS, CANCEL, UNDO, DONE)
-            if count > len(options):
+            if count > len(options) and not multi:
                 count = len(options)
             per_page = 10
         else:
@@ -169,9 +169,9 @@ class Menus:
                 pages.append('')
                 page_len = 0
             if count:
-                pages[-1] += '{}. {}\n'.format(ind % 10 + 1, line)
+                pages[-1] += f'{ind % 10 + 1}. {line}\n'
             else:
-                pages[-1] += '{}\n'.format(line)
+                pages[-1] += f'{line}\n'
             page_len += 1
         page = 0
         em._fields[0]['value'] = pages[page]
@@ -243,7 +243,7 @@ class Menus:
             raise ValueError('return_from length must match that of options')
         if count:
             reactions = (*DIGITS, *ARROWS, CANCEL, UNDO, DONE)
-            if count > len(options):
+            if count > len(options) and not multi:
                 count = len(options)
         else:
             reactions = (*ARROWS, CANCEL, UNDO, DONE)
@@ -251,7 +251,7 @@ class Menus:
         for page in options:
             for ind, field in enumerate(page):
                 if count:
-                    field['name'] = '{}. {}'.format(ind % 10 + 1, field['name'])
+                    field['name'] = f'{ind % 10 + 1}. {field["name"]}'
                 try:
                     field['inline']
                 except KeyError:

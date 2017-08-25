@@ -4,11 +4,8 @@ from discord.ext import commands
 import discord
 
 from cogs.menus import Menus, ARROWS, CANCEL
+from utils.utils import wrap
 from utils import errors
-
-
-def wrap(to_wrap, wrap_with, sep=' '):
-    return "{1}{2}{0}{2}{1}".format(to_wrap, wrap_with, sep)
 
 
 def ltpchannel():
@@ -159,7 +156,7 @@ class LTP(Menus):
         roles = sorted(self.game_aliases.keys())
         header = "**Game List**"
         spacer = '-=-=-=--=-=-=--=-=-=--=-=-=-=-=-=-=-=-=-=-=-=-=-=-'
-        key = '{0[0]} Click to go back a page.\n{0[1]} Click to go forward a page.\n{1} Click to exit the list.'.format(ARROWS, CANCEL)
+        key = f'{ARROWS[0]} Click to go back a page.\n{ARROWS[1]} Click to go forward a page.\n{CANCEL} Click to exit the list.'
         info = wrap('To assign yourself one of these roles just use **!ltp ``Game``**.', spacer, sep='\n')
         header = '\n'.join([header, key, info])
         await self.reaction_menu(roles, ctx.author, ctx.channel, 0, per_page=20, timeout=120, code=False, header=header, return_from=roles)
