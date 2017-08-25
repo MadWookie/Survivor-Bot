@@ -1,0 +1,4814 @@
+{
+    "1": {
+        "legendary": false,
+        "name": "Bulbasaur",
+        "type": "Grass & Poison",
+        "evolutions": "Bulbasaur {not_evolved} Ivysaur {not_evolved} Venusaur"
+    },
+    "2": {
+        "legendary": false,
+        "name": "Ivysaur",
+        "type": "Grass & Poison",
+        "evolutions": "Bulbasaur {evolved} Ivysaur {not_evolved} Venusaur"
+    },
+    "3": {
+        "legendary": false,
+        "name": "Venusaur",
+        "type": "Grass & Poison",
+        "evolutions": "Bulbasaur {evolved} Ivysaur {evolved} Venusaur"
+    },
+    "4": {
+        "legendary": false,
+        "name": "Charmander",
+        "type": "Fire",
+        "evolutions": "Charmander {not_evolved} Charmeleon {not_evolved} Charizard"
+    },
+    "5": {
+        "legendary": false,
+        "name": "Charmeleon",
+        "type": "Fire",
+        "evolutions": "Charmander {evolved} Charmeleon {not_evolved} Charizard"
+    },
+    "6": {
+        "legendary": false,
+        "name": "Charizard",
+        "type": "Fire",
+        "evolutions": "Charmander {evolved} Charmeleon {evolved} Charizard"
+    },
+    "7": {
+        "legendary": false,
+        "name": "Squirtle",
+        "type": "Water",
+        "evolutions": "Squirtle {not_evolved} Wartortle {not_evolved} Blastoise"
+    },
+    "8": {
+        "legendary": false,
+        "name": "Wartortle",
+        "type": "Water",
+        "evolutions": "Squirtle {evolved} Wartortle {not_evolved} Blastoise"
+    },
+    "9": {
+        "legendary": false,
+        "name": "Blastoise",
+        "type": "Water",
+        "evolutions": "Squirtle {evolved} Wartortle {evolved} Blastoise"
+    },
+    "10": {
+        "legendary": false,
+        "name": "Caterpie",
+        "type": "Bug",
+        "evolutions": "Caterpie {not_evolved} Metapod {not_evolved} Butterfree"
+    },
+    "11": {
+        "legendary": false,
+        "name": "Metapod",
+        "type": "Bug",
+        "evolutions": "Caterpie {evolved} Metapod {not_evolved} Butterfree"
+    },
+    "12": {
+        "legendary": false,
+        "name": "Butterfree",
+        "type": "Bug",
+        "evolutions": "Caterpie {evolved} Metapod {evolved} Butterfree"
+    },
+    "13": {
+        "legendary": false,
+        "name": "Weedle",
+        "type": "Bug & Poison",
+        "evolutions": "Weedle {not_evolved} Kakuna {not_evolved} Beedrill"
+    },
+    "14": {
+        "legendary": false,
+        "name": "Kakuna",
+        "type": "Bug & Poison",
+        "evolutions": "Weedle {evolved} Kakuna Pidgeot Beedrill"
+    },
+    "15": {
+        "legendary": false,
+        "name": "Beedrill",
+        "type": "Bug & Poison",
+        "evolutions": "Weedle {evolved} Kakuna {evolved} Beedrill"
+    },
+    "16": {
+        "legendary": false,
+        "name": "Pidgey",
+        "type": "Normal & Flying",
+        "evolutions": "Pidgey {not_evolved} Pidgeotto {not_evolved} Pidgeot"
+    },
+    "17": {
+        "legendary": false,
+        "name": "Pidgeotto",
+        "type": "Normal & Flying",
+        "evolutions": "Pidgey {evolved} Pidgeotto {not_evolved} Pidgeot"
+    },
+    "18": {
+        "legendary": false,
+        "name": "Pidgeot",
+        "type": "Normal & Flying",
+        "evolutions": "Pidgey {evolved} Pidgeotto {evolved} Pidgeot"
+    },
+    "19": {
+        "legendary": false,
+        "name": "Rattata",
+        "type": "Normal",
+        "evolutions": "Rattata {not_evolved} Raticate"
+    },
+    "20": {
+        "legendary": false,
+        "name": "Raticate",
+        "type": "Normal",
+        "evolutions": "Rattata {evolved} Raticate"
+    },
+    "21": {
+        "legendary": false,
+        "name": "Spearow",
+        "type": "Normal & Flying",
+        "evolutions": "Spearow {not_evolved} Fearow"
+    },
+    "22": {
+        "legendary": false,
+        "name": "Fearow",
+        "type": "Normal & Flying",
+        "evolutions": "Spearow {evolved} Fearow"
+    },
+    "23": {
+        "legendary": false,
+        "name": "Ekans",
+        "type": "Poison",
+        "evolutions": "Ekans {not_evolved} Arbok"
+    },
+    "24": {
+        "legendary": false,
+        "name": "Arbok",
+        "type": "Poison",
+        "evolutions": "Ekans {evolved} Arbok"
+    },
+    "25": {
+        "legendary": false,
+        "name": "Pikachu",
+        "type": "Electric",
+        "evolutions": "Pichu {evolved} Pikachu {not_evolved} Raichu"
+    },
+    "26": {
+        "legendary": false,
+        "name": "Raichu",
+        "type": "Electric",
+        "evolutions": "Pichu {evolved} Pikachu {evolved} Raichu"
+    },
+    "27": {
+        "legendary": false,
+        "name": "Sandshrew",
+        "type": "Ground",
+        "evolutions": "Sandshrew {not_evolved} Sandslash"
+    },
+    "28": {
+        "legendary": false,
+        "name": "Sandslash",
+        "type": "Ground",
+        "evolutions": "Sandshrew {evolved} Sandslash"
+    },
+    "29": {
+        "legendary": false,
+        "name": "NidoranF",
+        "type": "Poison",
+        "evolutions": "NidoranF {not_evolved} Nidorina {not_evolved} Nidoqueen"
+    },
+    "30": {
+        "legendary": false,
+        "name": "Nidorina",
+        "type": "Poison",
+        "evolutions": "NidoranF {evolved} Nidorina {not_evolved} Nidoqueen"
+    },
+    "31": {
+        "legendary": false,
+        "name": "Nidoqueen",
+        "type": "Poison",
+        "evolutions": "NidoranF {evolved} Nidorina {evolved} Nidoqueen"
+    },
+    "32": {
+        "legendary": false,
+        "name": "NidoranM",
+        "type": "Poison",
+        "evolutions": "NidoranM {not_evolved} Nidorino {not_evolved} Nidoking"
+    },
+    "33": {
+        "legendary": false,
+        "name": "Nidorino",
+        "type": "Poison",
+        "evolutions": "NidoranM {evolved} Nidorino {not_evolved} Nidoking"
+    },
+    "34": {
+        "legendary": false,
+        "name": "Nidoking",
+        "type": "Poison",
+        "evolutions": "NidoranM {evolved} Nidorino {evolved} Nidoking"
+    },
+    "35": {
+        "legendary": false,
+        "name": "Clefairy",
+        "type": "Fairy",
+        "evolutions": "Cleffa {evolved} Clefairy {not_evolved} Clefable"
+    },
+    "36": {
+        "legendary": false,
+        "name": "Clefable",
+        "type": "Fairy",
+        "evolutions": "Cleffa {evolved} Clefairy {evolved} Clefable"
+    },
+    "37": {
+        "legendary": false,
+        "name": "Vulpix",
+        "type": "Fire",
+        "evolutions": "Vulpix {not_evolved} Ninetales"
+    },
+    "38": {
+        "legendary": false,
+        "name": "Ninetales",
+        "type": "Fire",
+        "evolutions": "Vulpix {evolved} Ninetales"
+    },
+    "39": {
+        "legendary": false,
+        "name": "Jigglypuff",
+        "type": "Normal & Fairy",
+        "evolutions": "Igglybuff {evolved} Jigglypuff {not_evolved} Wigglytuff"
+    },
+    "40": {
+        "legendary": false,
+        "name": "Wigglytuff",
+        "type": "Normal & Fairy",
+        "evolutions": "Igglybuff {evolved} Jigglypuff {evolved} Wigglytuff"
+    },
+    "41": {
+        "legendary": false,
+        "name": "Zubat",
+        "type": "Poison & Flying",
+        "evolutions": "Zubat {not_evolved} Golbat {not_evolved} Crobat"
+    },
+    "42": {
+        "legendary": false,
+        "name": "Golbat",
+        "type": "Poison & Flying",
+        "evolutions": "Zubat {evolved} Golbat {not_evolved} Crobat"
+    },
+    "43": {
+        "legendary": false,
+        "name": "Oddish",
+        "type": "Grass & Poison",
+        "evolutions": "Oddish {not_evolved} Gloom {not_evolved} Vileplume OR Bellossom"
+    },
+    "44": {
+        "legendary": false,
+        "name": "Gloom",
+        "type": "Grass & Poison",
+        "evolutions": "Oddish {evolved} Gloom {not_evolved} Vileplume OR Bellossom"
+    },
+    "45": {
+        "legendary": false,
+        "name": "Vileplume",
+        "type": "Grass & Poison",
+        "evolutions": "Oddish {evolved} Gloom {evolved} Vileplume"
+    },
+    "46": {
+        "legendary": false,
+        "name": "Paras",
+        "type": "Bug & Grass",
+        "evolutions": "Paras {not_evolved} Parasect"
+    },
+    "47": {
+        "legendary": false,
+        "name": "Parasect",
+        "type": "Bug & Grass",
+        "evolutions": "Paras {evolved} Parasect"
+    },
+    "48": {
+        "legendary": false,
+        "name": "Venonat",
+        "type": "Bug & Poison",
+        "evolutions": "Venonat {not_evolved} Venomoth"
+    },
+    "49": {
+        "legendary": false,
+        "name": "Venomoth",
+        "type": "Bug & Poison",
+        "evolutions": "Venonat {evolved} Venomoth"
+    },
+    "50": {
+        "legendary": false,
+        "name": "Diglett",
+        "type": "Ground",
+        "evolutions": "Diglett {not_evolved} Dugtrio"
+    },
+    "51": {
+        "legendary": false,
+        "name": "Dugtrio",
+        "type": "Ground",
+        "evolutions": "Diglett {evolved} Dugtrio"
+    },
+    "52": {
+        "legendary": false,
+        "name": "Meowth",
+        "type": "Normal",
+        "evolutions": "Meowth {not_evolved} Persian"
+    },
+    "53": {
+        "legendary": false,
+        "name": "Persian",
+        "type": "Normal",
+        "evolutions": "Meowth {evolved} Persian"
+    },
+    "54": {
+        "legendary": false,
+        "name": "Psyduck",
+        "type": "Water",
+        "evolutions": "Psyduck {not_evolved} Golduck"
+    },
+    "55": {
+        "legendary": false,
+        "name": "Golduck",
+        "type": "Water",
+        "evolutions": "Psyduck {evolved} Golduck"
+    },
+    "56": {
+        "legendary": false,
+        "name": "Mankey",
+        "type": "Fighting",
+        "evolutions": "Mankey {not_evolved} Primeape"
+    },
+    "57": {
+        "legendary": false,
+        "name": "Primeape",
+        "type": "Fighting",
+        "evolutions": "Mankey {evolved} Primeape"
+    },
+    "58": {
+        "legendary": false,
+        "name": "Growlithe",
+        "type": "Fire",
+        "evolutions": "Growlithe {not_evolved} Arcanine"
+    },
+    "59": {
+        "legendary": false,
+        "name": "Arcanine",
+        "type": "Fire",
+        "evolutions": "Growlithe {evolved} Arcanine"
+    },
+    "60": {
+        "legendary": false,
+        "name": "Poliwag",
+        "type": "Water",
+        "evolutions": "Poliwag {not_evolved} Poliwhirl {not_evolved} Poliwrath OR Politoad"
+    },
+    "61": {
+        "legendary": false,
+        "name": "Poliwhirl",
+        "type": "Water",
+        "evolutions": "Poliwag {evolved} Poliwhirl {not_evolved} Poliwrath OR Politoad"
+    },
+    "62": {
+        "legendary": false,
+        "name": "Poliwrath",
+        "type": "Water & Fighting",
+        "evolutions": "Poliwag {evolved} Poliwhirl {evolved} Poliwrath"
+    },
+    "63": {
+        "legendary": false,
+        "name": "Abra",
+        "type": "Psychic",
+        "evolutions": "Abra {not_evolved} Kadabra {not_evolved} Alakazam"
+    },
+    "64": {
+        "legendary": false,
+        "name": "Kadabra",
+        "type": "Psychic",
+        "evolutions": "Abra {evolved} Kadabra {not_evolved} Alakazam"
+    },
+    "65": {
+        "legendary": false,
+        "name": "Alakazam",
+        "type": "Psychic",
+        "evolutions": "Abra {evolved} Kadabra {evolved} Alakazam"
+    },
+    "66": {
+        "legendary": false,
+        "name": "Machop",
+        "type": "Fighting",
+        "evolutions": "Machop {not_evolved} Machoke {not_evolved} Machamp"
+    },
+    "67": {
+        "legendary": false,
+        "name": "Machoke",
+        "type": "Fighting",
+        "evolutions": "Machop {evolved} Machoke {not_evolved} Machamp"
+    },
+    "68": {
+        "legendary": false,
+        "name": "Machamp",
+        "type": "Fighting",
+        "evolutions": "Machop {evolved} Machoke {evolved} Machamp"
+    },
+    "69": {
+        "legendary": false,
+        "name": "Bellsprout",
+        "type": "Grass & Poison",
+        "evolutions": "Bellsprout {not_evolved} Weepinbell {not_evolved} Victreebel"
+    },
+    "70": {
+        "legendary": false,
+        "name": "Weepinbell",
+        "type": "Grass & Poison",
+        "evolutions": "Bellsprout {evolved} Weepinbell {not_evolved} Victreebel"
+    },
+    "71": {
+        "legendary": false,
+        "name": "Victreebel",
+        "type": "Grass & Poison",
+        "evolutions": "Bellsprout {evolved} Weepinbell {evolved} Victreebel"
+    },
+    "72": {
+        "legendary": false,
+        "name": "Tentacool",
+        "type": "Water & Poison",
+        "evolutions": "Tentacool {not_evolved} Tentacruel"
+    },
+    "73": {
+        "legendary": false,
+        "name": "Tentacruel",
+        "type": "Water & Poison",
+        "evolutions": "Tentacool {evolved} Tentacruel"
+    },
+    "74": {
+        "legendary": false,
+        "name": "Geodude",
+        "type": "Rock & Ground",
+        "evolutions": "Geodude {not_evolved} Graveler {not_evolved} Golem"
+    },
+    "75": {
+        "legendary": false,
+        "name": "Graveler",
+        "type": "Rock & Ground",
+        "evolutions": "Geodude {evolved} Graveler {not_evolved} Golem"
+    },
+    "76": {
+        "legendary": false,
+        "name": "Golem",
+        "type": "Rock & Ground",
+        "evolutions": "Geodude {evolved} Graveler {evolved} Golem"
+    },
+    "77": {
+        "legendary": false,
+        "name": "Ponyta",
+        "type": "Fire",
+        "evolutions": "Ponyta {not_evolved} Rapidash"
+    },
+    "78": {
+        "legendary": false,
+        "name": "Rapidash",
+        "type": "Fire",
+        "evolutions": "Ponyta {evolved} Rapidash"
+    },
+    "79": {
+        "legendary": false,
+        "name": "Slowpoke",
+        "type": "Water & Psychic",
+        "evolutions": "Slowpoke {not_evolved} Slowbro OR Slowking"
+    },
+    "80": {
+        "legendary": false,
+        "name": "Slowbro",
+        "type": "Water & Psychic",
+        "evolutions": "Slowpoke {evolved} Slowbro"
+    },
+    "81": {
+        "legendary": false,
+        "name": "Magnemite",
+        "type": "Electric & Steel",
+        "evolutions": "Magnemite {not_evolved} Magneton {not_evolved} Magnezone"
+    },
+    "82": {
+        "legendary": false,
+        "name": "Magneton",
+        "type": "Electric & Steel",
+        "evolutions": "Magnemite {evolved} Magneton {not_evolved} Magnezone"
+    },
+    "83": {
+        "legendary": false,
+        "name": "Farfetch\"d",
+        "type": "Normal & Flying",
+        "evolutions": "This Pok{ething}mon does not evolve."
+    },
+    "84": {
+        "legendary": false,
+        "name": "Doduo",
+        "type": "Normal & Flying",
+        "evolutions": "Doduo {not_evolved} Dodrio"
+    },
+    "85": {
+        "legendary": false,
+        "name": "Dodrio",
+        "type": "Normal & Flying",
+        "evolutions": "Doduo {evolved} Dodrio"
+    },
+    "86": {
+        "legendary": false,
+        "name": "Seel",
+        "type": "Water",
+        "evolutions": "Seel {not_evolved} Dewgong"
+    },
+    "87": {
+        "legendary": false,
+        "name": "Dewgong",
+        "type": "Water",
+        "evolutions": "Seel {evolved} Dewgong"
+    },
+    "88": {
+        "legendary": false,
+        "name": "Grimer",
+        "type": "Poison",
+        "evolutions": "Grimer {not_evolved} Muk"
+    },
+    "89": {
+        "legendary": false,
+        "name": "Muk",
+        "type": "Poison",
+        "evolutions": "Grimer {evolved} Muk"
+    },
+    "90": {
+        "legendary": false,
+        "name": "Shellder",
+        "type": "Water",
+        "evolutions": "Shellder {not_evolved} Cloyster"
+    },
+    "91": {
+        "legendary": false,
+        "name": "Cloyster",
+        "type": "Water",
+        "evolutions": "Shellder {evolved} Cloyster"
+    },
+    "92": {
+        "legendary": false,
+        "name": "Gastly",
+        "type": "Ghost & Poison",
+        "evolutions": "Gastly {not_evolved} Haunter {not_evolved} Gengar"
+    },
+    "93": {
+        "legendary": false,
+        "name": "Haunter",
+        "type": "Ghost & Poison",
+        "evolutions": "Gastly {evolved} Haunter {not_evolved} Gengar"
+    },
+    "94": {
+        "legendary": false,
+        "name": "Gengar",
+        "type": "Ghost & Poison",
+        "evolutions": "Gastly {evolved} Haunter {evolved} Gengar"
+    },
+    "95": {
+        "legendary": false,
+        "name": "Onix",
+        "type": "Rock & Ground",
+        "evolutions": "Onix {not_evolved} Steelix"
+    },
+    "96": {
+        "legendary": false,
+        "name": "Drowzee",
+        "type": "Psychic",
+        "evolutions": "Drowzee {not_evolved} Hypno"
+    },
+    "97": {
+        "legendary": false,
+        "name": "Hypno",
+        "type": "Psychic",
+        "evolutions": "Drowzee {evolved} Hypno"
+    },
+    "98": {
+        "legendary": false,
+        "name": "Krabby",
+        "type": "Water",
+        "evolutions": "Krabby {not_evolved} Kingler"
+    },
+    "99": {
+        "legendary": false,
+        "name": "Kingler",
+        "type": "Water",
+        "evolutions": "Krabby {evolved} Kingler"
+    },
+    "100": {
+        "legendary": false,
+        "name": "Voltorb",
+        "type": "Electric",
+        "evolutions": "Voltorb {not_evolved} Electrode"
+    },
+    "101": {
+        "legendary": false,
+        "name": "Electrode",
+        "type": "Electric",
+        "evolutions": "Voltorb {evolved} Electrode"
+    },
+    "102": {
+        "legendary": false,
+        "name": "Exeggcute",
+        "type": "Grass & Psychic",
+        "evolutions": "Exeggcute {not_evolved} Exeggutor"
+    },
+    "103": {
+        "legendary": false,
+        "name": "Exeggutor",
+        "type": "Grass & Psychic",
+        "evolutions": "Exeggcute {evolved} Exeggutor"
+    },
+    "104": {
+        "legendary": false,
+        "name": "Cubone",
+        "type": "Ground",
+        "evolutions": "Cubone {not_evolved} Marowak"
+    },
+    "105": {
+        "legendary": false,
+        "name": "Marowak",
+        "type": "Ground",
+        "evolutions": "Cubone {evolved} Marowak"
+    },
+    "106": {
+        "legendary": false,
+        "name": "Hitmonlee",
+        "type": "Fighting",
+        "evolutions": "Tyrogue {evolved} Hitmonlee"
+    },
+    "107": {
+        "legendary": false,
+        "name": "Hitmonchan",
+        "type": "Fighting",
+        "evolutions": "Tyrogue {evolved} Hitmonchan"
+    },
+    "108": {
+        "legendary": false,
+        "name": "Lickitung",
+        "type": "Normal",
+        "evolutions": "Lickitung {not_evolved} Lickilicky"
+    },
+    "109": {
+        "legendary": false,
+        "name": "Koffing",
+        "type": "Poison",
+        "evolutions": "Koffing {not_evolved} Weezing"
+    },
+    "110": {
+        "legendary": false,
+        "name": "Weezing",
+        "type": "Poison",
+        "evolutions": "Koffing {evolved} Weezing"
+    },
+    "111": {
+        "legendary": false,
+        "name": "Rhyhorn",
+        "type": "Ground & Rock",
+        "evolutions": "Rhyhorn {not_evolved} Rhydon {not_evolved} Rhyperior"
+    },
+    "112": {
+        "legendary": false,
+        "name": "Rhydon",
+        "type": "Ground & Rock",
+        "evolutions": "Rhyhorn {evolved} Rhydon {not_evolved} Rhyperior"
+    },
+    "113": {
+        "legendary": false,
+        "name": "Chansey",
+        "type": "Normal",
+        "evolutions": "Happiny {evolved} Chansey {not_evolved} Blissey"
+    },
+    "114": {
+        "legendary": false,
+        "name": "Tangela",
+        "type": "Grass",
+        "evolutions": "Tangela {not_evolved} Tangrowth"
+    },
+    "115": {
+        "legendary": false,
+        "name": "Kangaskhan",
+        "type": "Normal",
+        "evolutions": "This Pok{ething}mon does not evolve."
+    },
+    "116": {
+        "legendary": false,
+        "name": "Horsea",
+        "type": "Water",
+        "evolutions": "Horsea {not_evolved} Seadra {not_evolved} Kingdra"
+    },
+    "117": {
+        "legendary": false,
+        "name": "Seadra",
+        "type": "Water",
+        "evolutions": "Horsea {evolved} Seadra {not_evolved} Kingdra"
+    },
+    "118": {
+        "legendary": false,
+        "name": "Goldeen",
+        "type": "Water",
+        "evolutions": "Goldeen {not_evolved} Seaking"
+    },
+    "119": {
+        "legendary": false,
+        "name": "Seaking",
+        "type": "Water",
+        "evolutions": "Goldeen {evolved} Seaking"
+    },
+    "120": {
+        "legendary": false,
+        "name": "Staryu",
+        "type": "Water",
+        "evolutions": "Staryu {not_evolved} Starmie"
+    },
+    "121": {
+        "legendary": false,
+        "name": "Starmie",
+        "type": "Water & Psychic",
+        "evolutions": "Staryu {evolved} Starmie"
+    },
+    "122": {
+        "legendary": false,
+        "name": "Mr. Mime",
+        "type": "Psychic & Fairy",
+        "evolutions": "Mime Jr. {evolved} Mr. Mime"
+    },
+    "123": {
+        "legendary": false,
+        "name": "Scyther",
+        "type": "Bug & Flying",
+        "evolutions": "Scyther {not_evolved} Scizor"
+    },
+    "124": {
+        "legendary": false,
+        "name": "Jynx",
+        "type": "Ice & Psychic",
+        "evolutions": "Smoochum {evolved} Jynx"
+    },
+    "125": {
+        "legendary": false,
+        "name": "Electabuzz",
+        "type": "Electric",
+        "evolutions": "Elekid {evolved} Electabuzz {not_evolved} Electivire"
+    },
+    "126": {
+        "legendary": false,
+        "name": "Magmar",
+        "type": "Fire",
+        "evolutions": "Magby {evolved} Magmar {not_evolved} Magmortar"
+    },
+    "127": {
+        "legendary": false,
+        "name": "Pinsir",
+        "type": "Bug",
+        "evolutions": "This Pok{ething}mon does not evolve."
+    },
+    "128": {
+        "legendary": false,
+        "name": "Tauros",
+        "type": "Normal",
+        "evolutions": "This Pok{ething}mon does not evolve."
+    },
+    "129": {
+        "legendary": false,
+        "name": "Magikarp",
+        "type": "Water",
+        "evolutions": "Magikarp {not_evolved} Gyarados"
+    },
+    "130": {
+        "legendary": false,
+        "name": "Gyarados",
+        "type": "Water & Flying",
+        "evolutions": "Magikarp {evolved} Gyarados"
+    },
+    "131": {
+        "legendary": false,
+        "name": "Lapras",
+        "type": "Water & Ice",
+        "evolutions": "This Pok{ething}mon does not evolve."
+    },
+    "132": {
+        "legendary": false,
+        "name": "Ditto",
+        "type": "Normal",
+        "evolutions": "This Pok{ething}mon does not evolve."
+    },
+    "133": {
+        "legendary": false,
+        "name": "Eevee",
+        "type": "Normal",
+        "evolutions": "Eevee {not_evolved} Vaporeon OR Jolteon OR Flareon OR Umbreon OR Glaceon OR Leafeon OR Espeon OR Sylveon"
+    },
+    "134": {
+        "legendary": false,
+        "name": "Vaporeon",
+        "type": "Water",
+        "evolutions": "Eevee {evolved} Vaporeon"
+    },
+    "135": {
+        "legendary": false,
+        "name": "Jolteon",
+        "type": "Electric",
+        "evolutions": "Eevee {evolved} Jolteon"
+    },
+    "136": {
+        "legendary": false,
+        "name": "Flareon",
+        "type": "Fire",
+        "evolutions": "Eevee {evolved} Flareon"
+    },
+    "137": {
+        "legendary": false,
+        "name": "Porygon",
+        "type": "Normal",
+        "evolutions": "Porygon {not_evolved} Porygon2 {not_evolved} Porygon-Z"
+    },
+    "138": {
+        "legendary": false,
+        "name": "Omanyte",
+        "type": "Rock & Water",
+        "evolutions": "Omanyte {not_evolved} Omastar"
+    },
+    "139": {
+        "legendary": false,
+        "name": "Omastar",
+        "type": "Rock & Water",
+        "evolutions": "Omanyte {evolved} Omastar"
+    },
+    "140": {
+        "legendary": false,
+        "name": "Kabuto",
+        "type": "Rock & Water",
+        "evolutions": "Kabuto {not_evolved} Kabutops"
+    },
+    "141": {
+        "legendary": false,
+        "name": "Kabutops",
+        "type": "Rock & Water",
+        "evolutions": "Kabuto {evolved} Kabutops"
+    },
+    "142": {
+        "legendary": false,
+        "name": "Aerodactyl",
+        "type": "Rock & Flying",
+        "evolutions": "This Pok{ething}mon does not evolve."
+    },
+    "143": {
+        "legendary": false,
+        "name": "Snorlax",
+        "type": "Normal",
+        "evolutions": "Munchlax {not_evolved} Snorlax"
+    },
+    "144": {
+        "legendary": true,
+        "name": "Articuno",
+        "type": "Ice & Flying",
+        "evolutions": "This Pok{ething}mon does not evolve."
+    },
+    "145": {
+        "legendary": true,
+        "name": "Zapdos",
+        "type": "Electric & Flying",
+        "evolutions": "This Pok{ething}mon does not evolve."
+    },
+    "146": {
+        "legendary": true,
+        "name": "Moltres",
+        "type": "Fire & Flying",
+        "evolutions": "This Pok{ething}mon does not evolve."
+    },
+    "147": {
+        "legendary": false,
+        "name": "Dratini",
+        "type": "Dragon",
+        "evolutions": "Dratini {not_evolved} Dragonair {not_evolved} Dragonite"
+    },
+    "148": {
+        "legendary": false,
+        "name": "Dragonair",
+        "type": "Dragon",
+        "evolutions": "Dratini {evolved} Dragonair {not_evolved} Dragonite"
+    },
+    "149": {
+        "legendary": false,
+        "name": "Dragonite",
+        "type": "Dragon & Flying",
+        "evolutions": "Dratini {evolved} Dragonair {evolved} Dragonite"
+    },
+    "150": {
+        "legendary": true,
+        "name": "Mewtwo",
+        "type": "Psychic",
+        "evolutions": "This Pok{ething}mon does not evolve."
+    },
+    "151": {
+        "legendary": true,
+        "name": "Mew",
+        "type": "Psychic",
+        "evolutions": "This Pok{ething}mon does not evolve."
+    },
+    "152": {
+        "legendary": false,
+        "name": "Chikorita",
+        "type": "Grass",
+        "evolutions": "Chikorita {not_evolved} Bayleef {not_evolved} Meganium"
+    },
+    "153": {
+        "legendary": false,
+        "name": "Bayleef",
+        "type": "Grass",
+        "evolutions": "Chikorita {evolved} Bayleef {not_evolved} Meganium"
+    },
+    "154": {
+        "legendary": false,
+        "name": "Meganium",
+        "type": "Grass",
+        "evolutions": "Chikorita {evolved} Bayleef {evolved} Meganium"
+    },
+    "155": {
+        "legendary": false,
+        "name": "Cyndaquil",
+        "type": "Fire",
+        "evolutions": "Cyndaquil {not_evolved} Quilava {not_evolved} Typhlosion"
+    },
+    "156": {
+        "legendary": false,
+        "name": "Quilava",
+        "type": "Fire",
+        "evolutions": "Cyndaquil {evolved} Quilava {not_evolved} Typhlosion"
+    },
+    "157": {
+        "legendary": false,
+        "name": "Typhlosion",
+        "type": "Fire",
+        "evolutions": "Cyndaquil {evolved} Quilava {evolved} Typhlosion"
+    },
+    "158": {
+        "legendary": false,
+        "name": "Totodile",
+        "type": "Water",
+        "evolutions": "Totodile {not_evolved} Croconaw {not_evolved} Feraligatr"
+    },
+    "159": {
+        "legendary": false,
+        "name": "Croconaw",
+        "type": "Water",
+        "evolutions": "Totodile {evolved} Croconaw {not_evolved} Feraligatr"
+    },
+    "160": {
+        "legendary": false,
+        "name": "Feraligatr",
+        "type": "Water",
+        "evolutions": "Totodile {evolved} Croconaw {evolved} Feraligatr"
+    },
+    "161": {
+        "legendary": false,
+        "name": "Sentret",
+        "type": "Normal",
+        "evolutions": "Sentret {not_evolved} Furret"
+    },
+    "162": {
+        "legendary": false,
+        "name": "Furret",
+        "type": "Normal",
+        "evolutions": "Sentret {evolved} Furret"
+    },
+    "163": {
+        "legendary": false,
+        "name": "Hoothoot",
+        "type": "Normal & Flying",
+        "evolutions": "Hoothoot {not_evolved} Noctowl"
+    },
+    "164": {
+        "legendary": false,
+        "name": "Noctowl",
+        "type": "Normal & Flying",
+        "evolutions": "Hoothoot {evolved} Noctowl"
+    },
+    "165": {
+        "legendary": false,
+        "name": "Ledyba",
+        "type": "Bug & Flying",
+        "evolutions": "Ledyba {not_evolved} Ledian"
+    },
+    "166": {
+        "legendary": false,
+        "name": "Ledian",
+        "type": "Bug & Flying",
+        "evolutions": "Ledyba {evolved} Ledian"
+    },
+    "167": {
+        "legendary": false,
+        "name": "Spinarak",
+        "type": "Bug & Poison",
+        "evolutions": "Spinarak {not_evolved} Ariados"
+    },
+    "168": {
+        "legendary": false,
+        "name": "Ariados",
+        "type": "Bug & Poison",
+        "evolutions": "Spinarak {evolved} Ariados"
+    },
+    "169": {
+        "legendary": false,
+        "name": "Crobat",
+        "type": "Poison & Flying",
+        "evolutions": "Zubat {evolved} Golbat {evolved} Crobat"
+    },
+    "170": {
+        "legendary": false,
+        "name": "Chinchou",
+        "type": "Water & Electric",
+        "evolutions": "Chinchou {not_evolved} Lanturn"
+    },
+    "171": {
+        "legendary": false,
+        "name": "Lanturn",
+        "type": "Water & Electric",
+        "evolutions": "Chinchou {evolved} Lanturn"
+    },
+    "172": {
+        "legendary": false,
+        "name": "Pichu",
+        "type": "Electric",
+        "evolutions": "Pichu {not_evolved} Pikachu {not_evolved} Raichu"
+    },
+    "173": {
+        "legendary": false,
+        "name": "Cleffa",
+        "type": "Fairy",
+        "evolutions": "Cleffa {not_evolved} Clefairy {not_evolved} Clefable"
+    },
+    "174": {
+        "legendary": false,
+        "name": "Igglybuff",
+        "type": "Normal & Fairy",
+        "evolutions": "Igglybuff {not_evolved} Jigglypuff {not_evolved} Wigglytuff"
+    },
+    "175": {
+        "legendary": false,
+        "name": "Togepi",
+        "type": "Fairy",
+        "evolutions": "Togepi {not_evolved} Togetic {not_evolved} Togekiss"
+    },
+    "176": {
+        "legendary": false,
+        "name": "Togetic",
+        "type": "Fairy & Flying",
+        "evolutions": "Togepi {evolved} Togetic {not_evolved} Togekiss"
+    },
+    "177": {
+        "legendary": false,
+        "name": "Natu",
+        "type": "Psychic & Flying",
+        "evolutions": "Natu {not_evolved} Xatu"
+    },
+    "178": {
+        "legendary": false,
+        "name": "Xatu",
+        "type": "Psychic & Flying",
+        "evolutions": "Natu {evolved} Xatu"
+    },
+    "179": {
+        "legendary": false,
+        "name": "Mareep",
+        "type": "Electric",
+        "evolutions": "Mareep {not_evolved} Flaaffy {not_evolved} Ampharos"
+    },
+    "180": {
+        "legendary": false,
+        "name": "Flaaffy",
+        "type": "Electric",
+        "evolutions": "Mareep {evolved} Flaaffy {not_evolved} Ampharos"
+    },
+    "181": {
+        "legendary": false,
+        "name": "Ampharos",
+        "type": "Electric",
+        "evolutions": "Mareep {evolved} Flaaffy {evolved} Ampharos"
+    },
+    "182": {
+        "legendary": false,
+        "name": "Bellossom",
+        "type": "Grass",
+        "evolutions": "Oddish {evolved} Gloom {evolved} Bellossom"
+    },
+    "183": {
+        "legendary": false,
+        "name": "Marill",
+        "type": "Water & Fairy",
+        "evolutions": "Azurill {evolved} Marill {not_evolved} Azumarill"
+    },
+    "184": {
+        "legendary": false,
+        "name": "Azumarill",
+        "type": "Water & Fairy",
+        "evolutions": "Azurill {evolved} Marill {evolved} Azumarill"
+    },
+    "185": {
+        "legendary": false,
+        "name": "Sudowoodo",
+        "type": "Rock",
+        "evolutions": "Bonsly {not_evolved} Sudowoodo"
+    },
+    "186": {
+        "legendary": false,
+        "name": "Politoad",
+        "type": "Water",
+        "evolutions": "Poliwag {evolved} Poliwhirl {evolved} Politoad"
+    },
+    "187": {
+        "legendary": false,
+        "name": "Hoppip",
+        "type": "Grass & Flying",
+        "evolutions": "Hoppip {not_evolved} Skiploom {not_evolved} Jumpluff"
+    },
+    "188": {
+        "legendary": false,
+        "name": "Skiploom",
+        "type": "Grass & Flying",
+        "evolutions": "Hoppip {evolved} Skiploom {not_evolved} Jumpluff"
+    },
+    "189": {
+        "legendary": false,
+        "name": "Jumpluff",
+        "type": "Grass & Flying",
+        "evolutions": "Hoppip {evolved} Skiploom {evolved} Jumpluff"
+    },
+    "190": {
+        "legendary": false,
+        "name": "Aipom",
+        "type": "Normal",
+        "evolutions": "Aipom {not_evolved} Ambipom"
+    },
+    "191": {
+        "legendary": false,
+        "name": "Sunkern",
+        "type": "Grass",
+        "evolutions": "Sunkern {not_evolved} Sunflora"
+    },
+    "192": {
+        "legendary": false,
+        "name": "Sunflora",
+        "type": "Grass",
+        "evolutions": "Sunkern {evolved} Sunflora"
+    },
+    "193": {
+        "legendary": false,
+        "name": "Yanma",
+        "type": "Bug & Flying",
+        "evolutions": "Yanma {not_evolved} Yanmega"
+    },
+    "194": {
+        "legendary": false,
+        "name": "Wooper",
+        "type": "Water & Ground",
+        "evolutions": "Wooper {not_evolved} Quagsire"
+    },
+    "195": {
+        "legendary": false,
+        "name": "Quagsire",
+        "type": "Water & Ground",
+        "evolutions": "Wooper {evolved} Quagsire"
+    },
+    "196": {
+        "legendary": false,
+        "name": "Espeon",
+        "type": "Psychic",
+        "evolutions": "Eevee {evolved} Espeon"
+    },
+    "197": {
+        "legendary": false,
+        "name": "Umbreon",
+        "type": "Dark",
+        "evolutions": "Eevee {evolved} Umbreon"
+    },
+    "198": {
+        "legendary": false,
+        "name": "Murkrow",
+        "type": "Dark & Flying",
+        "evolutions": "Murkrow {not_evolved} Honchkrow"
+    },
+    "199": {
+        "legendary": false,
+        "name": "Slowking",
+        "type": "Water & Psychic",
+        "evolutions": "Slowpoke {evolved} Slowking"
+    },
+    "200": {
+        "legendary": false,
+        "name": "Misdreavus",
+        "type": "Ghost",
+        "evolutions": "Misdreavus {not_evolved} Mismagius"
+    },
+    "201": {
+        "legendary": false,
+        "name": "Unown",
+        "type": "Psychic",
+        "evolutions": "This Pok{ething}mon does not evolve."
+    },
+    "202": {
+        "legendary": false,
+        "name": "Wobbuffet",
+        "type": "Psychic",
+        "evolutions": "Wynaut {not_evolved} Wobbuffet"
+    },
+    "203": {
+        "legendary": false,
+        "name": "Girafarig",
+        "type": "Normal & Psychic",
+        "evolutions": "This Pok{ething}mon does not evolve."
+    },
+    "204": {
+        "legendary": false,
+        "name": "Pineco",
+        "type": "Bug",
+        "evolutions": "Pineco {not_evolved} Forretress"
+    },
+    "205": {
+        "legendary": false,
+        "name": "Forretress",
+        "type": "Bug & Steel",
+        "evolutions": "Pineco {evolved} Forretress"
+    },
+    "206": {
+        "legendary": false,
+        "name": "Dunsparce",
+        "type": "Normal",
+        "evolutions": "This Pok{ething}mon does not evolve."
+    },
+    "207": {
+        "legendary": false,
+        "name": "Gligar",
+        "type": "Ground & Flying",
+        "evolutions": "Gligar {not_evolved} Gliscor"
+    },
+    "208": {
+        "legendary": false,
+        "name": "Steelix",
+        "type": "Steel & Ground",
+        "evolutions": "Onix {evolved} Steelix"
+    },
+    "209": {
+        "legendary": false,
+        "name": "Snubbull",
+        "type": "Fairy",
+        "evolutions": "Snubbull {not_evolved} Granbull"
+    },
+    "210": {
+        "legendary": false,
+        "name": "Granbull",
+        "type": "Fairy",
+        "evolutions": "Snubbull {evolved} Granbull"
+    },
+    "211": {
+        "legendary": false,
+        "name": "Qwilfish",
+        "type": "Water & Poison",
+        "evolutions": "This Pok{ething}mon does not evolve."
+    },
+    "212": {
+        "legendary": false,
+        "name": "Scizor",
+        "type": "Bug & Flying",
+        "evolutions": "Scyther {evolved} Scizor"
+    },
+    "213": {
+        "legendary": false,
+        "name": "Shuckle",
+        "type": "Bug & Rock",
+        "evolutions": "This Pok{ething}mon does not evolve."
+    },
+    "214": {
+        "legendary": false,
+        "name": "Heracross",
+        "type": "Bug & Fighting",
+        "evolutions": "This Pok{ething}mon does not evolve."
+    },
+    "215": {
+        "legendary": false,
+        "name": "Sneasel",
+        "type": "Dark & Ice",
+        "evolutions": "Sneasel {not_evolved} Weavile"
+    },
+    "216": {
+        "legendary": false,
+        "name": "Teddiursa",
+        "type": "Normal",
+        "evolutions": "Teddiursa {not_evolved} Ursaring"
+    },
+    "217": {
+        "legendary": false,
+        "name": "Ursaring",
+        "type": "Normal",
+        "evolutions": "Teddiursa {evolved} Ursaring"
+    },
+    "218": {
+        "legendary": false,
+        "name": "Slugma",
+        "type": "Fire",
+        "evolutions": "Slugma {not_evolved} Slugma"
+    },
+    "219": {
+        "legendary": false,
+        "name": "Magcargo",
+        "type": "Fire & Rock",
+        "evolutions": "Slugma {evolved} Slugma"
+    },
+    "220": {
+        "legendary": false,
+        "name": "Swinub",
+        "type": "Ice & Ground",
+        "evolutions": "Swinub {not_evolved} Piloswine {not_evolved} Mamoswine"
+    },
+    "221": {
+        "legendary": false,
+        "name": "Piloswine",
+        "type": "Ice & Ground",
+        "evolutions": "Swinub {evolved} Piloswine {not_evolved} Mamoswine"
+    },
+    "222": {
+        "legendary": false,
+        "name": "Corsola",
+        "type": "Water & Rock",
+        "evolutions": "This Pok{ething}mon does not evolve."
+    },
+    "223": {
+        "legendary": false,
+        "name": "Remoraid",
+        "type": "Water",
+        "evolutions": "Remoraid {not_evolved} Octillery"
+    },
+    "224": {
+        "legendary": false,
+        "name": "Octillery",
+        "type": "Water",
+        "evolutions": "Remoraid {evolved} Octillery"
+    },
+    "225": {
+        "legendary": false,
+        "name": "Delibird",
+        "type": "Ice & Flying",
+        "evolutions": "This Pok{ething}mon does not evolve."
+    },
+    "226": {
+        "legendary": false,
+        "name": "Mantine",
+        "type": "Water & Flying",
+        "evolutions": "Mantyke {evolved} Mantine"
+    },
+    "227": {
+        "legendary": false,
+        "name": "Skarmory",
+        "type": "Steel & Flying",
+        "evolutions": "This Pok{ething}mon does not evolve."
+    },
+    "228": {
+        "legendary": false,
+        "name": "Houndour",
+        "type": "Dark & Fire",
+        "evolutions": "Houndour {not_evolved} Houndoom"
+    },
+    "229": {
+        "legendary": false,
+        "name": "Houndoom",
+        "type": "Dark & Fire",
+        "evolutions": "Houndour {evolved} Houndoom"
+    },
+    "230": {
+        "legendary": false,
+        "name": "Kingdra",
+        "type": "Water",
+        "evolutions": "Horsea {evolved} Seadra {evolved} Kingdra"
+    },
+    "231": {
+        "legendary": false,
+        "name": "Phanpy",
+        "type": "Ground",
+        "evolutions": "Phanpy {not_evolved} Donphan"
+    },
+    "232": {
+        "legendary": false,
+        "name": "Donphan",
+        "type": "Ground",
+        "evolutions": "Phanpy {evolved} Donphan"
+    },
+    "233": {
+        "legendary": false,
+        "name": "Porygon2",
+        "type": "Normal",
+        "evolutions": "Porygon {evolved} Porygon2"
+    },
+    "234": {
+        "legendary": false,
+        "name": "Stantler",
+        "type": "Normal",
+        "evolutions": "This Pok{ething}mon does not evolve."
+    },
+    "235": {
+        "legendary": false,
+        "name": "Smeargle",
+        "type": "Normal",
+        "evolutions": "This Pok{ething}mon does not evolve."
+    },
+    "236": {
+        "legendary": false,
+        "name": "Tyrogue",
+        "type": "Fighting",
+        "evolutions": "Tyrogue {not_evolved} Hitmonlee OR Hitmonchan OR Hitmontop"
+    },
+    "237": {
+        "legendary": false,
+        "name": "Hitmontop",
+        "type": "Fighting",
+        "evolutions": "Tyrogue {evolved} Hitmontop"
+    },
+    "238": {
+        "legendary": false,
+        "name": "Smoochum",
+        "type": "Ice & Psychic",
+        "evolutions": "Smoochum {not_evolved} Jynx"
+    },
+    "239": {
+        "legendary": false,
+        "name": "Elekid",
+        "type": "Electric",
+        "evolutions": "Elekid {not_evolved} Electabuzz {not_evolved} Electivire"
+    },
+    "240": {
+        "legendary": false,
+        "name": "Magby",
+        "type": "Fire",
+        "evolutions": "Magby {not_evolved} Magmar {not_evolved} Magmortar"
+    },
+    "241": {
+        "legendary": false,
+        "name": "Miltank",
+        "type": "Normal",
+        "evolutions": "This Pok{ething}mon does not evolve."
+    },
+    "242": {
+        "legendary": false,
+        "name": "Blissey",
+        "type": "Normal",
+        "evolutions": "Happiny {evolved} Chansey {evolved} Blissey"
+    },
+    "243": {
+        "legendary": true,
+        "name": "Raikou",
+        "type": "Electric",
+        "evolutions": "This Pok{ething}mon does not evolve."
+    },
+    "244": {
+        "legendary": true,
+        "name": "Entei",
+        "type": "Fire",
+        "evolutions": "This Pok{ething}mon does not evolve."
+    },
+    "245": {
+        "legendary": true,
+        "name": "Suicune",
+        "type": "Water",
+        "evolutions": "This Pok{ething}mon does not evolve."
+    },
+    "246": {
+        "legendary": false,
+        "name": "Larvitar",
+        "type": "Rock & Ground",
+        "evolutions": "Larvitar {not_evolved} Pupitar {not_evolved} Tyranitar"
+    },
+    "247": {
+        "legendary": false,
+        "name": "Pupitar",
+        "type": "Rock & Ground",
+        "evolutions": "Larvitar {evolved} Pupitar {not_evolved} Tyranitar"
+    },
+    "248": {
+        "legendary": false,
+        "name": "Tyranitar",
+        "type": "Rock & Ground",
+        "evolutions": "Larvitar {evolved} Pupitar {evolved} Tyranitar"
+    },
+    "249": {
+        "legendary": true,
+        "name": "Lugia",
+        "type": "Psychic & Flying",
+        "evolutions": "This Pok{ething}mon does not evolve."
+    },
+    "250": {
+        "legendary": true,
+        "name": "Ho-Oh",
+        "type": "Fire & Flying",
+        "evolutions": "This Pok{ething}mon does not evolve."
+    },
+    "251": {
+        "legendary": true,
+        "name": "Celebi",
+        "type": "Psychic & Grass",
+        "evolutions": "This Pok{ething}mon does not evolve."
+    },
+    "252": {
+        "legendary": false,
+        "name": "Treecko",
+        "type": "Grass",
+        "evolutions": "Treecko {not_evolved} Grovyle {not_evolved} Sceptile"
+    },
+    "253": {
+        "legendary": false,
+        "name": "Grovyle",
+        "type": "Grass",
+        "evolutions": "Treecko {evolved} Grovyle {not_evolved} Sceptile"
+    },
+    "254": {
+        "legendary": false,
+        "name": "Sceptile",
+        "type": "Grass",
+        "evolutions": "Treecko {evolved} Grovyle {evolved} Sceptile"
+    },
+    "255": {
+        "legendary": false,
+        "name": "Torchic",
+        "type": "Fire",
+        "evolutions": "Torchic {not_evolved} Combusken {not_evolved} Blaziken"
+    },
+    "256": {
+        "legendary": false,
+        "name": "Combusken",
+        "type": "Fire & Fighting",
+        "evolutions": "Torchic {evolved} Combusken {not_evolved} Blaziken"
+    },
+    "257": {
+        "legendary": false,
+        "name": "Blaziken",
+        "type": "Fire & Fighting",
+        "evolutions": "Torchic {evolved} Combusken {evolved} Blaziken"
+    },
+    "258": {
+        "legendary": false,
+        "name": "Mudkip",
+        "type": "Water",
+        "evolutions": "Mudkip {not_evolved} Marshtomp {not_evolved} Swampert"
+    },
+    "259": {
+        "legendary": false,
+        "name": "Marshtomp",
+        "type": "Water & Ground",
+        "evolutions": "Mudkip {evolved} Marshtomp {not_evolved} Swampert"
+    },
+    "260": {
+        "legendary": false,
+        "name": "Swampert",
+        "type": "Water & Ground",
+        "evolutions": "Mudkip {evolved} Marshtomp {evolved} Swampert"
+    },
+    "261": {
+        "legendary": false,
+        "name": "Poochyena",
+        "type": "Dark",
+        "evolutions": "Poochyena {not_evolved} Mightyena"
+    },
+    "262": {
+        "legendary": false,
+        "name": "Mightyena",
+        "type": "Dark",
+        "evolutions": "Poochyena {evolved} Mightyena"
+    },
+    "263": {
+        "legendary": false,
+        "name": "Zigzagoon",
+        "type": "Normal",
+        "evolutions": "Zigzagoon {not_evolved} Linoone"
+    },
+    "264": {
+        "legendary": false,
+        "name": "Linoone",
+        "type": "Normal",
+        "evolutions": "Zigzagoon {evolved} Linoone"
+    },
+    "265": {
+        "legendary": false,
+        "name": "Wurmple",
+        "type": "Bug",
+        "evolutions": "Wurmple {not_evolved} Silcoon OR Cascoon {not_evolved} Beautifly OR Dustox"
+    },
+    "266": {
+        "legendary": false,
+        "name": "Silcoon",
+        "type": "Bug",
+        "evolutions": "Wurmple {evolved} Silcoon {not_evolved} Beautifly"
+    },
+    "267": {
+        "legendary": false,
+        "name": "Beautifly",
+        "type": "Bug & Flying",
+        "evolutions": "Wurmple {evolved} Silcoon {evolved} Beautifly"
+    },
+    "268": {
+        "legendary": false,
+        "name": "Cascoon",
+        "type": "Bug",
+        "evolutions": "Wurmple {evolved} Cascoon {not_evolved} Dustox"
+    },
+    "269": {
+        "legendary": false,
+        "name": "Dustox",
+        "type": "Bug & Poison",
+        "evolutions": "Wurmple {evolved} Cascoon {evolved} Dustox"
+    },
+    "270": {
+        "legendary": false,
+        "name": "Lotad",
+        "type": "Water & Grass",
+        "evolutions": "Lotad {not_evolved} Lombre {not_evolved} Ludicolo"
+    },
+    "271": {
+        "legendary": false,
+        "name": "Lombre",
+        "type": "Water & Grass",
+        "evolutions": "Lotad {evolved} Lombre {not_evolved} Ludicolo"
+    },
+    "272": {
+        "legendary": false,
+        "name": "Ludicolo",
+        "type": "Water & Grass",
+        "evolutions": "Lotad {evolved} Lombre {evolved} Ludicolo"
+    },
+    "273": {
+        "legendary": false,
+        "name": "Seedot",
+        "type": "Grass",
+        "evolutions": "Seedot {not_evolved} Nuzleaf {not_evolved} Shiftry"
+    },
+    "274": {
+        "legendary": false,
+        "name": "Nuzleaf",
+        "type": "Grass & Dark",
+        "evolutions": "Seedot {evolved} Nuzleaf {not_evolved} Shiftry"
+    },
+    "275": {
+        "legendary": false,
+        "name": "Shiftry",
+        "type": "Grass & Dark",
+        "evolutions": "Seedot {evolved} Nuzleaf {evolved} Shiftry"
+    },
+    "276": {
+        "legendary": false,
+        "name": "Taillow",
+        "type": "Normal & Flying",
+        "evolutions": "Taillow {not_evolved} Swellow"
+    },
+    "277": {
+        "legendary": false,
+        "name": "Swellow",
+        "type": "Normal & Flying",
+        "evolutions": "Taillow {evolved} Swellow"
+    },
+    "278": {
+        "legendary": false,
+        "name": "Wingull",
+        "type": "Water & Flying",
+        "evolutions": "Wingull {not_evolved} Pelipper"
+    },
+    "279": {
+        "legendary": false,
+        "name": "Pelipper",
+        "type": "Water & Flying",
+        "evolutions": "Wingull {evolved} Pelipper"
+    },
+    "280": {
+        "legendary": false,
+        "name": "Ralts",
+        "type": "Psychic & Fairy",
+        "evolutions": "Ralts {not_evolved} Kirlia {not_evolved} Gardevoir"
+    },
+    "281": {
+        "legendary": false,
+        "name": "Kirlia",
+        "type": "Psychic & Fairy",
+        "evolutions": "Ralts {evolved} Kirlia {not_evolved} Gardevoir"
+    },
+    "282": {
+        "legendary": false,
+        "name": "Gardevoir",
+        "type": "Psychic & Fairy",
+        "evolutions": "Ralts {evolved} Kirlia {evolved} Gardevoir"
+    },
+    "283": {
+        "legendary": false,
+        "name": "Surskit",
+        "type": "Bug & Water",
+        "evolutions": "Surskit {not_evolved} Masquerain"
+    },
+    "284": {
+        "legendary": false,
+        "name": "Masquerain",
+        "type": "Bug & Flying",
+        "evolutions": "Surskit {evolved} Masquerain"
+    },
+    "285": {
+        "legendary": false,
+        "name": "Shroomish",
+        "type": "Grass",
+        "evolutions": "Shroomish {not_evolved} Breloom"
+    },
+    "286": {
+        "legendary": false,
+        "name": "Breloom",
+        "type": "Grass & Fighting",
+        "evolutions": "Shroomish {evolved} Breloom"
+    },
+    "287": {
+        "legendary": false,
+        "name": "Slakoth",
+        "type": "Normal",
+        "evolutions": "Slakoth {not_evolved} Vigoroth {not_evolved} Slaking"
+    },
+    "288": {
+        "legendary": false,
+        "name": "Vigoroth",
+        "type": "Normal",
+        "evolutions": "Slakoth {evolved} Vigoroth {not_evolved} Slaking"
+    },
+    "289": {
+        "legendary": false,
+        "name": "Slaking",
+        "type": "Normal",
+        "evolutions": "Slakoth {evolved} Vigoroth {evolved} Slaking"
+    },
+    "290": {
+        "legendary": false,
+        "name": "Nincada",
+        "type": "Bug & Ground",
+        "evolutions": "Nincada {not_evolved} Ninjask OR Shedinja"
+    },
+    "291": {
+        "legendary": false,
+        "name": "Ninjask",
+        "type": "Bug & Flying",
+        "evolutions": "Nincada {evolved} Ninjask"
+    },
+    "292": {
+        "legendary": false,
+        "name": "Shedinja",
+        "type": "Bug & Ghost",
+        "evolutions": "Nincada {evolved} Shedinja"
+    },
+    "293": {
+        "legendary": false,
+        "name": "Whismur",
+        "type": "Normal",
+        "evolutions": "Whismur {not_evolved} Loudred {not_evolved} Exploud"
+    },
+    "294": {
+        "legendary": false,
+        "name": "Loudred",
+        "type": "Normal",
+        "evolutions": "Whismur {evolved} Loudred {not_evolved} Exploud"
+    },
+    "295": {
+        "legendary": false,
+        "name": "Exploud",
+        "type": "Normal",
+        "evolutions": "Whismur {evolved} Loudred {evolved} Exploud"
+    },
+    "296": {
+        "legendary": false,
+        "name": "Makuhita",
+        "type": "Fighting",
+        "evolutions": "Makuhita {not_evolved} Hariyama"
+    },
+    "297": {
+        "legendary": false,
+        "name": "Hariyama",
+        "type": "Fighting",
+        "evolutions": "Makuhita {evolved} Hariyama"
+    },
+    "298": {
+        "legendary": false,
+        "name": "Azurill",
+        "type": "Normal & Fairy",
+        "evolutions": "Azurill {not_evolved} Marill {not_evolved} Azumarill"
+    },
+    "299": {
+        "legendary": false,
+        "name": "Nosepass",
+        "type": "Rock",
+        "evolutions": "Nosepass {not_evolved} Probopass"
+    },
+    "300": {
+        "legendary": false,
+        "name": "Skitty",
+        "type": "Normal",
+        "evolutions": "Skitty {not_evolved} Delcatty"
+    },
+    "301": {
+        "legendary": false,
+        "name": "Delcatty",
+        "type": "Normal",
+        "evolutions": "Skitty {evolved} Delcatty"
+    },
+    "302": {
+        "legendary": false,
+        "name": "Sableye",
+        "type": "Dark & Ghost",
+        "evolutions": "This Pok{ething}mon does not evolve."
+    },
+    "303": {
+        "legendary": false,
+        "name": "Mawile",
+        "type": "Steel",
+        "evolutions": "This Pok{ething}mon does not evolve."
+    },
+    "304": {
+        "legendary": false,
+        "name": "Aron",
+        "type": "Steel & Rock",
+        "evolutions": "Aron {not_evolved} Lairon {not_evolved} Aggron"
+    },
+    "305": {
+        "legendary": false,
+        "name": "Lairon",
+        "type": "Steel & Rock",
+        "evolutions": "Aron {evolved} Lairon {not_evolved} Aggron"
+    },
+    "306": {
+        "legendary": false,
+        "name": "Aggron",
+        "type": "Steel & Rock",
+        "evolutions": "Aron {evolved} Lairon {evolved} Aggron"
+    },
+    "307": {
+        "legendary": false,
+        "name": "Meditite",
+        "type": "Fighting & Psychic",
+        "evolutions": "Meditite {not_evolved} Medicham"
+    },
+    "308": {
+        "legendary": false,
+        "name": "Medicham",
+        "type": "Fighting & Psychic",
+        "evolutions": "Meditite {evolved} Medicham"
+    },
+    "309": {
+        "legendary": false,
+        "name": "Electrike",
+        "type": "Electric",
+        "evolutions": "Electrike {not_evolved} Manectric"
+    },
+    "310": {
+        "legendary": false,
+        "name": "Manectric",
+        "type": "Electric",
+        "evolutions": "Electrike {evolved} Manectric"
+    },
+    "311": {
+        "legendary": false,
+        "name": "Plusle",
+        "type": "Electric",
+        "evolutions": "This Pok{ething}mon does not evolve."
+    },
+    "312": {
+        "legendary": false,
+        "name": "Minun",
+        "type": "Electric",
+        "evolutions": "This Pok{ething}mon does not evolve."
+    },
+    "313": {
+        "legendary": false,
+        "name": "Volbeat",
+        "type": "Bug",
+        "evolutions": "This Pok{ething}mon does not evolve."
+    },
+    "314": {
+        "legendary": false,
+        "name": "Illumise",
+        "type": "Bug",
+        "evolutions": "This Pok{ething}mon does not evolve."
+    },
+    "315": {
+        "legendary": false,
+        "name": "Roselia",
+        "type": "Grass & Poison",
+        "evolutions": "Budew {evolved} Roselia {not_evolved} Roserade"
+    },
+    "316": {
+        "legendary": false,
+        "name": "Gulpin",
+        "type": "Poison",
+        "evolutions": "Gulpin {not_evolved} Swalot"
+    },
+    "317": {
+        "legendary": false,
+        "name": "Swalot",
+        "type": "Poison",
+        "evolutions": "Gulpin {evolved} Swalot"
+    },
+    "318": {
+        "legendary": false,
+        "name": "Carvanha",
+        "type": "Water & Dark",
+        "evolutions": "Carvanha {not_evolved} Sharpedo"
+    },
+    "319": {
+        "legendary": false,
+        "name": "Sharpedo",
+        "type": "Water & Dark",
+        "evolutions": "Carvanha {evolved} Sharpedo"
+    },
+    "320": {
+        "legendary": false,
+        "name": "Wailmer",
+        "type": "Water",
+        "evolutions": "Wailmer {not_evolved} Wailord"
+    },
+    "321": {
+        "legendary": false,
+        "name": "Wailord",
+        "type": "Water",
+        "evolutions": "Wailmer {evolved} Wailord"
+    },
+    "322": {
+        "legendary": false,
+        "name": "Numel",
+        "type": "Fire{Fire_Type} & Ground",
+        "evolutions": "Numel {not_evolved} Camerupt"
+    },
+    "323": {
+        "legendary": false,
+        "name": "Camerupt",
+        "type": "Fire{Fire_Type} & Ground",
+        "evolutions": "Numel {evolved} Camerupt"
+    },
+    "324": {
+        "legendary": false,
+        "name": "Torkoal",
+        "type": "Fire{Fire_Type}",
+        "evolutions": "This Pok{ething}mon does not evolve."
+    },
+    "325": {
+        "legendary": false,
+        "name": "Spoink",
+        "type": "Psychic",
+        "evolutions": "Spoink {not_evolved} Grumpig"
+    },
+    "326": {
+        "legendary": false,
+        "name": "Grumpig",
+        "type": "Psychic",
+        "evolutions": "Spoink {evolved} Grumpig"
+    },
+    "327": {
+        "legendary": false,
+        "name": "Spinda",
+        "type": "Normal",
+        "evolutions": "This Pok{ething}mon does not evolve."
+    },
+    "328": {
+        "legendary": false,
+        "name": "Trapinch",
+        "type": "Ground",
+        "evolutions": "Trapinch {not_evolved} Vibrava {not_evolved} Flygon"
+    },
+    "329": {
+        "legendary": false,
+        "name": "Vibrava",
+        "type": "Ground & Dragon",
+        "evolutions": "Trapinch {evolved} Vibrava {not_evolved} Flygon"
+    },
+    "330": {
+        "legendary": false,
+        "name": "Flygon",
+        "type": "Ground & Dragon",
+        "evolutions": "Trapinch {evolved} Vibrava {evolved} Flygon"
+    },
+    "331": {
+        "legendary": false,
+        "name": "Cacnea",
+        "type": "Grass",
+        "evolutions": "Cacnea {not_evolved} Cacturne"
+    },
+    "332": {
+        "legendary": false,
+        "name": "Cacturne",
+        "type": "Grass",
+        "evolutions": "Cacnea {evolved} Cacturne"
+    },
+    "333": {
+        "legendary": false,
+        "name": "Swablu",
+        "type": "Normal & Flying",
+        "evolutions": "Swablu {not_evolved} Altaria"
+    },
+    "334": {
+        "legendary": false,
+        "name": "Altaria",
+        "type": "Dragon & Flying",
+        "evolutions": "Swablu {evolved} Altaria"
+    },
+    "335": {
+        "legendary": false,
+        "name": "Zangoose",
+        "type": "Normal",
+        "evolutions": "This Pok{ething}mon does not evolve."
+    },
+    "336": {
+        "legendary": false,
+        "name": "Seviper",
+        "type": "Poison",
+        "evolutions": "This Pok{ething}mon does not evolve."
+    },
+    "337": {
+        "legendary": false,
+        "name": "Lunatone",
+        "type": "Rock & Psychic",
+        "evolutions": "This Pok{ething}mon does not evolve."
+    },
+    "338": {
+        "legendary": false,
+        "name": "Solrock",
+        "type": "Rock & Psychic",
+        "evolutions": "This Pok{ething}mon does not evolve."
+    },
+    "339": {
+        "legendary": false,
+        "name": "Barboach",
+        "type": "Water & Ground",
+        "evolutions": "Barboach {not_evolved} Whiscash"
+    },
+    "340": {
+        "legendary": false,
+        "name": "Whiscash",
+        "type": "Water & Ground",
+        "evolutions": "Barboach {evolved} Whiscash"
+    },
+    "341": {
+        "legendary": false,
+        "name": "Corphish",
+        "type": "Water",
+        "evolutions": "Corphish {not_evolved} Crawdaunt"
+    },
+    "342": {
+        "legendary": false,
+        "name": "Crawdaunt",
+        "type": "Water & Dark",
+        "evolutions": "Corphish {evolved} Crawdaunt"
+    },
+    "343": {
+        "legendary": false,
+        "name": "Baltoy",
+        "type": "Ground & Psychic",
+        "evolutions": "Baytoy {not_evolved} Claydol"
+    },
+    "344": {
+        "legendary": false,
+        "name": "Claydol",
+        "type": "Ground & Psychic",
+        "evolutions": "Baltoy {evolved} Claydol"
+    },
+    "345": {
+        "legendary": false,
+        "name": "Lileep",
+        "type": "Rock & Grass",
+        "evolutions": "Lileep {not_evolved} Cradily"
+    },
+    "346": {
+        "legendary": false,
+        "name": "Cradily",
+        "type": "Rock & Grass",
+        "evolutions": "Lileep {evolved} Cradily"
+    },
+    "347": {
+        "legendary": false,
+        "name": "Anorith",
+        "type": "Rock & Bug",
+        "evolutions": "Anorith {not_evolved} Armaldo"
+    },
+    "348": {
+        "legendary": false,
+        "name": "Armaldo",
+        "type": "Rock & Bug",
+        "evolutions": "Anorith {evolved} Armaldo"
+    },
+    "349": {
+        "legendary": false,
+        "name": "Feebas",
+        "type": "Water",
+        "evolutions": "Feebas {not_evolved} Milotic"
+    },
+    "350": {
+        "legendary": false,
+        "name": "Milotic",
+        "type": "Water",
+        "evolutions": "Feebas {evolved} Milotic"
+    },
+    "351": {
+        "legendary": false,
+        "name": "Castform",
+        "type": "Normal",
+        "evolutions": "This Pok{ething}mon does not evolve."
+    },
+    "352": {
+        "legendary": false,
+        "name": "Kecleon",
+        "type": "Normal",
+        "evolutions": "This Pok{ething}mon does not evolve."
+    },
+    "353": {
+        "legendary": false,
+        "name": "Shuppet",
+        "type": "Ghost",
+        "evolutions": "Shuppet {not_evolved} Banette"
+    },
+    "354": {
+        "legendary": false,
+        "name": "Banette",
+        "type": "Ghost",
+        "evolutions": "Shuppet {evolved} Banette"
+    },
+    "355": {
+        "legendary": false,
+        "name": "Duskull",
+        "type": "Ghost",
+        "evolutions": "Duskull {not_evolved} Dusclops {not_evolved} Dusknoir"
+    },
+    "356": {
+        "legendary": false,
+        "name": "Dusclops",
+        "type": "Ghost",
+        "evolutions": "Duskull {evolved} Dusclops {not_evolved} Dusknoir"
+    },
+    "357": {
+        "legendary": false,
+        "name": "Tropius",
+        "type": "Grass & Flying",
+        "evolutions": "This Pok{ething}mon does not evolve."
+    },
+    "358": {
+        "legendary": false,
+        "name": "Chimecho",
+        "type": "Psychic",
+        "evolutions": "Chingling {evolved} Chimecho"
+    },
+    "359": {
+        "legendary": false,
+        "name": "Absol",
+        "type": "Dark",
+        "evolutions": "This Pok{ething}mon does not evolve."
+    },
+    "360": {
+        "legendary": false,
+        "name": "Wynaut",
+        "type": "Psychic",
+        "evolutions": "Wynaut {not_evolved} Wobbuffet"
+    },
+    "361": {
+        "legendary": false,
+        "name": "Snorunt",
+        "type": "Ice",
+        "evolutions": "Snorunt {not_evolved} Glalie OR Froslass"
+    },
+    "362": {
+        "legendary": false,
+        "name": "Glalie",
+        "type": "Ice",
+        "evolutions": "Snorunt {evolved} Glalie OR Froslass"
+    },
+    "363": {
+        "legendary": false,
+        "name": "Spheal",
+        "type": "Ice & Water",
+        "evolutions": "Spheal {not_evolved} Sealeo {not_evolved} Walrein"
+    },
+    "364": {
+        "legendary": false,
+        "name": "Sealeo",
+        "type": "Ice & Water",
+        "evolutions": "Spheal {evolved} Sealeo {not_evolved} Walrein"
+    },
+    "365": {
+        "legendary": false,
+        "name": "Walrein",
+        "type": "Ice & Water",
+        "evolutions": "Spheal {evolved} Sealeo {evolved} Walrein"
+    },
+    "366": {
+        "legendary": false,
+        "name": "Clamperl",
+        "type": "Water",
+        "evolutions": "Clamperl {not_evolved} Huntail OR Gorebyss"
+    },
+    "367": {
+        "legendary": false,
+        "name": "Huntail",
+        "type": "Water",
+        "evolutions": "Clamperl {evolved} Huntail OR Gorebyss"
+    },
+    "368": {
+        "legendary": false,
+        "name": "Gorebyss",
+        "type": "Water",
+        "evolutions": "Clamperl {evolved} Huntail OR Gorebyss"
+    },
+    "369": {
+        "legendary": false,
+        "name": "Relicanth",
+        "type": "Water & Rock",
+        "evolutions": "This Pok{ething}mon does not evolve."
+    },
+    "370": {
+        "legendary": false,
+        "name": "Luvdisc",
+        "type": "Water",
+        "evolutions": "This Pok{ething}mon does not evolve."
+    },
+    "371": {
+        "legendary": false,
+        "name": "Bagon",
+        "type": "Dragon",
+        "evolutions": "Bagon {not_evolved} Shelgon {not_evolved} Salamence"
+    },
+    "372": {
+        "legendary": false,
+        "name": "Shelgon",
+        "type": "Dragon",
+        "evolutions": "Bagon {evolved} Shelgon {not_evolved} Salamence"
+    },
+    "373": {
+        "legendary": false,
+        "name": "Salamence",
+        "type": "Dragon & Flying",
+        "evolutions": "Bagon {evolved} Shelgon {not_evolved} Salamence"
+    },
+    "374": {
+        "legendary": false,
+        "name": "Beldum",
+        "type": "Steel & Psychic",
+        "evolutions": "Beldum {not_evolved} Metang {not_evolved} Metagross"
+    },
+    "375": {
+        "legendary": false,
+        "name": "Metang",
+        "type": "Steel & Psychic",
+        "evolutions": "Beldum {evolved} Metang {not_evolved} Metagross"
+    },
+    "376": {
+        "legendary": false,
+        "name": "Metagross",
+        "type": "Steel & Psychic",
+        "evolutions": "Beldum {evolved} Metang {evolved} Metagross"
+    },
+    "377": {
+        "legendary": true,
+        "name": "Regirock",
+        "type": "Rock",
+        "evolutions": "This Pok{ething}mon does not evolve."
+    },
+    "378": {
+        "legendary": true,
+        "name": "Regice",
+        "type": "Ice",
+        "evolutions": "This Pok{ething}mon does not evolve."
+    },
+    "379": {
+        "legendary": true,
+        "name": "Registeel",
+        "type": "Steel",
+        "evolutions": "This Pok{ething}mon does not evolve."
+    },
+    "380": {
+        "legendary": true,
+        "name": "Latias",
+        "type": "Dragon & Psychic",
+        "evolutions": "This Pok{ething}mon does not evolve."
+    },
+    "381": {
+        "legendary": true,
+        "name": "Latios",
+        "type": "Dragon & Psychic",
+        "evolutions": "This Pok{ething}mon does not evolve."
+    },
+    "382": {
+        "legendary": true,
+        "name": "Kyogre",
+        "type": "Water",
+        "evolutions": "This Pok{ething}mon does not evolve."
+    },
+    "383": {
+        "legendary": true,
+        "name": "Groudon",
+        "type": "Ground",
+        "evolutions": "This Pok{ething}mon does not evolve."
+    },
+    "384": {
+        "legendary": true,
+        "name": "Rayquaza",
+        "type": "Dragon & Flying",
+        "evolutions": "This Pok{ething}mon does not evolve."
+    },
+    "385": {
+        "legendary": true,
+        "name": "Jirachi",
+        "type": "Steel & Psychic",
+        "evolutions": "This Pok{ething}mon does not evolve."
+    },
+    "386": {
+        "legendary": true,
+        "name": "Deoxys",
+        "type": "Psychic",
+        "evolutions": "This Pok{ething}mon does not evolve."
+    },
+    "387": {
+        "legendary": false,
+        "name": "Turtwig",
+        "type": "Grass",
+        "evolutions": "Turtwig {not_evolved} Grotle {not_evolved} Torterra"
+    },
+    "388": {
+        "legendary": false,
+        "name": "Grotle",
+        "type": "Grass",
+        "evolutions": "Turtwig {evolved} Grotle {not_evolved} Torterra"
+    },
+    "389": {
+        "legendary": false,
+        "name": "Torterra",
+        "type": "Grass & Ground",
+        "evolutions": "Turtwig {evolved} Grotle {evolved} Torterra"
+    },
+    "390": {
+        "legendary": false,
+        "name": "Chimchar",
+        "type": "Fire",
+        "evolutions": "Chimchar {not_evolved} Monferno {not_evolved} Infernape"
+    },
+    "391": {
+        "legendary": false,
+        "name": "Monferno",
+        "type": "Fire & Fighting",
+        "evolutions": " Chimchar {evolved} Monferno {not_evolved} Infernape"
+    },
+    "392": {
+        "legendary": false,
+        "name": "Infernape",
+        "type": "Fire & Fighting",
+        "evolutions": "Chimchar {evolved} Monferno {evolved} Infernape"
+    },
+    "393": {
+        "legendary": false,
+        "name": "Piplup",
+        "type": "Water",
+        "evolutions": "Piplup {not_evolved} Prinplup {not_evolved} Empoleon"
+    },
+    "394": {
+        "legendary": false,
+        "name": "Prinplup",
+        "type": "Water",
+        "evolutions": "Piplup {evolved} Prinplup {not_evolved} Empoleon"
+    },
+    "395": {
+        "legendary": false,
+        "name": "Empoleon",
+        "type": "Water & Steel",
+        "evolutions": "Piplup {evolved} Prinplup {evolved} Empoleon"
+    },
+    "396": {
+        "legendary": false,
+        "name": "Starly",
+        "type": "Normal & Flying",
+        "evolutions": "Starly {not_evolved} Staravia {not_evolved} Staraptor"
+    },
+    "397": {
+        "legendary": false,
+        "name": "Staravia",
+        "type": "Normal & Flying",
+        "evolutions": "Starly {not_evolved} Staravia {not_evolved} Staraptor"
+    },
+    "398": {
+        "legendary": false,
+        "name": "Staraptor",
+        "type": "Normal & Flying",
+        "evolutions": "Starly {not_evolved} Staravia {not_evolved} Staraptor"
+    },
+    "399": {
+        "legendary": false,
+        "name": "Bidoof",
+        "type": "Normal",
+        "evolutions": "Bidoof {not_evolved} Bibarel"
+    },
+    "400": {
+        "legendary": false,
+        "name": "Bibarel",
+        "type": "Normal & Water",
+        "evolutions": "Bidoof {evolved} Bibarel"
+    },
+    "401": {
+        "legendary": false,
+        "name": "Kricketot",
+        "type": "Bug",
+        "evolutions": "Kricketot {not_evolved} Kricketune"
+    },
+    "402": {
+        "legendary": false,
+        "name": "Kricketune",
+        "type": "Bug",
+        "evolutions": "Kricketot {evolved} Kricketune"
+    },
+    "403": {
+        "legendary": false,
+        "name": "Shinx",
+        "type": "Electric",
+        "evolutions": "Shinx {not_evolved} Luxio {not_evolved} Luxray"
+    },
+    "404": {
+        "legendary": false,
+        "name": "Luxio",
+        "type": "Electric",
+        "evolutions": "Shinx {evolved} Luxio {not_evolved} Luxray"
+    },
+    "405": {
+        "legendary": false,
+        "name": "Luxray",
+        "type": "Electric",
+        "evolutions": "Shinx {evolved} Luxio {evolved} Luxray"
+    },
+    "406": {
+        "legendary": false,
+        "name": "Budew",
+        "type": "Grass & Poison",
+        "evolutions": "Budew {not_evolved} Roselia {not_evolved} Roserade"
+    },
+    "407": {
+        "legendary": false,
+        "name": "Roserade",
+        "type": "Grass & Poison",
+        "evolutions": "Budew {evolved} Roselia {evolved} Roserade"
+    },
+    "408": {
+        "legendary": false,
+        "name": "Cranidos",
+        "type": "Rock",
+        "evolutions": "Cranidos {not_evolved} Rampardos"
+    },
+    "409": {
+        "legendary": false,
+        "name": "Rampardos",
+        "type": "Rock",
+        "evolutions": "Cranidos {evolved} Rampardos"
+    },
+    "410": {
+        "legendary": false,
+        "name": "Sheldon",
+        "type": "Rock & Steel",
+        "evolutions": "Sheldon {not_evolved} Bastiodon"
+    },
+    "411": {
+        "legendary": false,
+        "name": "Bastiodon",
+        "type": "Rock & Steel",
+        "evolutions": "Sheldon {evolved} Bastiodon"
+    },
+    "412": {
+        "legendary": false,
+        "name": "Burmy",
+        "type": "Bug",
+        "evolutions": "Burmy {not_evolved} Wormandam {not_evolved} Mothim"
+    },
+    "413": {
+        "legendary": false,
+        "name": "Wormandam",
+        "type": "Bug & Grass",
+        "evolutions": "Burmy {evolved} Wormandam {not_evolved} Mothim"
+    },
+    "414": {
+        "legendary": false,
+        "name": "Mothim",
+        "type": "Bug & Flying",
+        "evolutions": "Burmy {evolved} Wormandam {evolved} Mothim"
+    },
+    "415": {
+        "legendary": false,
+        "name": "Combee",
+        "type": "Bug & Flying",
+        "evolutions": "Combee {not_evolved} Vespiquen"
+    },
+    "416": {
+        "legendary": false,
+        "name": "Vespiquen",
+        "type": "Bug & Flying",
+        "evolutions": "Combee {evolved} Vespiquen"
+    },
+    "417": {
+        "legendary": false,
+        "name": "Pachirisu",
+        "type": "Electric",
+        "evolutions": "This Pok{ething}mon does not evolve."
+    },
+    "418": {
+        "legendary": false,
+        "name": "Buizel",
+        "type": "Water",
+        "evolutions": "Buizel {not_evolved} Floatzel"
+    },
+    "419": {
+        "legendary": false,
+        "name": "Floatzel",
+        "type": "Water",
+        "evolutions": "Buizel {evolved} Floatzel"
+    },
+    "420": {
+        "legendary": false,
+        "name": "Cherubi",
+        "type": "Grass",
+        "evolutions": "Cherubi {not_evolved} Cherrim"
+    },
+    "421": {
+        "legendary": false,
+        "name": "Cherrim",
+        "type": "Grass",
+        "evolutions": "Cherubi {evolved} Cherrim"
+    },
+    "422": {
+        "legendary": false,
+        "name": "Shellos",
+        "type": "Water",
+        "evolutions": "Shellos {not_evolved} Gastrodon"
+    },
+    "423": {
+        "legendary": false,
+        "name": "Gastrodon",
+        "type": "Water & Ground",
+        "evolutions": "Shellos {evolved} Gastrodon"
+    },
+    "424": {
+        "legendary": false,
+        "name": "Ambipom",
+        "type": "Normal",
+        "evolutions": "Aipom {evolved} Ambipom"
+    },
+    "425": {
+        "legendary": false,
+        "name": "Drifloon",
+        "type": "Ghost & Flying",
+        "evolutions": "Drifloon {not_evolved} Drifblim"
+    },
+    "426": {
+        "legendary": false,
+        "name": "Drifblim",
+        "type": "Ghost & Flying",
+        "evolutions": "Drifloon {evolved} Drifblim"
+    },
+    "427": {
+        "legendary": false,
+        "name": "Buneary",
+        "type": "Normal",
+        "evolutions": "Buneary {not_evolved} Lopunny"
+    },
+    "428": {
+        "legendary": false,
+        "name": "Lopunny",
+        "type": "Normal",
+        "evolutions": "Buneary {evolved} Lopunny"
+    },
+    "429": {
+        "legendary": false,
+        "name": "Mismagius",
+        "type": "Ghost",
+        "evolutions": "Misdreavus {evolved} Mismagius"
+    },
+    "430": {
+        "legendary": false,
+        "name": "Honchkrow",
+        "type": "Dark & Flying",
+        "evolutions": "Murkrow {evolved} Honchkrow"
+    },
+    "431": {
+        "legendary": false,
+        "name": "Glameow",
+        "type": "Normal",
+        "evolutions": "Glameow {not_evolved} Purugly"
+    },
+    "432": {
+        "legendary": false,
+        "name": "Purugly",
+        "type": "Normal",
+        "evolutions": "Glameow {evolved} Purugly"
+    },
+    "433": {
+        "legendary": false,
+        "name": "Chingling",
+        "type": "Psychic",
+        "evolutions": "Chingling {not_evolved} Chimecho"
+    },
+    "434": {
+        "legendary": false,
+        "name": "Stunky",
+        "type": "Poison & Dark",
+        "evolutions": "Stunky {not_evolved} Skuntank"
+    },
+    "435": {
+        "legendary": false,
+        "name": "Skuntank",
+        "type": "Poison & Dark",
+        "evolutions": "Stunky {evolved} Skuntank"
+    },
+    "436": {
+        "legendary": false,
+        "name": "Bonzor",
+        "type": "Steel & Psychic",
+        "evolutions": "Bonzor {not_evolved} Bronzong"
+    },
+    "437": {
+        "legendary": false,
+        "name": "Bronzong",
+        "type": "Steel & Psychic",
+        "evolutions": "Bonzor {evolved} Bronzong"
+    },
+    "438": {
+        "legendary": false,
+        "name": "Bonsly",
+        "type": "Rock",
+        "evolutions": "Bonsly {not_evolved} Sudowoodo"
+    },
+    "439": {
+        "legendary": false,
+        "name": "Mime Jr.",
+        "type": "Psychic & Fairy",
+        "evolutions": "Mime Jr. {not_evolved} Mr.Mime"
+    },
+    "440": {
+        "legendary": false,
+        "name": "Happiny",
+        "type": "Normal",
+        "evolutions": "Happiny {not_evolved} Chansey {not_evolved} Blissey"
+    },
+    "441": {
+        "legendary": false,
+        "name": "Chatot",
+        "type": "Normal & Flying",
+        "evolutions": "This Pok{ething}mon does not evolve."
+    },
+    "442": {
+        "legendary": false,
+        "name": "Spiritomb",
+        "type": "Ghost & Dark",
+        "evolutions": "This Pok{ething}mon does not evolve."
+    },
+    "443": {
+        "legendary": false,
+        "name": "Gible",
+        "type": "Dragon & Ground",
+        "evolutions": "Gible {not_evolved} Gabite {not_evolved} Garchomp"
+    },
+    "444": {
+        "legendary": false,
+        "name": "Gabite",
+        "type": "Dragon & Ground",
+        "evolutions": "Gible {evolved} Gabite {not_evolved} Garchomp"
+    },
+    "445": {
+        "legendary": false,
+        "name": "Garchomp",
+        "type": "Dragon & Ground",
+        "evolutions": "Gible {evolved} Gabite {evolved} Garchomp"
+    },
+    "446": {
+        "legendary": false,
+        "name": "Munchlax",
+        "type": "Normal",
+        "evolutions": "Munchlax {not_evolved} Snorlax"
+    },
+    "447": {
+        "legendary": false,
+        "name": "Riolu",
+        "type": "Fighting",
+        "evolutions": "Riolu {not_evolved} Lucario"
+    },
+    "448": {
+        "legendary": false,
+        "name": "Lucario",
+        "type": "Fighting & Steel",
+        "evolutions": "Riolu {evolved} Lucario"
+    },
+    "449": {
+        "legendary": false,
+        "name": "Hippopotas",
+        "type": "Ground",
+        "evolutions": "Hippopotas {not_evolved} Hippowdon"
+    },
+    "450": {
+        "legendary": false,
+        "name": "Hippowdon",
+        "type": "Ground",
+        "evolutions": "Hippopotas {evolved} Hippowdon"
+    },
+    "451": {
+        "legendary": false,
+        "name": "Skorupi",
+        "type": "Poison & Bug",
+        "evolutions": "Skorupi {not_evolved} Drapion"
+    },
+    "452": {
+        "legendary": false,
+        "name": "Drapion",
+        "type": "Poison & Dark",
+        "evolutions": "Skorupi {evolved} Drapion"
+    },
+    "453": {
+        "legendary": false,
+        "name": "Croagunk",
+        "type": "Poison & Fighting",
+        "evolutions": "Croagunk {not_evolved} Toxicroak"
+    },
+    "454": {
+        "legendary": false,
+        "name": "Toxicroak",
+        "type": "Poison & Fighting",
+        "evolutions": "Croagunk {evolved} Toxicroak"
+    },    
+    "455": {
+        "legendary": false,
+        "name": "Carnivine",
+        "type": "Grass",
+        "evolutions": "This Pok{ething}mon does not evolve."
+    },
+    "456": {
+        "legendary": false,
+        "name": "Finneon",
+        "type": "Water",
+        "evolutions": "Finneon {not_evolved} Lumineon"
+    },
+    "457": {
+        "legendary": false,
+        "name": "Lumineon",
+        "type": "Water",
+        "evolutions": "Finneon {evolved} Lumineon"
+    },
+    "458": {
+        "legendary": false,
+        "name": "Mantyke",
+        "type": "Water & Flying",
+        "evolutions": "Mantyke {not_evolved} Mantine"
+    },
+    "459": {
+        "legendary": false,
+        "name": "Snover",
+        "type": "Grass & Ice",
+        "evolutions": "Snover {not_evolved} Abomasnow"
+    },
+    "460": {
+        "legendary": false,
+        "name": "Abomasnow",
+        "type": "Grass & Ice",
+        "evolutions": "Snover {evolved} Abomasnow"
+    },
+    "461": {
+        "legendary": false,
+        "name": "Weavile",
+        "type": "Dark & Ice",
+        "evolutions": "Sneasel {evolved} Weavile"
+    },
+    "462": {
+        "legendary": false,
+        "name": "Magnezone",
+        "type": "Electric & Steel",
+        "evolutions": "Magnemite {evolved} Magneton {evolved} Magnezone"
+    },
+    "463": {
+        "legendary": false,
+        "name": "Lickilicky",
+        "type": "Normal",
+        "evolutions": "Lickitung {evolved} Lickilicky"
+    },
+    "464": {
+        "legendary": false,
+        "name": "Rhyperior",
+        "type": "Ground & Rock",
+        "evolutions": "Rhyhorn {evolved} Rhydon {evolved} Rhyperior"
+    },
+    "465": {
+        "legendary": false,
+        "name": "Tangrowth",
+        "type": "Grass",
+        "evolutions": "Tangela {evolved} Tangrowth"
+    },
+    "466": {
+        "legendary": false,
+        "name": "Electivire",
+        "type": "Electric",
+        "evolutions": "Elekid {evolved} Electabuzz {evolved} Electivire"
+    },
+    "467": {
+        "legendary": false,
+        "name": "Magmortar",
+        "type": "Fire",
+        "evolutions": "Magby {evolved} Magmar {evolved} Magmortar"
+    },
+    "468": {
+        "legendary": false,
+        "name": "Togekiss",
+        "type": "Fairy & Flying",
+        "evolutions": "Togepi {evolved} Togetic {evolved} Togekiss"
+    },
+    "469": {
+        "legendary": false,
+        "name": "Yanmega",
+        "type": "Bug & Flying",
+        "evolutions": "Yanma {evolved} Yanmega"
+    },
+    "470": {
+        "legendary": false,
+        "name": "Leafeon",
+        "type": "Grass",
+        "evolutions": "Eevee {evolved} Leafeon"
+    },
+    "471": {
+        "legendary": false,
+        "name": "Glaceon",
+        "type": "Ice",
+        "evolutions": "Eevee {evolved} Glaceon"
+    },
+    "472": {
+        "legendary": false,
+        "name": "Gliscor",
+        "type": "Ground & Flying",
+        "evolutions": "Gligar {evolved} Gliscor"
+    },
+    "473": {
+        "legendary": false,
+        "name": "Mamoswine",
+        "type": "Ice & Ground",
+        "evolutions": "Swinub {evolved} Piloswine {evolved} Mamoswine"
+    },
+    "474": {
+        "legendary": false,
+        "name": "Porygon-Z",
+        "type": "Normal",
+        "evolutions": "Porygon {evolved} Porygon2 {evolved} Porygon-Z"
+    },
+    "475": {
+        "legendary": false,
+        "name": "Gallade",
+        "type": "Psychic & Fighting",
+        "evolutions": "Ralts {evolved} Kirlia {evolved} Gallade"
+    },
+    "476": {
+        "legendary": false,
+        "name": "Probopass",
+        "type": "Rock & Steel",
+        "evolutions": "Nosepass {evolved} Probopass"
+    },
+    "477": {
+        "legendary": false,
+        "name": "Dusknoir",
+        "type": "Ghost",
+        "evolutions": "Duskull {evolved} Dusclops {evolved} Dusknoir"
+    },
+    "478": {
+        "legendary": false,
+        "name": "Froslass",
+        "type": "Ice & Ghost",
+        "evolutions": "Snorunt {evolved} Froslass"
+    },
+    "479": {
+        "legendary": false,
+        "name": "Rotom",
+        "type": "Electric & Ghost",
+        "evolutions": "This Pok{ething}mon does not evolve."
+    },
+    "480": {
+        "legendary": true,
+        "name": "Uxie",
+        "type": "Psychic",
+        "evolutions": "This Pok{ething}mon does not evolve."
+    },
+    "481": {
+        "legendary": true,
+        "name": "Mesprit",
+        "type": "Psychic",
+        "evolutions": "This Pok{ething}mon does not evolve."
+    },
+    "482": {
+        "legendary": true,
+        "name": "Azelf",
+        "type": "Psychic",
+        "evolutions": "This Pok{ething}mon does not evolve."
+    },
+    "483": {
+        "legendary": true,
+        "name": "Dialga",
+        "type": "Steel & Dragon",
+        "evolutions": "This Pok{ething}mon does not evolve."
+    },
+    "484": {
+        "legendary": true,
+        "name": "Palkia",
+        "type": "Water & Dragon",
+        "evolutions": "This Pok{ething}mon does not evolve."
+    },
+    "485": {
+        "legendary": true,
+        "name": "Heatran",
+        "type": "Fire & Steel",
+        "evolutions": "This Pok{ething}mon does not evolve."
+    },
+    "486": {
+        "legendary": true,
+        "name": "Regigigas",
+        "type": "Normal",
+        "evolutions": "This Pok{ething}mon does not evolve."
+    },
+    "487": {
+        "legendary": true,
+        "name": "Giratina",
+        "type": "Ghost & Dragon",
+        "evolutions": "This Pok{ething}mon does not evolve."
+    },
+    "488": {
+        "legendary": true,
+        "name": "Cresselia",
+        "type": "Psychic",
+        "evolutions": "This Pok{ething}mon does not evolve."
+    },
+    "489": {
+        "legendary": false,
+        "name": "Phione",
+        "type": "Water",
+        "evolutions": "This Pok{ething}mon does not evolve."
+    },
+    "490": {
+        "legendary": true,
+        "name": "Manaphy",
+        "type": "Water",
+        "evolutions": "This Pok{ething}mon does not evolve."
+    },
+    "491": {
+        "legendary": true,
+        "name": "Darkrai",
+        "type": "Dark",
+        "evolutions": "This Pok{ething}mon does not evolve."
+    },
+    "492": {
+        "legendary": true,
+        "name": "Shaymin",
+        "type": "Grass",
+        "evolutions": "This Pok{ething}mon does not evolve."
+    },
+    "493": {
+        "legendary": true,
+        "name": "Arceus",
+        "type": "Normal",
+        "evolutions": "This Pok{ething}mon does not evolve."
+    },
+    "494": {
+        "legendary": true,
+        "name": "Victini",
+        "type": "Psychic & Fire",
+        "evolutions": "This Pok{ething}mon does not evolve."
+    },
+    "495": {
+        "legendary": false,
+        "name": "Snivy",
+        "type": "Grass",
+        "evolutions": "Snivy {not_evolved} Servine {not_evolved} Serperior"
+    },
+    "496": {
+        "legendary": false,
+        "name": "Servine",
+        "type": "Grass",
+        "evolutions": "Snivy {evolved} Servine {not_evolved} Serperior"
+    },
+    "497": {
+        "legendary": false,
+        "name": "Serperior",
+        "type": "Grass",
+        "evolutions": "Snivy {evolved} Servine {evolved} Serperior"
+    },
+    "498": {
+        "legendary": false,
+        "name": "Tepig",
+        "type": "Fire",
+        "evolutions": "Tepig {not_evolved} Pignite {not_evolved} Emboar"
+    },
+    "499": {
+        "legendary": false,
+        "name": "Pignite",
+        "type": "Fire & Fighting",
+        "evolutions": "Tepig {evolved} Pignite {not_evolved} Emboar"
+    },
+    "500": {
+        "legendary": false,
+        "name": "Emboar",
+        "type": "Fire & Fighting",
+        "evolutions": "Tepig {evolved} Pignite {evolved} Emboar"
+    },
+    "501": {
+        "legendary": false,
+        "name": "Oshawott",
+        "type": "Water",
+        "evolutions": "Oshawott {not evolved} Dewott {not evolved} Samurott"
+    },
+    "502": {
+        "legendary": false,
+        "name": "Dewott",
+        "type": "Water",
+        "evolutions": "Oshawott {evolved} Dewott {not evolved} Samurott"
+    },
+    "503": {
+        "legendary": false,
+        "name": "Samurott",
+        "type": "Water",
+        "evolutions": "Oshawott {evolved} Dewott {evolved} Samurott"
+    },
+    "504": {
+        "legendary": false,
+        "name": "Patrat",
+        "type": "Normal",
+        "evolutions": "Patrat {not evolved} Watchog"
+    },
+    "505": {
+        "legendary": false,
+        "name": "Watchog",
+        "type": "Normal",
+        "evolutions": "Patrat {evolved} Watchog"
+    },
+    "506": {
+        "legendary": false,
+        "name": "Lillipup",
+        "type": "Normal",
+        "evolutions": "Lillipup {not evolved} Herdier {not evolved} Stoutland"
+    },
+    "507": {
+        "legendary": false,
+        "name": "Herdier",
+        "type": "Normal",
+        "evolutions": "Lillipup {evolved} Herdier {not evolved} Stoutland"
+    },
+    "508": {
+        "legendary": false,
+        "name": "Stoutland",
+        "type": "Normal",
+        "evolutions": "Lillipup {evolved} Herdier {evolved} Stoutland"
+    },
+    "509": {
+        "legendary": false,
+        "name": "Purrloin",
+        "type": "Dark",
+        "evolutions": "Purrloin {not evolved} Liepard"
+    },
+    "510": {
+        "legendary": false,
+        "name": "Liepard",
+        "type": "Dark",
+        "evolutions": "Purrloin {evolved} Liepard"
+    },
+    "511": {
+        "legendary": false,
+        "name": "Pansage",
+        "type": "Grass",
+        "evolutions": "Pansage {not evolved} Simisage"
+    },
+    "512": {
+        "legendary": false,
+        "name": "Simisage",
+        "type": "Grass",
+        "evolutions": "Pansage {evolved} Simisage"
+    },
+    "513": {
+        "legendary": false,
+        "name": "Pansear",
+        "type": "Fire",
+        "evolutions": "Pansear {not evolved} Simisear"
+    },
+    "514": {
+        "legendary": false,
+        "name": "Simisear",
+        "type": "Fire",
+        "evolutions": "Pansear {evolved} Simisear"
+    },
+    "515": {
+        "legendary": false,
+        "name": "Panpour",
+        "type": "Water",
+        "evolutions": "Panpour {not evolved} Simipour"
+    },
+    "516": {
+        "legendary": false,
+        "name": "Simipour",
+        "type": "Water",
+        "evolutions": "Panpour {evolved} Simipour"
+    },
+    "517": {
+        "legendary": false,
+        "name": "Munna",
+        "type": "Psychic",
+        "evolutions": "Munna {not evolved} Musharna"
+    },
+    "518": {
+        "legendary": false,
+        "name": "Musharna",
+        "type": "Psychic",
+        "evolutions": "Munna {evolved} Musharna"
+    },
+    "519": {
+        "legendary": false,
+        "name": "Pidove",
+        "type": "Normal & Flying",
+        "evolutions": "Pidove {not evolved} Tranquill {not evolved} Unfezant"
+    },
+    "520": {
+        "legendary": false,
+        "name": "Tranquill",
+        "type": "Normal & Flying",
+        "evolutions": "Pidove {not evolved} Tranquill {evolved} Unfezant"
+    },
+    "521": {
+        "legendary": false,
+        "name": "Unfezant",
+        "type": "Normal & Flying",
+        "evolutions": "Pidove {evolved} Tranquill {evolved} Unfezant"
+    },
+    "522": {
+        "legendary": false,
+        "name": "Blitzle",
+        "type": "Electric",
+        "evolutions": "Blitzle {not evolved} Zebstrika"
+    },
+    "523": {
+        "legendary": false,
+        "name": "Zebstrika",
+        "type": "Electric",
+        "evolutions": "Blitzle {evolved} Zebstrika"
+    },
+    "524": {
+        "legendary": false,
+        "name": "Roggenrola",
+        "type": "Rock",
+        "evolutions": "Roggenrola {not evolved} Boldore {not evolved} Gigalith"
+    },
+    "525": {
+        "legendary": false,
+        "name": "Boldore",
+        "type": "Rock",
+        "evolutions": "Roggenrola {not evolved} Boldore {evolved} Gigalith"
+    },
+    "526": {
+        "legendary": false,
+        "name": "Gigalith",
+        "type": "Rock",
+        "evolutions": "Roggenrola {evolved} Boldore {evolved} Gigalith"
+    },
+    "527": {
+        "legendary": false,
+        "name": "Woobat",
+        "type": "Psychic & Flying",
+        "evolutions": "Woobat {not evolved} Swoobat"
+    },
+    "528": {
+        "legendary": false,
+        "name": "Swoobat",
+        "type": "Psychic & Flying",
+        "evolutions": "Woobat {evolved} Swoobat"
+    },
+    "529": {
+        "legendary": false,
+        "name": "Drilbur",
+        "type": "Ground",
+        "evolutions": "Drilbur {not evolved} Excadrill"
+    },
+    "530": {
+        "legendary": false,
+        "name": "Excadrill",
+        "type": "Ground",
+        "evolutions": "Drilbur {evolved} Excadrill"
+    },
+    "531": {
+        "legendary": false,
+        "name": "Audino",
+        "type": "Normal",
+        "evolutions": "This Pok{ething}mon does not evolve."
+    },
+    "532": {
+        "legendary": false,
+        "name": "Timburr",
+        "type": "Fighting",
+        "evolutions": "Timburr {not evolved} Gurdurr {not evolved} Conkeldurr"
+    },
+    "533": {
+        "legendary": false,
+        "name": "Gurdurr",
+        "type": "Fighting",
+        "evolutions": "Timburr {evolved} Gurdurr {not evolved} Conkeldurr"
+    },
+    "534": {
+        "legendary": false,
+        "name": "Conkeldurr",
+        "type": "Fighting",
+        "evolutions": "Timburr {evolved} Gurdurr {evolved} Conkeldurr"
+    },
+    "535": {
+        "legendary": false,
+        "name": "Tympole",
+        "type": "Water",
+        "evolutions": "Tympole {not evolved} Palpitoad {not evolved} Seismitoad"
+    },
+    "536": {
+        "legendary": false,
+        "name": "Palpitoad",
+        "type": "Water & Ground",
+        "evolutions": "Tympole {evolved} Palpitoad {not evolved} Seismitoad"
+    },
+    "537": {
+        "legendary": false,
+        "name": "Seismitoad",
+        "type": "Water & Ground",
+        "evolutions": "Tympole {evolved} Palpitoad {evolved} Seismitoad"
+    },
+    "538": {
+        "legendary": false,
+        "name": "Throh",
+        "type": "Fighting",
+        "evolutions": "This Pok{ething}mon does not evolve."
+    },
+    "539": {
+        "legendary": false,
+        "name": "Sawk",
+        "type": "Fighting",
+        "evolutions": "This Pok{ething}mon does not evolve."
+    },
+    "540": {
+        "legendary": false,
+        "name": "Sewaddle",
+        "type": "Bug & Grass",
+        "evolutions": "Sewaddle {not evolved} Swadloon {not evolved} Leavanny"
+    },
+    "541": {
+        "legendary": false,
+        "name": "Swadloon",
+        "type": "Bug & Grass",
+        "evolutions": "Sewaddle {evolved} Swadloon {not evolved} Leavanny"
+    },
+    "542": {
+        "legendary": false,
+        "name": "Leavanny",
+        "type": "Bug & Grass",
+        "evolutions": "Sewaddle {evolved} Swadloon {evolved} Leavanny"
+    },
+    "543": {
+        "legendary": false,
+        "name": "Venipede",
+        "type": "Bug & Poison",
+        "evolutions": "Venipede {not evolved} Whirlipede {not evolved} Scolipede"
+    },
+    "544": {
+        "legendary": false,
+        "name": "Whirlipede",
+        "type": "Bug & Poison",
+        "evolutions": "Venipede {evolved} Whirlipede {not evolved} Scolipede"
+    },
+    "545": {
+        "legendary": false,
+        "name": "Scolipede",
+        "type": "Bug & Poison",
+        "evolutions": "Venipede {evolved} Whirlipede {evolved} Scolipede"
+    },
+    "546": {
+        "legendary": false,
+        "name": "Cottonee",
+        "type": "Grass & Fairy",
+        "evolutions": "Cottonee {not evolved} Whimsicott"
+    },
+    "547": {
+        "legendary": false,
+        "name": "Whimsicott",
+        "type": "Grass & Fairy",
+        "evolutions": "Cottonee {evolved} Whimsicott"
+    },
+    "548": {
+        "legendary": false,
+        "name": "Petilil",
+        "type": "Grass",
+        "evolutions": "Petilil {not evolved} Lilligant"
+    },
+    "549": {
+        "legendary": false,
+        "name": "Lilligant",
+        "type": "Grass",
+        "evolutions": "Petilil {evolved} Lilligant"
+    },
+    "550": {
+        "legendary": false,
+        "name": "Basculin",
+        "type": "Water",
+        "evolutions": "This Pok{ething}mon does not evolve."
+    },
+    "551": {
+        "legendary": false,
+        "name": "Sandile",
+        "type": "Ground & Dark",
+        "evolutions": "Sandile {not evolved} Krokorok {not evolved} Krookodile"
+    },
+    "552": {
+        "legendary": false,
+        "name": "Krokorok",
+        "type": "Ground & Dark",
+        "evolutions": "Sandile {evolved} Krokorok {not_evolved} Krookodile"
+    },
+    "553": {
+        "legendary": false,
+        "name": "Krookodile",
+        "type": "Ground & Dark",
+        "evolutions": "Sandile {evolved} Krokorok {evolved} Krookodile"
+    },
+    "554": {
+        "legendary": false,
+        "name": "Darumaka",
+        "type": "Fire",
+        "evolutions": "Darumaka {not_evolved} Darmanitan"
+    },
+    "555": {
+        "legendary": false,
+        "name": "Darmanitan",
+        "type": "Fire",
+        "evolutions": "Darumaka {evolved} Darmanitan"
+    },
+    "556": {
+        "legendary": false,
+        "name": "Maractus",
+        "type": "Grass",
+        "evolutions": "This Pok{ething}mon does not evolve."
+    },
+    "557": {
+        "legendary": false,
+        "name": "Dwebble",
+        "type": "Bug & Rock",
+        "evolutions": "Dwebble {not_evolved} Crustle"
+    },
+    "558": {
+        "legendary": false,
+        "name": "Crustle",
+        "type": "Bug & Rock",
+        "evolutions": "Dwebble {evolved} Crustle"
+    },
+    "559": {
+        "legendary": false,
+        "name": "Scraggy",
+        "type": "Dark & Fighting",
+        "evolutions": "Scraggy {not_evolved} Scrafty"
+    },
+    "560": {
+        "legendary": false,
+        "name": "Scrafty",
+        "type": "Dark & Fighting",
+        "evolutions": "Scraggy {evolved} Scrafty"
+    },
+    "561": {
+        "legendary": false,
+        "name": "Sigilyph",
+        "type": "Psychic & Flying",
+        "evolutions": "This Pok{ething}mon does not evolve."
+    },
+    "562": {
+        "legendary": false,
+        "name": "Yamask",
+        "type": "Ghost",
+        "evolutions": "Yamask {not_evolved} Cofagrigus"
+    },
+    "563": {
+        "legendary": false,
+        "name": "Cofagrigus",
+        "type": "Ghost",
+        "evolutions": "Yamask {evolved} Cofagrigus"
+    },
+    "564": {
+        "legendary": false,
+        "name": "Tirtouga",
+        "type": "Water & Rock",
+        "evolutions": "Tirtouga {not_evolved} Carracosta"
+    },
+    "565": {
+        "legendary": false,
+        "name": "Carracosta",
+        "type": "Water & Rock",
+        "evolutions": "Tirtouga {evolved} Carracosta"
+    },
+    "566": {
+        "legendary": false,
+        "name": "Archen",
+        "type": "Rock & Flying",
+        "evolutions": "Archen {not_evolved} Archeops"
+    },
+    "567": {
+        "legendary": false,
+        "name": "Archeops",
+        "type": "Rock & Flying",
+        "evolutions": "Archen {evolved} Archeops"
+    },
+    "568": {
+        "legendary": false,
+        "name": "Trubbish",
+        "type": "Poison",
+        "evolutions": "Trubbish {not_evolved} Garbodor"
+    },
+    "569": {
+        "legendary": false,
+        "name": "Garbodor",
+        "type": "Poison",
+        "evolutions": "Trubbish {evolved} Garbodor"
+    },
+    "570": {
+        "legendary": false,
+        "name": "Zorua",
+        "type": "Dark",
+        "evolutions": "Zorua {not_evolved} Zoroark"
+    },
+    "571": {
+        "legendary": false,
+        "name": "Zoroark",
+        "type": "Dark",
+        "evolutions": "Zorua {evolved} Zoroark"
+    },
+    "572": {
+        "legendary": false,
+        "name": "Minccino",
+        "type": "Normal",
+        "evolutions": "Minccino {not_evolved} Cinccino"
+    },
+    "573": {
+        "legendary": false,
+        "name": "Cinccino",
+        "type": "Normal",
+        "evolutions": "Minccino {evolved} Cinccino"
+    },
+    "574": {
+        "legendary": false,
+        "name": "Gothita",
+        "type": "Psychic",
+        "evolutions": "Gothita {not_evolved} Gothorita {not_evolved} Gothitelle"
+    },
+    "575": {
+        "legendary": false,
+        "name": "Gothorita",
+        "type": "Psychic",
+        "evolutions": "Gothita {evolved} Gothorita {not_evolved} Gothitelle"
+    },
+    "576": {
+        "legendary": false,
+        "name": "Gothitelle",
+        "type": "Psychic",
+        "evolutions": "Gothita {evolved} Gothorita {evolved} Gothitelle"
+    },
+    "577": {
+        "legendary": false,
+        "name": "solosis",
+        "type": "Psychic",
+        "evolutions": "Solosis {not_evolved} Duosion {not_evolved} Reuniclus"
+    },
+    "578": {
+        "legendary": false,
+        "name": "Duosion",
+        "type": "Psychic",
+        "evolutions": "Solosis {evolved} Duosion {not_evolved} Reuniclus"
+    },
+    "579": {
+        "legendary": false,
+        "name": "Reuniclus",
+        "type": "Psychic",
+        "evolutions": "Solosis {evolved} Duosion {evolved} Reuniclus"
+    },
+    "580": {
+        "legendary": false,
+        "name": "Ducklett",
+        "type": "Water & Flying",
+        "evolutions": "Ducklett {not_evolved} Swanna"
+    },
+    "581": {
+        "legendary": false,
+        "name": "Swanna",
+        "type": "Water & Flying",
+        "evolutions": "Ducklett {evolved} Swanna"
+    },
+    "582": {
+        "legendary": false,
+        "name": "Vanillite",
+        "type": "Ice",
+        "evolutions": "Vanillite {not_evolved} Vanillish {not_evolved} Vanilluxe"
+    },
+    "583": {
+        "legendary": false,
+        "name": "Vanillish",
+        "type": "Ice",
+        "evolutions": "Vanillite {evolved} Vanillish {not_evolved} Vanilluxe"
+    },
+    "584": {
+        "legendary": false,
+        "name": "Vanilluxe",
+        "type": "Ice",
+        "evolutions": "Vanillite {evolved} Vanillish {evolved} Vanilluxe"
+    },
+    "585": {
+        "legendary": false,
+        "name": "Deerling",
+        "type": "Normal & Grass",
+        "evolutions": "Deerling {not_evolved} Sawsbuck"
+    },
+    "586": {
+        "legendary": false,
+        "name": "Sawsbuck",
+        "type": "Normal & Grass",
+        "evolutions": "Deerling {evolved} Sawsbuck"
+    },
+    "587": {
+        "legendary": false,
+        "name": "Emolga",
+        "type": "Electic & Flying",
+        "evolutions": "This Pok{ething}mon does not evolve."
+    },
+    "588": {
+        "legendary": false,
+        "name": "Karrablast",
+        "type": "Bug",
+        "evolutions": "Karrablast {not_evolved} Escavalier"
+    },
+    "589": {
+        "legendary": false,
+        "name": "Escavalier",
+        "type": "Bug & Steel",
+        "evolutions": "Karrablast {evolved} Escavalier"
+    },
+    "590": {
+        "legendary": false,
+        "name": "Foongus",
+        "type": "Grass & Poison",
+        "evolutions": "Foongus {not_evolved} Amoonguss"
+    },
+    "591": {
+        "legendary": false,
+        "name": "Amoonguss",
+        "type": "Grass & Poison",
+        "evolutions": "Foongus {evolved} Amoonguss"
+    },
+    "592": {
+        "legendary": false,
+        "name": "Frillish",
+        "type": "Water & Ghost",
+        "evolutions": "Frillish {not_evolved} Jellicent"
+    },
+    "593": {
+        "legendary": false,
+        "name": "Jellicent",
+        "type": "Water & Ghost",
+        "evolutions": "Frillish {evolved} Jellicent"
+    },
+    "594": {
+        "legendary": false,
+        "name": "Alomomola",
+        "type": "Water",
+        "evolutions": "This Pok{ething}mon does not evolve."
+    },
+    "595": {
+        "legendary": false,
+        "name": "Joltik",
+        "type": "Bug & Electic",
+        "evolutions": "Joltik {not_evolved} Galvantula"
+    },
+    "596": {
+        "legendary": false,
+        "name": "Galvantula",
+        "type": "Bug & Electric",
+        "evolutions": "Joltik {evolved} Galvantula"
+    },
+    "597": {
+        "legendary": false,
+        "name": "Ferroseed",
+        "type": "Grass & Steel",
+        "evolutions": "Ferroseed {not_evolved} Ferrothorn"
+    },
+    "598": {
+        "legendary": false,
+        "name": "Ferrothorn",
+        "type": "Grass & Steel",
+        "evolutions": "Ferroseed {evolved} Ferrothorn"
+    },
+    "599": {
+        "legendary": false,
+        "name": "Klink",
+        "type": "Steel",
+        "evolutions": "Klink {not_evolved} Klang {not_evolved} Klinklang"
+    },
+    "600": {
+        "legendary": false,
+        "name": "Klang",
+        "type": "Steel",
+        "evolutions": "Klink {evolved} Klang {not_evolved} Klinklang"
+    },
+    "601": {
+        "legendary": false,
+        "name": "Klinklang",
+        "type": "Steel",
+        "evolutions": "Klink {evolved} Klang {evolved} Klinklang"
+    },
+    "602": {
+        "legendary": false,
+        "name": "Tynamo",
+        "type": "Electric",
+        "evolutions": "Tynamo {not_evolved} Eelektrik {not_evolved} Eelektross"
+    },
+    "603": {
+        "legendary": false,
+        "name": "Eelektrik",
+        "type": "Electric",
+        "evolutions": "Tynamo {evolved} Eelektrik {not_evolved} Eelektross"
+    },
+    "604": {
+        "legendary": false,
+        "name": "Eelektross",
+        "type": "Electric",
+        "evolutions": "Tynamo {evolved} Eelektrik {evolved} Eelektross"
+    },
+    "605": {
+        "legendary": false,
+        "name": "Elgyem",
+        "type": "Psychic",
+        "evolutions": "Elgyem {not_evolved} Beheeyem"
+    },
+    "606": {
+        "legendary": false,
+        "name": "Beheeyem",
+        "type": "Psychic",
+        "evolutions": "Elgyem {evolved} Beheeyem"
+    },
+    "607": {
+        "legendary": false,
+        "name": "Litwick",
+        "type": "Ghost & Fire",
+        "evolutions": "Litwick {not_evolved} Lampent {not_evolved} Chandelure"
+    },
+    "608": {
+        "legendary": false,
+        "name": "Lampent",
+        "type": "Ghost & Fire",
+        "evolutions": "Litwick {evolved} Lampent {not_evolved} Chandelure"
+    },
+    "609": {
+        "legendary": false,
+        "name": "Chandelure",
+        "type": "Ghost & Fire",
+        "evolutions": "Litwick {evolved} Lampent {evolved} Chandelure"
+    },
+    "610": {
+        "legendary": false,
+        "name": "Axew",
+        "type": "Dragon",
+        "evolutions": "Axew {not_evolved} Fraxure {not_evolved} Haxorus"
+    },
+    "611": {
+        "legendary": false,
+        "name": "Fraxure",
+        "type": "Dragon",
+        "evolutions": "Axew {evolved} Fraxure {not_evolved} Haxorus"
+    },
+    "612": {
+        "legendary": false,
+        "name": "Haxorus",
+        "type": "Dragon",
+        "evolutions": "Axew {evolved} Fraxure {evolved} Haxorus"
+    },
+    "613": {
+        "legendary": false,
+        "name": "Cubchoo",
+        "type": "Ice",
+        "evolutions": "Cubchoo {not_evolved} Beartic"
+    },
+    "614": {
+        "legendary": false,
+        "name": "Beartic",
+        "type": "Ice",
+        "evolutions": "Cubchoo {evolved} Beartic"
+    },
+    "615": {
+        "legendary": false,
+        "name": "Cryogonal",
+        "type": "Ice",
+        "evolutions": "This Pok{ething}mon does not evolve."
+    },
+    "616": {
+        "legendary": false,
+        "name": "Shelmet",
+        "type": "Bug",
+        "evolutions": "Shelmet {not_evolved} Accelgor"
+    },
+    "617": {
+        "legendary": false,
+        "name": "Accelgor",
+        "type": "Bug",
+        "evolutions": "Shelmet {evolved} Accelgor"
+    },
+    "618": {
+        "legendary": false,
+        "name": "Stunfisk",
+        "type": "Ground & Electric",
+        "evolutions": "This Pok{ething}mon does not evolve."
+    },
+    "619": {
+        "legendary": false,
+        "name": "Mienfoo",
+        "type": "Fighting",
+        "evolutions": "Mienfoo {not_evolved} Mienshao"
+    },
+    "620": {
+        "legendary": false,
+        "name": "Mienshao",
+        "type": "Fighting",
+        "evolutions": "Mienfoo {evolved} Mienshao"
+    },
+    "621": {
+        "legendary": false,
+        "name": "Druddigon",
+        "type": "Dragon",
+        "evolutions": "This Pok{ething}mon does not evolve."
+    },
+    "622": {
+        "legendary": false,
+        "name": "Golett",
+        "type": "Ground & Ghost",
+        "evolutions": "Golett {not_evolved} Golurk"
+    },
+    "623": {
+        "legendary": false,
+        "name": "Golurk",
+        "type": "Ground & Ghost",
+        "evolutions": "Golett {evolved} Golurk"
+    },
+    "624": {
+        "legendary": false,
+        "name": "Pawniard",
+        "type": "Dark & Steel",
+        "evolutions": "Pawniard {not_evolved} Bisharp"
+    },
+    "625": {
+        "legendary": false,
+        "name": "Bisharp",
+        "type": "Dark & Steel",
+        "evolutions": "Pawniard {evolved} Bisharp"
+    },
+    "626": {
+        "legendary": false,
+        "name": "Bouffalant",
+        "type": "Normal",
+        "evolutions": "This Pok{ething}mon does not evolve."
+    },
+    "627": {
+        "legendary": false,
+        "name": "Rufflet",
+        "type": "Normal & Flying",
+        "evolutions": "Rufflet {not_evolved} Braviary"
+    },
+    "628": {
+        "legendary": false,
+        "name": "Braviary",
+        "type": "Normal & Flying",
+        "evolutions": "Rufflet {evolved} Braviary"
+    },
+    "629": {
+        "legendary": false,
+        "name": "Vullaby",
+        "type": "Dark & Flying",
+        "evolutions": "Vullaby {not_evolved} Mandibuzz"
+    },
+    "630": {
+        "legendary": false,
+        "name": "Mandibuzz",
+        "type": "Dark & Flying",
+        "evolutions": "Vullaby {evolved} Mandibuzz"
+    },
+    "631": {
+        "legendary": false,
+        "name": "Heatmor",
+        "type": "Fire",
+        "evolutions": "This Pok{ething}mon does not evolve."
+    },
+    "632": {
+        "legendary": false,
+        "name": "Durant",
+        "type": "Bug & Steel",
+        "evolutions": "This Pok{ething}mon does not evolve."
+    },
+    "633": {
+        "legendary": false,
+        "name": "Deino",
+        "type": "Dark & Dragon",
+        "evolutions": "Deino {not_evolved} Zweilous {not_evolved} Hydreigon"
+    },
+    "634": {
+        "legendary": false,
+        "name": "Zweilous",
+        "type": "Dark & Dragon",
+        "evolutions": "Deino {evolved} Zweilous {not_evolved} Hydreigon"
+    },
+    "635": {
+        "legendary": false,
+        "name": "Hydreigon",
+        "type": "Dark & Dragon",
+        "evolutions": "Deino {evolved} Zweilous {evolved} Hydreigon"
+    },
+    "636": {
+        "legendary": false,
+        "name": "Larvesta",
+        "type": "Bug & Fire",
+        "evolutions": "Larvesta {not_evolved} Volcarona"
+    },
+    "637": {
+        "legendary": false,
+        "name": "Volcarona",
+        "type": "Bug & Fire",
+        "evolutions": "Larvesta {evolved} Volcarona"
+    },
+    "638": {
+        "legendary": true,
+        "name": "Cobalion",
+        "type": "Steel & Fighting",
+        "evolutions": "This Pok{ething}mon does not evolve."
+    },
+    "639": {
+        "legendary": true,
+        "name": "Terrakion",
+        "type": "Rock & Fighting",
+        "evolutions": "This Pok{ething}mon does not evolve."
+    },
+    "640": {
+        "legendary": true,
+        "name": "Virizion",
+        "type": "Grass & Fighting",
+        "evolutions": "This Pok{ething}mon does not evolve."
+    },
+    "641": {
+        "legendary": true,
+        "name": "Tornadus",
+        "type": "Flying",
+        "evolutions": "This Pok{ething}mon does not evolve."
+    },
+    "642": {
+        "legendary": true,
+        "name": "Thundurus",
+        "type": "Electric & Flying",
+        "evolutions": "This Pok{ething}mon does not evolve."
+    },
+    "643": {
+        "legendary": true,
+        "name": "Reshiram",
+        "type": "Dragon & Fire",
+        "evolutions": "This Pok{ething}mon does not evolve."
+    },
+    "644": {
+        "legendary": true,
+        "name": "Zekrom",
+        "type": "Dragon & Electric",
+        "evolutions": "This Pok{ething}mon does not evolve."
+    },
+    "645": {
+        "legendary": true,
+        "name": "Landorus",
+        "type": "Ground & Flying",
+        "evolutions": "This Pok{ething}mon does not evolve."
+    },
+    "646": {
+        "legendary": true,
+        "name": "Kyurem",
+        "type": "Dragon & Ice",
+        "evolutions": "This Pok{ething}mon does not evolve."
+    },
+    "647": {
+        "legendary": true,
+        "name": "Keldeo",
+        "type": "Water & Fighting",
+        "evolutions": "This Pok{ething}mon does not evolve."
+    },
+    "648": {
+        "legendary": true,
+        "name": "Meloetta",
+        "type": "Normal & Psychic",
+        "evolutions": "This Pok{ething}mon does not evolve."
+    },
+    "649": {
+        "legendary": true,
+        "name": "Genesect",
+        "type": "Bug & Steel",
+        "evolutions": "This Pok{ething}mon does not evolve."
+    },
+    "650": {
+        "legendary": false,
+        "name": "Chespin",
+        "type": "Grass",
+        "evolutions": "Chespin {not_evolved} Quilladin {not_evolved} Chesnaught"
+    },
+    "651": {
+        "legendary": false,
+        "name": "Quilladin",
+        "type": "Grass",
+        "evolutions": "Chespin {evolved} Quilladin {not_evolved} Chesnaught"
+    },
+    "652": {
+        "legendary": false,
+        "name": "Chesnaught",
+        "type": "Grass & Fighting",
+        "evolutions": "Chespin {evolved} Quilladin {evolved} Chesnaught"
+    },
+    "653": {
+        "legendary": false,
+        "name": "Fennekin",
+        "type": "Fire",
+        "evolutions": "Fennekin {not_evolved} Braixen {not_evolved} Delphox"
+    },
+    "654": {
+        "legendary": false,
+        "name": "Braixen",
+        "type": "Fire",
+        "evolutions": "Fennekin {evolved} Braixen {not_evolved} Delphox"
+    },
+    "655": {
+        "legendary": false,
+        "name": "Delphox",
+        "type": "Fire & Psychic",
+        "evolutions": "Fennekin {evolved} Braixen {evolved} Delphox"
+    },
+    "656": {
+        "legendary": false,
+        "name": "Froakie",
+        "type": "Water",
+        "evolutions": "Froakie {not_evolved} Frogadier {not_evolved} Greninja"
+    },
+    "657": {
+        "legendary": false,
+        "name": "Frogadier",
+        "type": "Water",
+        "evolutions": "Froakie {evolved} Frogadier {not_evolved} Greninja"
+    },
+    "658": {
+        "legendary": false,
+        "name": "Greninja",
+        "type": "Water & Dark",
+        "evolutions": "Froakie {evolved} Frogadier {evolved} Greninja"
+    },
+    "659": {
+        "legendary": false,
+        "name": "Bunnelby",
+        "type": "Normal",
+        "evolutions": "Bunnelby {not_evolved} Diggersby"
+    },
+    "660": {
+        "legendary": false,
+        "name": "Diggersby",
+        "type": "Normal & Ground",
+        "evolutions": "Bunnelby {evolved} Diggersby"
+    },
+    "661": {
+        "legendary": false,
+        "name": "Fletchling",
+        "type": "Normal & Flying",
+        "evolutions": "Fletchling {not_evolved} Fletchinder {not_evolved} Talonflame"
+    },
+    "662": {
+        "legendary": false,
+        "name": "Fletchinder",
+        "type": "Fire & Flying",
+        "evolutions": "Fletchling {evolved} Fletchinder {not_evolved} Talonflame"
+    },
+    "663": {
+        "legendary": false,
+        "name": "Talonflame",
+        "type": "Fire & Flying",
+        "evolutions": "Fletchling {evolved} Fletchinder {evolved} Talonflame"
+    },
+    "664": {
+        "legendary": false,
+        "name": "Scatterbug",
+        "type": "Bug",
+        "evolutions": "Scatterbug {not_evolved} Spewpa {not_evolved} Vivillon"
+    },
+    "665": {
+        "legendary": false,
+        "name": "Spewpa",
+        "type": "Bug",
+        "evolutions": "Scatterbug {evolved} Spewpa {not_evolved} Vivillon"
+    },
+    "666": {
+        "legendary": false,
+        "name": "Vivillon",
+        "type": "Bug & Flying",
+        "evolutions": "Scatterbug {evolved} Spewpa {evolved} Vivillon"
+    },
+    "667": {
+        "legendary": false,
+        "name": "Litleo",
+        "type": "Fire & Normal",
+        "evolutions": "Litleo {not_evolved} Pyroar"
+    },
+    "668": {
+        "legendary": false,
+        "name": "Pyroar",
+        "type": "Fire & Normal",
+        "evolutions": "Litleo {evolved} Pyroar"
+    },
+    "669": {
+        "legendary": false,
+        "name": "Flabebe",
+        "type": "Fairy",
+        "evolutions": "Flab{ething}b{ething} {not_evolved} Floette {not_evolved} Florges"
+    },
+    "670": {
+        "legendary": false,
+        "name": "Floette",
+        "type": "Fairy",
+        "evolutions": "Flab{ething}b{ething} {evolved} Floette {not_evolved} Florges"
+    },
+    "671": {
+        "legendary": false,
+        "name": "Florges",
+        "type": "Fairy",
+        "evolutions": "Flab{ething}b{ething} {evolved} Floette {evolved} Florges"
+    },
+    "672": {
+        "legendary": false,
+        "name": "Skiddo",
+        "type": "Grass",
+        "evolutions": "Skiddo {not_evolved} Gogoat"
+    },
+    "673": {
+        "legendary": false,
+        "name": "Gogoat",
+        "type": "Grass",
+        "evolutions": "Skiddo {evolved} Gogoat"
+    },
+    "674": {
+        "legendary": false,
+        "name": "Pancham",
+        "type": "Fighting",
+        "evolutions": "Pancham {not_evolved} Pangoro"
+    },
+    "675": {
+        "legendary": false,
+        "name": "Pangoro",
+        "type": "Fighting & Dark",
+        "evolutions": "Pancham {evolved} Pangoro"
+    },
+    "676": {
+        "legendary": false,
+        "name": "Furfrou",
+        "type": "Normal",
+        "evolutions": "This Pok{ething}mon does not evolve."
+    },
+    "677": {
+        "legendary": false,
+        "name": "Espurr",
+        "type": "Psychic",
+        "evolutions": "Espurr {not_evolved} Meowstic"
+    },
+    "678": {
+        "legendary": false,
+        "name": "Meowstic",
+        "type": "Psychic",
+        "evolutions": "Espurr {evolved} Meowstic"
+    },
+    "679": {
+        "legendary": false,
+        "name": "Honedge",
+        "type": "Steel & Ghost",
+        "evolutions": "Honedge {not_evolved} Doublade {not_evolved} Aegislash"
+    },
+    "680": {
+        "legendary": false,
+        "name": "Doublade",
+        "type": "Steel & Ghost",
+        "evolutions": "Honedge {evolved} Doublade {not_evolved} Aegislash"
+    },
+    "681": {
+        "legendary": false,
+        "name": "Aegislash",
+        "type": "Steel & Ghost",
+        "evolutions": "Honedge {evolved} Doublade {evolved} Aegislash"
+    },
+    "682": {
+        "legendary": false,
+        "name": "Spritzee",
+        "type": "Fairy",
+        "evolutions": "Spritzee {not_evolved} Aromatisse"
+    },
+    "683": {
+        "legendary": false,
+        "name": "Aromatisse",
+        "type": "Fairy",
+        "evolutions": "Spritzee {evolved} Aromatisse"
+    },
+    "684": {
+        "legendary": false,
+        "name": "Swirlix",
+        "type": "Fairy",
+        "evolutions": "Swirlix {not_evolved} Slurpuff"
+    },
+    "685": {
+        "legendary": false,
+        "name": "Slurpuff",
+        "type": "Fairy",
+        "evolutions": "Swirlix {evolved} Slurpuff"
+    },
+    "686": {
+        "legendary": false,
+        "name": "Inkay",
+        "type": "Dark & Psychic",
+        "evolutions": "Inkay {not_evolved} Malamar"
+    },
+    "687": {
+        "legendary": false,
+        "name": "Malamar",
+        "type": "Dark & Psychic",
+        "evolutions": "Inkay {evolved} Malamar"
+    },
+    "688": {
+        "legendary": false,
+        "name": "Binacle",
+        "type": "Rock & Water",
+        "evolutions": "Binacle {not_evolved} Barbaracle"
+    },
+    "689": {
+        "legendary": false,
+        "name": "Barbaracle",
+        "type": "Rock & Water",
+        "evolutions": "Binacle {evolved} Barbaracle"
+    },
+    "690": {
+        "legendary": false,
+        "name": "Skrelp",
+        "type": "Poison & Water",
+        "evolutions": "Skrelp {not_evolved} Dragalge"
+    },
+    "691": {
+        "legendary": false,
+        "name": "Dragalge",
+        "type": "Poison & Dragon",
+        "evolutions": "Skrelp {evolved} Dragalge"
+    },
+    "692": {
+        "legendary": false,
+        "name": "Clauncher",
+        "type": "Water",
+        "evolutions": "Clauncher {not_evolved} Clawitzer"
+    },
+    "693": {
+        "legendary": false,
+        "name": "Clawitzer",
+        "type": "Water",
+        "evolutions": "Clauncher {evolved} Clawitzer"
+    },
+    "694": {
+        "legendary": false,
+        "name": "Helioptile",
+        "type": "Electric & Normal",
+        "evolutions": "Helioptile {not_evolved} Heliolisk"
+    },
+    "695": {
+        "legendary": false,
+        "name": "Heliolisk",
+        "type": "Electric & Normal",
+        "evolutions": "Helioptile {evolved} Heliolisk"
+    },
+    "696": {
+        "legendary": false,
+        "name": "Tyrunt",
+        "type": "Rock & Dragon",
+        "evolutions": "Tyrunt {not_evolved} Tyrantrum"
+    },
+    "697": {
+        "legendary": false,
+        "name": "Tyrantrum",
+        "type": "Rock & Dragon",
+        "evolutions": "Tyrunt {evolved} Tyrantrum"
+    },
+    "698": {
+        "legendary": false,
+        "name": "Amaura",
+        "type": "Rock & Ice",
+        "evolutions": "Amaura {not_evolved} Aurorus"
+    },
+    "699": {
+        "legendary": false,
+        "name": "Aurorus",
+        "type": "Rock & Ice",
+        "evolutions": "Amaura {evolved} Aurorus"
+    },
+    "700": {
+        "legendary": false,
+        "name": "Sylveon",
+        "type": "Fairy",
+        "evolutions": "Eevee {evolved} Sylveon"
+    },
+    "701": {
+        "legendary": false,
+        "name": "Hawlucha",
+        "type": "Fighting & Flying",
+        "evolutions": "This Pok{ething}mon does not evolve."
+    },
+    "702": {
+        "legendary": false,
+        "name": "Dedenne",
+        "type": "Electric & Fairy",
+        "evolutions": "This Pok{ething}mon does not evolve."
+    },
+    "703": {
+        "legendary": false,
+        "name": "Carbink",
+        "type": "Rock & Fairy",
+        "evolutions": "This Pok{ething}mon does not evolve."
+    },
+    "704": {
+        "legendary": false,
+        "name": "Goomy",
+        "type": "Dragon",
+        "evolutions": "Goomy {not_evolved} Sliggoo {not_evolved} Goodra"
+    },
+    "705": {
+        "legendary": false,
+        "name": "Sliggoo",
+        "type": "Dragon",
+        "evolutions": "Goomy {evolved} Sliggoo {not_evolved} Goodra"
+    },
+    "706": {
+        "legendary": false,
+        "name": "Goodra",
+        "type": "Dragon",
+        "evolutions": "Goomy {evolved} Sliggoo {evolved} Goodra"
+    },
+    "707": {
+        "legendary": false,
+        "name": "Klefki",
+        "type": "Steel & Fairy",
+        "evolutions": "This Pok{ething}mon does not evolve."
+    },
+    "708": {
+        "legendary": false,
+        "name": "Phantump",
+        "type": "Ghost & Grass",
+        "evolutions": "Phantump {not_evolved} Trevenant"
+    },
+    "709": {
+        "legendary": false,
+        "name": "Trevenant",
+        "type": "Ghost & Grass",
+        "evolutions": "Phantump {evolved} Trevenant"
+    },
+    "710": {
+        "legendary": false,
+        "name": "Pumpkaboo",
+        "type": "Ghost & Grass",
+        "evolutions": "Pumpkaboo {not_evolved} Gourgeist"
+    },
+    "711": {
+        "legendary": false,
+        "name": "Gourgeist",
+        "type": "Ghost & Grass",
+        "evolutions": "Pumpkaboo {evolved} Gourgeist"
+    },
+    "712": {
+        "legendary": false,
+        "name": "Bergmite",
+        "type": "Ice",
+        "evolutions": "Bergmite {not_evolved} Avalugg"
+    },
+    "713": {
+        "legendary": false,
+        "name": "Avalugg",
+        "type": "Ice",
+        "evolutions": "Bergmite {evolved} Avalugg"
+    },
+    "714": {
+        "legendary": false,
+        "name": "Noibat",
+        "type": "Flying & Dragon",
+        "evolutions": "Noibat {not_evolved} Noivern"
+    },
+    "715": {
+        "legendary": false,
+        "name": "Noivern",
+        "type": "Flying & Dragon",
+        "evolutions": "Noibat {evolved} Noivern"
+    },
+    "716": {
+        "legendary": true,
+        "name": "Xerneas",
+        "type": "Fairy",
+        "evolutions": "This Pok{ething}mon does not evolve."
+    },
+    "717": {
+        "legendary": true,
+        "name": "Yveltal",
+        "type": "Dark & Flying",
+        "evolutions": "This Pok{ething}mon does not evolve."
+    },
+    "718": {
+        "legendary": true,
+        "name": "Zygarde",
+        "type": "Dragon & Ground",
+        "evolutions": "This Pok{ething}mon does not evolve."
+    },
+    "719": {
+        "legendary": true,
+        "name": "Diancie",
+        "type": "Rock & Fairy",
+        "evolutions": "This Pok{ething}mon does not evolve."
+    },
+    "720": {
+        "legendary": true,
+        "name": "Hoopa",
+        "type": "Psychic & Ghost",
+        "evolutions": "This Pok{ething}mon does not evolve."
+    },
+    "721": {
+        "legendary": true,
+        "name": "Volcanion",
+        "type": "Fire & Water",
+        "evolutions": "This Pok{ething}mon does not evolve."
+    },
+    "722": {
+        "legendary": false,
+        "name": "Rowlet",
+        "type": "Grass & Flying",
+        "evolutions": "Rowlet {not_evolved} Dartrix {not_evolved} Decidueye"
+    },
+    "723": {
+        "legendary": false,
+        "name": "Dartrix",
+        "type": "Grass & Flying",
+        "evolutions": "Rowlet {evolved} Dartrix {not_evolved} Decidueye"
+    },
+    "724": {
+        "legendary": false,
+        "name": "Decidueye",
+        "type": "Grass & Ghost",
+        "evolutions": "Rowlet {evolved} Dartrix {evolved} Decidueye"
+    },
+    "725": {
+        "legendary": false,
+        "name": "Litten",
+        "type": "Fire",
+        "evolutions": "Litten {not_evolved} Torracat {not_evolved} Incineroar"
+    },
+    "726": {
+        "legendary": false,
+        "name": "Torracat",
+        "type": "Fire",
+        "evolutions": "Litten {evolved} Torracat {not_evolved} Incineroar"
+    },
+    "727": {
+        "legendary": false,
+        "name": "Incineroar",
+        "type": "Fire & Dark",
+        "evolutions": "Litten {evolved} Torracat {evolved} Incineroar"
+    },
+    "728": {
+        "legendary": false,
+        "name": "Popplio",
+        "type": "Water",
+        "evolutions": "Popplio {not_evolved} Brionne {not_evolved} Primarina"
+    },
+    "729": {
+        "legendary": false,
+        "name": "Brionne",
+        "type": "Water",
+        "evolutions": "Popplio {evolved} Brionne {not_evolved} Primarina"
+    },
+    "730": {
+        "legendary": false,
+        "name": "Primarina",
+        "type": "Water & Fairy",
+        "evolutions": "Popplio {evolved} Brionne {evolved} Primarina"
+    },
+    "731": {
+        "legendary": false,
+        "name": "Pikipek",
+        "type": "Normal & Flying",
+        "evolutions": "Pikipek {not_evolved} Trumbeak {not_evolved} Toucannon"
+    },
+    "732": {
+        "legendary": false,
+        "name": "Trumbeak",
+        "type": "Normal & Flying",
+        "evolutions": "Pikipek {evolved} Trumbeak {not_evolved} Toucannon"
+    },
+    "733": {
+        "legendary": false,
+        "name": "Toucannon",
+        "type": "Normal & Flying",
+        "evolutions": "Pikipek {evolved} Trumbeak {evolved} Toucannon"
+    },
+    "734": {
+        "legendary": false,
+        "name": "Yungoos",
+        "type": "Normal",
+        "evolutions": "Yungoos {not_evolved} Gumshoos"
+    },
+    "735": {
+        "legendary": false,
+        "name": "Gumshoos",
+        "type": "Normal",
+        "evolutions": "Yungoos {evolved} Gumshoos"
+    },
+    "736": {
+        "legendary": false,
+        "name": "Grubbin",
+        "type": "Bug",
+        "evolutions": "Grubbin {not_evolved} Charjabug {not_evolved} Vikavolt"
+    },
+    "737": {
+        "legendary": false,
+        "name": "Charjabug",
+        "type": "Bug & Electric",
+        "evolutions": "Grubbin {evolved} Charjabug {not_evolved} Vikavolt"
+    },
+    "738": {
+        "legendary": false,
+        "name": "Vikavolt",
+        "type": "Bug & Electric",
+        "evolutions": "Grubbin {evolved} Charjabug {evolved} Vikavolt"
+    },
+    "739": {
+        "legendary": false,
+        "name": "Crabrawler",
+        "type": "Fighting",
+        "evolutions": "Crabrawler {not_evolved} Crabominable"
+    },
+    "740": {
+        "legendary": false,
+        "name": "Crabominable",
+        "type": "Fighting & Ice",
+        "evolutions": "Crabrawler {evolved} Crabominable"
+    },
+    "741": {
+        "legendary": false,
+        "name": "Oricorio",
+        "type": "Fire & Flying",
+        "evolutions": "This Pok{ething}mon does not evolve."
+    },
+    "742": {
+        "legendary": false,
+        "name": "Cutiefly",
+        "type": "Bug & Fairy",
+        "evolutions": "Cutiefly {not_evolved} Ribombee"
+    },
+    "743": {
+        "legendary": false,
+        "name": "Ribombee",
+        "type": "Bug & Fairy",
+        "evolutions": "Cutiefly {evolved} Ribombee"
+    },
+    "744": {
+        "legendary": false,
+        "name": "Rockruff",
+        "type": "Rock",
+        "evolutions": "Rockruff {not_evolved} Lycanroc"
+    },
+    "745": {
+        "legendary": false,
+        "name": "Lycanroc",
+        "type": "Rock",
+        "evolutions": "Rockruff {evolved} Lycanroc"
+    },
+    "746": {
+        "legendary": false,
+        "name": "Wishiwashi",
+        "type": "Water",
+        "evolutions": "This Pok{ething}mon does not evolve."
+    },
+    "747": {
+        "legendary": false,
+        "name": "Mareanie",
+        "type": "Poison & Water",
+        "evolutions": "Mareanie {not_evolved} Toxapex"
+    },
+    "748": {
+        "legendary": false,
+        "name": "Toxapex",
+        "type": "Poison & Water",
+        "evolutions": "Mareanie {evolved} Toxapex"
+    },
+    "749": {
+        "legendary": false,
+        "name": "Mudbray",
+        "type": "Ground",
+        "evolutions": "Mudbray {not_evolved} Mudsdale"
+    },
+    "750": {
+        "legendary": false,
+        "name": "Mudsdale",
+        "type": "Ground",
+        "evolutions": "Mudbray {evolved} Mudsdale"
+    },
+    "751": {
+        "legendary": false,
+        "name": "Dewpider",
+        "type": "Water & Bug",
+        "evolutions": "Dewpider {not_evolved} Araquanid"
+    },
+    "752": {
+        "legendary": false,
+        "name": "Araquanid",
+        "type": "Water & Bug",
+        "evolutions": "Dewpider {evolved} Araquanid"
+    },
+    "753": {
+        "legendary": false,
+        "name": "Fomantis",
+        "type": "Grass",
+        "evolutions": "Fomantis {not_evolved} Lurantis"
+    },
+    "754": {
+        "legendary": false,
+        "name": "Lurantis",
+        "type": "Grass",
+        "evolutions": "Fomantis {evolved} Lurantis"
+    },
+    "755": {
+        "legendary": false,
+        "name": "Morelull",
+        "type": "Grass & Fairy",
+        "evolutions": "Morelull {not_evolved} Shiinotic"
+    },
+    "756": {
+        "legendary": false,
+        "name": "Shiinotic",
+        "type": "Grass & Fairy",
+        "evolutions": "Morelull {evolved} Shiinotic"
+    },
+    "757": {
+        "legendary": false,
+        "name": "Salandit",
+        "type": "Poison & Fire",
+        "evolutions": "Salandit {not_evolved} Salazzle"
+    },
+    "758": {
+        "legendary": false,
+        "name": "Salazzle",
+        "type": "Poison & Fire",
+        "evolutions": "Salandit {evolved} Salazzle"
+    },
+    "759": {
+        "legendary": false,
+        "name": "Stufful",
+        "type": "Normal & Fighting",
+        "evolutions": "Stufful {not_evolved} Bewear"
+    },
+    "760": {
+        "legendary": false,
+        "name": "Bewear",
+        "type": "Normal & Fighting",
+        "evolutions": "Stufful {evolved} Bewear"
+    },
+    "761": {
+        "legendary": false,
+        "name": "Bounsweet",
+        "type": "Grass",
+        "evolutions": "Bounsweet {not_evolved} Steenee {not_evolved} Tsareena"
+    },
+    "762": {
+        "legendary": false,
+        "name": "Steenee",
+        "type": "Grass",
+        "evolutions": "Bounsweet {evolved} Steenee {not_evolved} Tsareena"
+    },
+    "763": {
+        "legendary": false,
+        "name": "Tsareena",
+        "type": "Grass",
+        "evolutions": "Bounsweet {evolved} Steenee {evolved} Tsareena"
+    },
+    "764": {
+        "legendary": false,
+        "name": "Comfey",
+        "type": "Fairy",
+        "evolutions": "This Pok{ething}mon does not evolve."
+    },
+    "765": {
+        "legendary": false,
+        "name": "Oranguru",
+        "type": "Normal & Psychic",
+        "evolutions": "This Pok{ething}mon does not evolve."
+    },
+    "766": {
+        "legendary": false,
+        "name": "Passimian",
+        "type": "Fighting",
+        "evolutions": "This Pok{ething}mon does not evolve."
+    },
+    "767": {
+        "legendary": false,
+        "name": "Wimpod",
+        "type": "Bug & Water",
+        "evolutions": "Wimpod {not_evolved} Golisopod"
+    },
+    "768": {
+        "legendary": false,
+        "name": "Golisopod",
+        "type": "Bug & Water",
+        "evolutions": "Wimpod {evolved} Golisopod"
+    },
+    "769": {
+        "legendary": false,
+        "name": "Sandygast",
+        "type": "Ghost & Ground",
+        "evolutions": "Sandygast {not_evolved} Palossand"
+    },
+    "770": {
+        "legendary": false,
+        "name": "Palossand",
+        "type": "Ghost & Ground",
+        "evolutions": "Sandygast {evolved} Palossand"
+    },
+    "771": {
+        "legendary": false,
+        "name": "Pyukumuku",
+        "type": "Water",
+        "evolutions": "This Pok{ething}mon does not evolve."
+    },
+    "772": {
+        "legendary": false,
+        "name": "Type: Null",
+        "type": "Normal",
+        "evolutions": "Type: Null {not_evolved} Silvally"
+    },
+    "773": {
+        "legendary": false,
+        "name": "Silvally",
+        "type": "Normal",
+        "evolutions": "Type: Null {evolved} Silvally"
+    },
+    "774": {
+        "legendary": false,
+        "name": "Minior",
+        "type": "Rock & Flying",
+        "evolutions": "This Pok{ething}mon does not evolve."
+    },
+    "775": {
+        "legendary": false,
+        "name": "Komala",
+        "type": "Normal",
+        "evolutions": "This Pok{ething}mon does not evolve."
+    },
+    "776": {
+        "legendary": false,
+        "name": "Turtonator",
+        "type": "Fire & Dragon",
+        "evolutions": "This Pok{ething}mon does not evolve."
+    },
+    "777": {
+        "legendary": false,
+        "name": "Togedemaru",
+        "type": "Electric & Steel",
+        "evolutions": "This Pok{ething}mon does not evolve."
+    },
+    "778": {
+        "legendary": false,
+        "name": "Mimikyu",
+        "type": "Ghost & Fairy",
+        "evolutions": "This Pok{ething}mon does not evolve."
+    },
+    "779": {
+        "legendary": false,
+        "name": "Bruxish",
+        "type": "Water & Psychic",
+        "evolutions": "This Pok{ething}mon does not evolve."
+    },
+    "780": {
+        "legendary": false,
+        "name": "Drampa",
+        "type": "Normal & Dragon",
+        "evolutions": "This Pok{ething}mon does not evolve."
+    },
+    "781": {
+        "legendary": false,
+        "name": "Dhelmise",
+        "type": "Ghost & Grass",
+        "evolutions": "This Pok{ething}mon does not evolve."
+    },
+    "782": {
+        "legendary": false,
+        "name": "Jangmo-o",
+        "type": "Dragon",
+        "evolutions": "Jangmo-o {not_evolved} Hakamo-o {not_evolved} Kommo-o"
+    },
+    "783": {
+        "legendary": false,
+        "name": "Hakamo-o",
+        "type": "Dragon & Fairy",
+        "evolutions": "Jangmo-o {evolved} Hakamo-o {not_evolved} Kommo-o"
+    },
+    "784": {
+        "legendary": false,
+        "name": "Kommo-o",
+        "type": "Dragon & Fighting",
+        "evolutions": "Jangmo-o {evolved} Hakamo-o {evolved} Kommo-o"
+    },
+    "785": {
+        "legendary": true,
+        "name": "Tapu Koko",
+        "type": "Electric & Fairy",
+        "evolutions": "This Pok{ething}mon does not evolve."
+    },
+    "786": {
+        "legendary": true,
+        "name": "Tapu Lele",
+        "type": "Psychic & Fairy",
+        "evolutions": "This Pok{ething}mon does not evolve."
+    },
+    "787": {
+        "legendary": true,
+        "name": "Tapu Bulu",
+        "type": "Grass & Fairy",
+        "evolutions": "This Pok{ething}mon does not evolve."
+    },
+    "788": {
+        "legendary": true,
+        "name": "Tapu Fini",
+        "type": "Water & Fairy",
+        "evolutions": "This Pok{ething}mon does not evolve."
+    },
+    "789": {
+        "legendary": true,
+        "name": "Cosmog",
+        "type": "Psychic",
+        "evolutions": "Cosmog {not_evolved} Cosmoem {not_evolved} Solgaleo OR Lunala"
+    },
+    "790": {
+        "legendary": true,
+        "name": "Cosmoem",
+        "type": "Psychic",
+        "evolutions": "Cosmog {evolved} Cosmoem {not_evolved} Solgaleo OR Lunala"
+    },
+    "791": {
+        "legendary": true,
+        "name": "Solgaleo",
+        "type": "Psychic & Steel",
+        "evolutions": "Cosmog {evolved} Cosmoem {evolved} Solgaleo"
+    },
+    "792": {
+        "legendary": true,
+        "name": "Lunala",
+        "type": "Psychic & Ghost",
+        "evolutions": "Cosmog {evolved} Cosmoem {evolved} Lunala"
+    },
+    "793": {
+        "legendary": true,
+        "name": "Nihilego",
+        "type": "Rock & Poison",
+        "evolutions": "This Pok{ething}mon does not evolve."
+    },
+    "794": {
+        "legendary": true,
+        "name": "Buzzwole",
+        "type": "Bug & Fighting",
+        "evolutions": "This Pok{ething}mon does not evolve."
+    },
+    "795": {
+        "legendary": true,
+        "name": "Pheromosa",
+        "type": "Bug & Fighting",
+        "evolutions": "This Pok{ething}mon does not evolve."
+    },
+    "796": {
+        "legendary": true,
+        "name": "Xurkitree",
+        "type": "Electric",
+        "evolutions": "This Pok{ething}mon does not evolve."
+    },
+    "797": {
+        "legendary": true,
+        "name": "Celesteela",
+        "type": "Steel & Flying",
+        "evolutions": "This Pok{ething}mon does not evolve."
+    },
+    "798": {
+        "legendary": true,
+        "name": "Kartana",
+        "type": "Grass & Steel",
+        "evolutions": "This Pok{ething}mon does not evolve."
+    },
+    "799": {
+        "legendary": true,
+        "name": "Guzzlord",
+        "type": "Dark & Dragon",
+        "evolutions": "This Pok{ething}mon does not evolve."
+    },
+    "800": {
+        "legendary": true,
+        "name": "Necrozma",
+        "type": "Psychic",
+        "evolutions": "This Pok{ething}mon does not evolve."
+    },
+    "801": {
+        "legendary": true,
+        "name": "Magearna",
+        "type": "Steel & Fairy",
+        "evolutions": "This Pok{ething}mon does not evolve."
+    },
+    "802": {
+        "legendary": true,
+        "name": "Marshadow",
+        "type": "Fighting & Ghost",
+        "evolutions": "This Pok{ething}mon does not evolve."
+    }
+}
