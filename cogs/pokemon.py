@@ -148,10 +148,10 @@ class Pokemon(Menus):
             await msg.edit(content=f'*{player_name}*,\n**{mon["name"]}** escaped because you took too long! :stopwatch:', delete_after=60)
             await msg.clear_reactions()
             return
+        await msg.clear_reactions()
         if reaction.emoji in balls:
             if catch(mon, balls.index(reaction.emoji)):
                 await msg.edit(content=wrap(f'*{player_name}* has caught **{mon["name"]}** successfully!', reaction.emoji), delete_after=60)
-                await msg.clear_reactions()
                 userdata['pokemon'][poke_bullet] += 1
             else:
                 await msg.edit(content=f'*{player_name}*,\n**{mon["name"]}** has escaped!', delete_after=60)
