@@ -12,6 +12,8 @@ from utils.json import Dict, List
 from utils.utils import wrap
 from utils import errors
 
+GRASS_IMAGE = 'http://unitedsurvivorsgaming.com/grass.png'
+
 ITEMS = [{'price': 10, 'name': 'pokeballs', 'display': lambda c: discord.utils.get(c.guild.emojis, name='Pokeball')},
          {'price': 100, 'name': 'ultraballs', 'display': lambda c: discord.utils.get(c.guild.emojis, name='Ultraball')},
          {'price': 500, 'name': 'masterballs', 'display': lambda c: discord.utils.get(c.guild.emojis, name='Masterball')}]
@@ -51,7 +53,7 @@ def poke_converter(ctx, user_or_num):
 class Pokemon(Menus):
     def __init__(self, bot):
         self.bot = bot
-        self.image_path = 'data/pokemon/images/pokemon{}.png'
+        self.image_path = 'data/pokemon/images/normal/{}-0.gif'
         self.trades = {}
         self.poke_info = Dict('pokemon', 'pokemon', loop=bot.loop, int_keys=True)
         self.rewards = List('rewards', 'pokemon', loop=bot.loop)
@@ -129,8 +131,10 @@ class Pokemon(Menus):
         mon = self.poke_info[poke_bullet]
         userdata = self.get_player(player_id)
         balls = [item['display'](ctx) for item in ITEMS]
-        msg = await ctx.send(f'*{player_name}*,\nA wild **{mon["name"]}** appears!\nUse a {balls[0]} to catch it!',
-                             file=discord.File(open(self.image_path.format(poke_bullet), 'rb')))
+        embed = discord.Embed(description=f'A wild **{mon["name"]}** appears!\nUse a {balls[0]} to catch it!')
+        embed.set_author(icon_url=ctx.author.avatar_url, name=player_name)
+        embed.set_image(url='attachment://pokemon.gif')
+        msg = await ctx.send(embed=embed, file=discord.File(open(self.image_path.format(poke_bullet), 'rb'), filename='pokemon.gif'))
         can_react_with = []
         for item, emoji in zip(('pokeballs', 'ultraballs', 'masterballs'), balls):
             if userdata['inventory'][item]:
@@ -145,21 +149,28 @@ class Pokemon(Menus):
                         user == ctx.author)
             reaction, _ = await self.bot.wait_for('reaction_add', check=check, timeout=20)
         except asyncio.TimeoutError:
-            await msg.edit(content=f'*{player_name}*,\n**{mon["name"]}** escaped because you took too long! :stopwatch:', delete_after=60)
+            embed.description = f'**{mon["name"]}** escaped because you took too long! :stopwatch:'
+            embed.set_image(url=GRASS_IMAGE)
+            await msg.edit(embed=embed, delete_after=60)
             await msg.clear_reactions()
             return
         await msg.clear_reactions()
         if reaction.emoji in balls:
             if catch(mon, balls.index(reaction.emoji)):
-                await msg.edit(content=wrap(f'*{player_name}* has caught **{mon["name"]}** successfully!', reaction.emoji), delete_after=60)
+                embed.description = wrap(f'You caught **{mon["name"]}** successfully!', reaction.emoji)
+                await msg.edit(embed=embed, delete_after=60)
                 userdata['pokemon'][poke_bullet] += 1
             else:
-                await msg.edit(content=f'*{player_name}*,\n**{mon["name"]}** has escaped!', delete_after=60)
+                embed.description = f'**{mon["name"]}** has escaped!'
+                embed.set_image(url=GRASS_IMAGE)
+                await msg.edit(embed=embed, delete_after=60)
             item = reaction.emoji.name.lower() + 's'
             userdata['inventory'][item] -= 1
             await self.found_pokemon.save()
         else:
-            await msg.edit(content=f':chicken: *{player_name}* ran away from **{mon["name"]}**! :chicken:', delete_after=60)
+            embed.description = wrap(f'You ran away from **{mon["name"]}**!', ':chicken:')
+            embed.set_image(url=GRASS_IMAGE)
+            await msg.edit(embed=embed, delete_after=60)
 
 ###################
 #                 #
@@ -194,9 +205,12 @@ class Pokemon(Menus):
             options = ['**{}.** {[name]}{}'.format(mon, self.poke_info[mon], f' *x{found[mon]}*' if found[mon] > 1 else '') for mon in found_sorted]
             await self.reaction_menu(options, ctx.author, ctx.channel, 0, per_page=20, code=False, header=header)
         else:
-            evo = self.poke_info[user_or_num]['evolutions'].format(ething='é', evolved=':ballot_box_with_check:', not_evolved=':arrow_right:')
-            await ctx.send('{0} __{1[name]}\'s Information__ {0}\n**Type:** {1[type]}\n**Evolutions:** {2}'.format(pokedex_emote, self.poke_info[user_or_num], evo),
-                           file=discord.File(open(self.image_path.format(user_or_num), 'rb')), delete_after=120)
+            info = self.poke_info[user_or_num]
+            evo = info['evolutions'].format(ething='é', evolved=':ballot_box_with_check:', not_evolved=':arrow_right:')
+            embed = discord.Embed(title=wrap(f"__{info['name']}'s Information__", pokedex_emote),
+                                  description=f"**Type:** {info['type']}\n**Evolutions:** {evo}")
+            embed.set_image(url='attachment://pokemon.gif')
+            await ctx.send(embed=embed, file=discord.File(open(self.image_path.format(user_or_num), 'rb'), filename='pokemon.gif'), delete_after=120)
 
 ###################
 #                 #
