@@ -265,12 +265,13 @@ class Pokemon(Menus):
         userdata = self.get_player(ctx.author.id)
         found = {k: v for k, v in userdata['pokemon'].items() if v}
         found_sorted = sorted(found)
+        found_names = [self.poke_info[num]['name'] for num in found_sorted]
         header = f'**{player_name}**,\nSelect Pokemon to sell.\nNormal = 100\ua750\nLegendary = 600\ua750'
         options = ['**{}.** {[name]}{}'.format(mon, self.poke_info[mon], f' *x{found[mon]}*' if found[mon] > 1 else '') for mon in found_sorted]
         if not options:
             await ctx.send("You don't have any pokemon to sell.", delete_after=60)
             return
-        selected = await self.reaction_menu(options, ctx.author, ctx.channel, -1, per_page=20, header=header, code=False, multi=True, return_from=found_sorted)
+        selected = await self.reaction_menu(options, ctx.author, ctx.channel, -1, per_page=20, header=header, code=False, multi=True, return_from=found_sorted, display=found_names)
         if not selected:
             return
         sold = []
@@ -308,14 +309,16 @@ class Pokemon(Menus):
         a_data = self.get_player(author.id)['pokemon']
         a_found = {k: v for k, v in a_data.items() if v}
         a_sorted = sorted(a_found)
+        a_names = [self.poke_info[num]['name'] for num in a_sorted]
         a_options = [fmt.format(mon, self.poke_info[mon], f' *x{a_found[mon]}*' if a_found[mon] > 1 else '') for mon in a_sorted]
         b_data = self.get_player(user.id)['pokemon']
         b_found = {k: v for k, v in b_data.items() if v}
         b_sorted = sorted(b_found)
+        b_names = [self.poke_info[num]['name'] for num in b_sorted]
         b_options = [fmt.format(mon, self.poke_info[mon], f' *x{b_found[mon]}*' if b_found[mon] > 1 else '') for mon in b_sorted]
         header = '**{.name}**,\nSelect the pokemon you wish to trade with **{.name}**'
-        selected = await asyncio.gather(self.reaction_menu(a_options, author, channel, -1, code=False, header=header.format(author, user), return_from=a_sorted, allow_none=True, multi=True),
-                                        self.reaction_menu(b_options, user, channel, -1, code=False, header=header.format(user, author), return_from=b_sorted, allow_none=True, multi=True))
+        selected = await asyncio.gather(self.reaction_menu(a_options, author, channel, -1, code=False, header=header.format(author, user), return_from=a_sorted, allow_none=True, multi=True, display=a_names),
+                                        self.reaction_menu(b_options, user, channel, -1, code=False, header=header.format(user, author), return_from=b_sorted, allow_none=True, multi=True, display=b_names))
         if all(s is None for s in selected):
             await ctx.send('No one responded to the trade.', delete_after=60)
             return
