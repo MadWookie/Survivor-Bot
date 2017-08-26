@@ -12,8 +12,6 @@ from utils.json import Dict, List
 from utils.utils import wrap
 from utils import errors
 
-GRASS_IMAGE = 'http://unitedsurvivorsgaming.com/grass.png'
-
 ITEMS = [{'price': 10, 'name': 'pokeballs', 'display': lambda c: discord.utils.get(c.guild.emojis, name='Pokeball')},
          {'price': 100, 'name': 'ultraballs', 'display': lambda c: discord.utils.get(c.guild.emojis, name='Ultraball')},
          {'price': 500, 'name': 'masterballs', 'display': lambda c: discord.utils.get(c.guild.emojis, name='Masterball')}]
@@ -150,7 +148,6 @@ class Pokemon(Menus):
             reaction, _ = await self.bot.wait_for('reaction_add', check=check, timeout=20)
         except asyncio.TimeoutError:
             embed.description = f'**{mon["name"]}** escaped because you took too long! :stopwatch:'
-            embed.set_image(url=GRASS_IMAGE)
             await msg.edit(embed=embed, delete_after=60)
             await msg.clear_reactions()
             return
@@ -162,14 +159,12 @@ class Pokemon(Menus):
                 userdata['pokemon'][poke_bullet] += 1
             else:
                 embed.description = f'**{mon["name"]}** has escaped!'
-                embed.set_image(url=GRASS_IMAGE)
                 await msg.edit(embed=embed, delete_after=60)
             item = reaction.emoji.name.lower() + 's'
             userdata['inventory'][item] -= 1
             await self.found_pokemon.save()
         else:
             embed.description = wrap(f'You ran away from **{mon["name"]}**!', ':chicken:')
-            embed.set_image(url=GRASS_IMAGE)
             await msg.edit(embed=embed, delete_after=60)
 
 ###################
