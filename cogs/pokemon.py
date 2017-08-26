@@ -51,7 +51,7 @@ def poke_converter(ctx, user_or_num):
 class Pokemon(Menus):
     def __init__(self, bot):
         self.bot = bot
-        self.image_path = 'data/pokemon/images/normal/{}-0.gif'
+        self.image_path = 'data/pokemon/images/{}/{}-{}.gif'
         self.trades = {}
         self.poke_info = Dict('pokemon', 'pokemon', loop=bot.loop, int_keys=True)
         self.rewards = List('rewards', 'pokemon', loop=bot.loop)
@@ -132,7 +132,7 @@ class Pokemon(Menus):
         embed = discord.Embed(description=f'A wild **{mon["name"]}** appears!\nUse a {balls[0]} to catch it!')
         embed.set_author(icon_url=ctx.author.avatar_url, name=player_name)
         embed.set_image(url='attachment://pokemon.gif')
-        msg = await ctx.send(embed=embed, file=discord.File(open(self.image_path.format(poke_bullet), 'rb'), filename='pokemon.gif'))
+        msg = await ctx.send(embed=embed, file=discord.File(open(self.image_path.format('normal', poke_bullet, 0), 'rb'), filename='pokemon.gif'))
         can_react_with = []
         for item, emoji in zip(('pokeballs', 'ultraballs', 'masterballs'), balls):
             if userdata['inventory'][item]:
@@ -175,7 +175,7 @@ class Pokemon(Menus):
 
     @commands.command()
     @pokechannel()
-    async def pokedex(self, ctx, user_or_num=None):
+    async def pokedex(self, ctx, user_or_num=None, shiny=''):
         """Shows you your Pokedex through a reaction menu."""
         pokedex_emote = discord.utils.get(ctx.guild.emojis, name='Pokedex')
         user_or_num = poke_converter(ctx, user_or_num) or ctx.author
@@ -200,12 +200,13 @@ class Pokemon(Menus):
             options = ['**{}.** {[name]}{}'.format(mon, self.poke_info[mon], f' *x{found[mon]}*' if found[mon] > 1 else '') for mon in found_sorted]
             await self.reaction_menu(options, ctx.author, ctx.channel, 0, per_page=20, code=False, header=header)
         else:
+            image = self.image_path.format('shiny' if shiny else 'normal', user_or_num, 0)
             info = self.poke_info[user_or_num]
             evo = info['evolutions'].format(ething='é', evolved=':ballot_box_with_check:', not_evolved=':arrow_right:')
             embed = discord.Embed(title=wrap(f"__{info['name']}'s Information__", pokedex_emote),
                                   description=f"**Type:** {info['type']}\n**Evolutions:** {evo}")
             embed.set_image(url='attachment://pokemon.gif')
-            await ctx.send(embed=embed, file=discord.File(open(self.image_path.format(user_or_num), 'rb'), filename='pokemon.gif'), delete_after=120)
+            await ctx.send(embed=embed, file=discord.File(open(image, 'rb'), filename='pokemon.gif'), delete_after=120)
 
 ###################
 #                 #
