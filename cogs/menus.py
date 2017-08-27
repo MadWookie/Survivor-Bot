@@ -225,9 +225,9 @@ class Menus:
                 break
             await msg.clear_reactions()
             if choices:
-                em.description = kwargs.get(description, '') + '\n' + 'Selected: ' + ', '.join(map(str, [display[ind] for ind in choices]))
+                em.description = kwargs.get('description', '') + '\n' + 'Selected: ' + ', '.join(map(str, [display[ind] for ind in choices]))
             else:
-                em.description = kwargs.get(description)
+                em.description = kwargs.get('description')
             em._fields[0]['value'] = pages[page]
             await msg.edit(embed=em)
         await msg.delete()
@@ -318,7 +318,7 @@ class Menus:
             if choices:
                 embed.description += '\n' + 'Selected: ' + ', '.join(map(str, [options[ind] for ind in choices]))
             else:
-                embed.description = kwargs.get(description)
+                embed.description = kwargs.get('description')
             embed._fields = pages[page]
             await msg.edit(embed=embed)
         await msg.delete()
