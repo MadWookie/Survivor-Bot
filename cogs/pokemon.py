@@ -220,11 +220,12 @@ class Pokemon(Menus):
             return
         player_name = ctx.author.name
         userdata = self.get_player(ctx.author.id)
+        thumbnail = 'http://unitedsurvivorsgaming.com/shop.png'
         title = f'{player_name} | {userdata["inventory"]["money"]}\ua750'
         description = 'Select items to buy{}.'.format(f' in multiples of {multiple}' if multiple > 1 else '')
         options = ['{} {[price]}\ua750 **|** Inventory: {}'.format(data['display'](ctx), data, userdata['inventory'][data['name']]) for data in ITEMS]
         balls = [item['display'](ctx) for item in ITEMS]
-        selected = await self.embed_menu(options, 'Shop', ctx.author, ctx.channel, -1, description=description, title=title, return_from=list(range(len(ITEMS))), multi=True, display=balls)
+        selected = await self.embed_menu(options, 'Shop', ctx.author, ctx.channel, -1, description=description, title=title, thumbnail=thumbnail, return_from=list(range(len(ITEMS))), multi=True, display=balls)
         if not selected:
             return
         bought = []
