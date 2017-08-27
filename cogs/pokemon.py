@@ -203,8 +203,7 @@ class Pokemon(Menus):
             image = self.image_path.format('shiny' if shiny else 'normal', user_or_num, 0)
             info = self.poke_info[user_or_num]
             evo = info['evolutions'].format(ething='é', evolved=':ballot_box_with_check:', not_evolved=':arrow_right:')
-            embed = discord.Embed(title=wrap(f"__{info['name']}'s Information__", pokedex_emote),
-                                  description=f"**Type:** {info['type']}\n**Evolutions:** {evo}")
+            embed = discord.Embed(description=wrap(f"__{info['name']}'s Information__", pokedex_emote) + f"\n**Type:** {info['type']}\n**Evolutions:** {evo}")
             embed.set_image(url='attachment://pokemon.gif')
             await ctx.send(embed=embed, file=discord.File(open(image, 'rb'), filename='pokemon.gif'), delete_after=120)
 
