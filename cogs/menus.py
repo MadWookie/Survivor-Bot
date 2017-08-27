@@ -143,8 +143,8 @@ class Menus:
 #                 #
 ###################
 
-    async def embed_menu(self, options, field, user, destination, count=1, *, timeout=60, multi=False, description=None,
-                         code=True, per_page=10, title=None, return_from=None, allow_none=False, return_id=False, display=None):
+    async def embed_menu(self, options, field, user, destination, count=1, *, timeout=60, multi=False, code=True, per_page=10, return_from=None, allow_none=False, return_id=False, display=None,
+                         thumbnail=None, image=None, footer=None, **kwargs):
         if return_from is None:
             return_from = options
         elif len(return_from) != len(options):
@@ -160,7 +160,13 @@ class Menus:
             per_page = 10
         else:
             reactions = (*ARROWS, CANCEL, UNDO, DONE)
-        em = discord.Embed(title=title, description=description)
+        em = discord.Embed(**kwargs)
+        if thumbnail:
+            em.set_thumbnail(url=thumbnail)
+        if image:
+            em.set_image(url=image)
+        if footer:
+            em.set_footer(text=footer)
         em.add_field(name=field, value='')
         pages = ['']
         page_len = 0
@@ -235,8 +241,8 @@ class Menus:
 #                 #
 ###################
 
-    async def embed_reaction_menu(self, options, user, destination, count=1, *, timeout=60, multi=False,
-                                  title=None, description=None, return_from=None, allow_none=False):
+    async def embed_reaction_menu(self, options, user, destination, count=1, *, timeout=60, multi=False, return_from=None, allow_none=False,
+                                  thumbnail=None, image=None, footer=None, **kwargs):
         if return_from is None:
             return_from = options
         elif len(return_from) != len(options):
@@ -257,7 +263,13 @@ class Menus:
                 except KeyError:
                     field['inline'] = True
             pages.append(page)
-        embed = discord.Embed(title=title, description=description)
+        embed = discord.Embed(**kwargs)
+        if thumbnail:
+            embed.set_thumbnail(url=thumbnail)
+        if image:
+            embed.set_image(url=image)
+        if footer:
+            embed.set_footer(text=footer)
         page = 0
         embed._fields = pages[page]
         choices = []
