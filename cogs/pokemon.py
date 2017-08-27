@@ -81,8 +81,9 @@ class Pokemon(Menus):
     async def inventory(self, ctx):
         thumbnail = 'http://unitedsurvivorsgaming.com/Backpack.png'
         inv = self.get_player(ctx.author.id)['inventory']
-        em = discord.Embed(title=f'{ctx.author.name} | {inv["money"]}\ua750', thumbnail=thumbnail)
+        em = discord.Embed(title=f'{ctx.author.name} | {inv["money"]}\ua750')
         items = [f'{item["display"](ctx)} | {inv[item["name"]]}' for item in ITEMS]
+        em.set_thumbnail(url=thumbnail)
         em.add_field(name='Inventory', value='\n'.join(items))
         await ctx.send(embed=em, delete_after=60)
 
