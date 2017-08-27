@@ -144,7 +144,7 @@ class Menus:
 ###################
 
     async def embed_menu(self, options, field, user, destination, count=1, *, timeout=60, multi=False, code=True, per_page=10, return_from=None, allow_none=False, return_id=False, display=None,
-                         thumbnail=None, image=None, footer=None, **kwargs):
+                         file=None, thumbnail=None, image=None, footer=None, **kwargs):
         if return_from is None:
             return_from = options
         elif len(return_from) != len(options):
@@ -182,7 +182,7 @@ class Menus:
         page = 0
         em._fields[0]['value'] = pages[page]
         choices = []
-        msg = await destination.send(embed=em)
+        msg = await destination.send(embed=em, file=file)
 
         def check(reaction, reaction_user):
             return (reaction.emoji in reactions and
@@ -242,7 +242,7 @@ class Menus:
 ###################
 
     async def embed_reaction_menu(self, options, user, destination, count=1, *, timeout=60, multi=False, return_from=None, allow_none=False,
-                                  thumbnail=None, image=None, footer=None, **kwargs):
+                                  file=None, thumbnail=None, image=None, footer=None, **kwargs):
         if return_from is None:
             return_from = options
         elif len(return_from) != len(options):
@@ -273,7 +273,7 @@ class Menus:
         page = 0
         embed._fields = pages[page]
         choices = []
-        msg = await destination.send(embed=embed)
+        msg = await destination.send(embed=embed, file=file)
 
         def check(reaction, reaction_user):
             return (reaction.emoji in reactions and
