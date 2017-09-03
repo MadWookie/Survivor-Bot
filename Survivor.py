@@ -12,9 +12,13 @@ import config
 
 class SurvivorBot(commands.Bot):
     async def is_command(self, message):
+        cmds = self.commands.copy()
+        for cmd in self.commands:
+            cmds.append(cmd.name)
+            cmds.extend(cmd.aliases)
         def check(prefix):
             view = StringView(message.content)
-            return view.skip_string(prefix) and view.get_word() in [c.name for c in self.commands]
+            return view.skip_string(prefix) and view.get_word() in cmds
         if callable(self.command_prefix):
             prefixes = self.command_prefix(self, message)
             if asyncio.iscoroutine(prefixes):
