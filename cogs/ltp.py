@@ -36,7 +36,6 @@ class LTP(Menus):
             'RimWorld': ("RIMWORLD", "RIMJOBWORLD", "RIM WORLD", "RIM JOB WORLD"),
             'Battlefield 1': ("BF1", "BATTLEFIELD 1", "BATTLEFIELD ONE"),
             'Hypixel': ("HYPIXEL"),
-            'WynnCraft': ("WYNNCRAFT"),
             'Wikian': ("WIKIA", "WIKIAN", "FANDOM", "WIKI"),
             'World of Tanks': ("WOT", "WORLD OF TANKS"),
             'Brawlhalla': ("BRAWLHALLA", "BRAWL HALLA"),
@@ -70,6 +69,7 @@ class LTP(Menus):
             'Payday': ("PAYDAY", "PAYDAY 2"),
             'Unturned': ("UNTURNED"),
             'Paladins': ("PALADINS"),
+            'GTAV': ("GTAV", "GTA5", "GTA V", "GTA 5", "GRAND THEFT AUTO FIVE", "GRAND THEFT AUTO V" "GRAND THEFT AUTO 5"),
             'PUBG': ("PUBG", "PLAYERUNKNOWN BATTLEGROUND", "PLAYERUNKNOWN BATTLEGROUNDS", "PLAYER UNKNOWN BATTLEGROUND", "PLAYER UNKNOWN BATTLEGROUNDS", "PLAYERUNKNOWN", "PLAYER UNKNOWN BATTLE GROUND")
         }
 
