@@ -273,7 +273,7 @@ class Pokemon(Menus):
         found = {k: v for k, v in userdata['pokemon'].items() if v}
         found_sorted = sorted(found)
         found_names = [self.poke_info[num]['name'] for num in found_sorted]
-        header = f'**{player_name}**,\nSelect Pokemon to sell.\nNormal = 100\ua750\nLegendary = 600\ua750'
+        header = f'**{player_name}**,\nSelect Pokemon to sell.\nNormal = 100\ua750\nLegendary = 600\ua750\Mythical = 1000\ua750'
         options = ['**{}.** {[name]}{}{}'.format(mon, self.poke_info[mon], star if self.poke_info[mon]['legendary'] else glowing_star if self.poke_info[mon]['mythical'] else '', f' *x{found[mon]}*' if found[mon] > 1 else '') for mon in found_sorted]
         if not options:
             await ctx.send("You don't have any pokemon to sell.", delete_after=60)
@@ -287,7 +287,12 @@ class Pokemon(Menus):
             while selected.count(mon) > found[mon]:
                 selected.remove(mon)
             count = selected.count(mon)
-            total += 600 if self.poke_info[mon]['legendary'] else 100
+            if self.poke_info[mon]['mythical']:
+                total += 1000
+            elif self.poke_info[mon]['legendary']:
+                total += 600
+            else:
+                total += 100
             userdata['pokemon'][mon] -= count
             if not userdata['pokemon'][mon]:
                 userdata['pokemon'].pop(mon)
