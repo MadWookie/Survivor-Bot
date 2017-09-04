@@ -132,7 +132,7 @@ class Pokemon(Menus):
         mon = self.poke_info[poke_bullet]
         userdata = self.get_player(player_id)
         balls = [item['display'](ctx) for item in ITEMS]
-        star = GLOWING_STAR if self.poke_info[mon]['mythical'] else STAR if self.poke_info[mon]['legendary'] else ''
+        star = GLOWING_STAR if mon['mythical'] else STAR if mon['legendary'] else ''
         embed = discord.Embed(description=f'A wild **{mon["name"]}**{star} appears!\nUse a {balls[0]} to catch it!')
         embed.set_author(icon_url=ctx.author.avatar_url, name=player_name)
         embed.set_image(url='attachment://pokemon.gif')
