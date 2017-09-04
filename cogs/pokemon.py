@@ -132,7 +132,8 @@ class Pokemon(Menus):
         mon = self.poke_info[poke_bullet]
         userdata = self.get_player(player_id)
         balls = [item['display'](ctx) for item in ITEMS]
-        embed = discord.Embed(description=f'A wild **{mon["name"]}** appears!\nUse a {balls[0]} to catch it!')
+        star = GLOWING_STAR if self.poke_info[mon]['mythical'] else STAR if self.poke_info[mon]['legendary'] else ''
+        embed = discord.Embed(description=f'A wild **{mon["name"]}**{star} appears!\nUse a {balls[0]} to catch it!')
         embed.set_author(icon_url=ctx.author.avatar_url, name=player_name)
         embed.set_image(url='attachment://pokemon.gif')
         msg = await ctx.send(embed=embed, file=discord.File(open(self.image_path.format('normal', poke_bullet, 0), 'rb'), filename='pokemon.gif'))
@@ -201,7 +202,7 @@ class Pokemon(Menus):
             key = f'{ARROWS[0]} Click to go back a page.\n{ARROWS[1]} Click to go forward a page.\n{CANCEL} Click to exit your pokedex.'
             counts = wrap(f'**{total}** collected out of {remaining} total Pokemon.\n**{total - mythics - legendaries}** Normal | **{legendaries}** Legendary {STAR} | **{mythics}** Mythical {GLOWING_STAR}', spacer, sep='\n')
             header = '\n'.join([header, 'Use **!pokedex** ``#`` to take a closer look at your Pokémon!', key, counts])
-            options = ['**{}.** {[name]}{}{}'.format(mon, self.poke_info[mon], STAR if self.poke_info[mon]['legendary'] else GLOWING_STAR if self.poke_info[mon]['mythical'] else '', f' *x{found[mon]}*' if found[mon] > 1 else '') for mon in found_sorted]
+            options = ['**{}.** {[name]}{}{}'.format(mon, self.poke_info[mon], GLOWING_STAR if self.poke_info[mon]['mythical'] else STAR if self.poke_info[mon]['legendary'] else '', f' *x{found[mon]}*' if found[mon] > 1 else '') for mon in found_sorted]
             await self.reaction_menu(options, ctx.author, ctx.channel, 0, per_page=20, code=False, header=header)
         else:
             image = self.image_path.format('shiny' if shiny else 'normal', user_or_num, 0)
@@ -272,7 +273,7 @@ class Pokemon(Menus):
         found_sorted = sorted(found)
         found_names = [self.poke_info[num]['name'] for num in found_sorted]
         header = f'**{player_name}**,\nSelect Pokemon to sell.\n' + wrap(f'**100**\ua750 Normal | **600**\ua750 Legendary {STAR} | **1000**\ua750 Mythical {GLOWING_STAR}', spacer, sep='\n')
-        options = ['**{}.** {[name]}{}{}'.format(mon, self.poke_info[mon], STAR if self.poke_info[mon]['legendary'] else GLOWING_STAR if self.poke_info[mon]['mythical'] else '', f' *x{found[mon]}*' if found[mon] > 1 else '') for mon in found_sorted]
+        options = ['**{}.** {[name]}{}{}'.format(mon, self.poke_info[mon], GLOWING_STAR if self.poke_info[mon]['mythical'] else STAR if self.poke_info[mon]['legendary'] else '', f' *x{found[mon]}*' if found[mon] > 1 else '') for mon in found_sorted]
         if not options:
             await ctx.send("You don't have any pokemon to sell.", delete_after=60)
             return
@@ -315,17 +316,17 @@ class Pokemon(Menus):
             return
         channel = ctx.channel
         cancelled = '**{.name}** cancelled the trade.'
-        fmt = '**{}.** {[name]}{}'
+        fmt = '**{}.** {[name]}{}{}'
         a_data = self.get_player(author.id)['pokemon']
         a_found = {k: v for k, v in a_data.items() if v}
         a_sorted = sorted(a_found)
         a_names = [self.poke_info[num]['name'] for num in a_sorted]
-        a_options = [fmt.format(mon, self.poke_info[mon], f' *x{a_found[mon]}*' if a_found[mon] > 1 else '') for mon in a_sorted]
+        a_options = [fmt.format(mon, self.poke_info[mon], GLOWING_STAR if self.poke_info[mon]['mythical'] else STAR if self.poke_info[mon]['legendary'] else '', f' *x{a_found[mon]}*' if a_found[mon] > 1 else '') for mon in a_sorted]
         b_data = self.get_player(user.id)['pokemon']
         b_found = {k: v for k, v in b_data.items() if v}
         b_sorted = sorted(b_found)
         b_names = [self.poke_info[num]['name'] for num in b_sorted]
-        b_options = [fmt.format(mon, self.poke_info[mon], f' *x{b_found[mon]}*' if b_found[mon] > 1 else '') for mon in b_sorted]
+        b_options = [fmt.format(mon, self.poke_info[mon], GLOWING_STAR if self.poke_info[mon]['mythical'] else STAR if self.poke_info[mon]['legendary'] else '', f' *x{b_found[mon]}*' if b_found[mon] > 1 else '') for mon in b_sorted]
         header = '**{.name}**,\nSelect the pokemon you wish to trade with **{.name}**'
         selected = await asyncio.gather(self.reaction_menu(a_options, author, channel, -1, code=False, header=header.format(author, user), return_from=a_sorted, allow_none=True, multi=True, display=a_names),
                                         self.reaction_menu(b_options, user, channel, -1, code=False, header=header.format(user, author), return_from=b_sorted, allow_none=True, multi=True, display=b_names))
