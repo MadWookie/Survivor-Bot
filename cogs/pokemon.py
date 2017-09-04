@@ -7,7 +7,7 @@ from discord.ext import commands
 import aiohttp
 import discord
 
-from cogs.menus import Menus, ARROWS, DONE, CANCEL
+from cogs.menus import Menus, STAR, GLOWING_STAR, SPACER, ARROWS, DONE, CANCEL
 from utils.json import Dict, List
 from utils.utils import wrap
 from utils import errors
@@ -181,8 +181,6 @@ class Pokemon(Menus):
     async def pokedex(self, ctx, user_or_num=None, shiny=''):
         """Shows you your Pokedex through a reaction menu."""
         pokedex_emote = discord.utils.get(ctx.guild.emojis, name='Pokedex')
-        star = '\\\N{WHITE MEDIUM STAR}'
-        glowing_star = '\\\N{GLOWING STAR}'
         user_or_num = poke_converter(ctx, user_or_num) or ctx.author
         if isinstance(user_or_num, discord.abc.User):
             player = user_or_num
@@ -199,11 +197,11 @@ class Pokemon(Menus):
             if total == 0:
                 await ctx.send(header, delete_after=60)
                 return
-            spacer = '\N{BLACK PARALLELOGRAM}' * 21
+            spacer = SPACER * 21
             key = f'{ARROWS[0]} Click to go back a page.\n{ARROWS[1]} Click to go forward a page.\n{CANCEL} Click to exit your pokedex.'
-            counts = wrap(f'**{total}** collected out of {remaining} total Pokemon.\n**{total - mythics - legendaries}** Normal | **{legendaries}** Legendary {star} | **{mythics}** Mythical {glowing_star}', spacer, sep='\n')
+            counts = wrap(f'**{total}** collected out of {remaining} total Pokemon.\n**{total - mythics - legendaries}** Normal | **{legendaries}** Legendary {STAR} | **{mythics}** Mythical {GLOWING_STAR}', spacer, sep='\n')
             header = '\n'.join([header, 'Use **!pokedex** ``#`` to take a closer look at your Pokémon!', key, counts])
-            options = ['**{}.** {[name]}{}{}'.format(mon, self.poke_info[mon], star if self.poke_info[mon]['legendary'] else glowing_star if self.poke_info[mon]['mythical'] else '', f' *x{found[mon]}*' if found[mon] > 1 else '') for mon in found_sorted]
+            options = ['**{}.** {[name]}{}{}'.format(mon, self.poke_info[mon], STAR if self.poke_info[mon]['legendary'] else GLOWING_STAR if self.poke_info[mon]['mythical'] else '', f' *x{found[mon]}*' if found[mon] > 1 else '') for mon in found_sorted]
             await self.reaction_menu(options, ctx.author, ctx.channel, 0, per_page=20, code=False, header=header)
         else:
             image = self.image_path.format('shiny' if shiny else 'normal', user_or_num, 0)
@@ -267,16 +265,14 @@ class Pokemon(Menus):
     @shop.command()
     @pokechannel()
     async def sell(self, ctx):
-        spacer = '\N{BLACK PARALLELOGRAM}' * 24
-        star = '\\\N{WHITE MEDIUM STAR}'
-        glowing_star = '\\\N{GLOWING STAR}'
+        spacer = SPACER * 24
         player_name = ctx.author.name
         userdata = self.get_player(ctx.author.id)
         found = {k: v for k, v in userdata['pokemon'].items() if v}
         found_sorted = sorted(found)
         found_names = [self.poke_info[num]['name'] for num in found_sorted]
-        header = f'**{player_name}**,\nSelect Pokemon to sell.\n' + wrap(f'**100**\ua750 Normal | **600**\ua750 Legendary {star} | **1000**\ua750 Mythical {glowing_star}', spacer, sep='\n')
-        options = ['**{}.** {[name]}{}{}'.format(mon, self.poke_info[mon], star if self.poke_info[mon]['legendary'] else glowing_star if self.poke_info[mon]['mythical'] else '', f' *x{found[mon]}*' if found[mon] > 1 else '') for mon in found_sorted]
+        header = f'**{player_name}**,\nSelect Pokemon to sell.\n' + wrap(f'**100**\ua750 Normal | **600**\ua750 Legendary {STAR} | **1000**\ua750 Mythical {GLOWING_STAR}', spacer, sep='\n')
+        options = ['**{}.** {[name]}{}{}'.format(mon, self.poke_info[mon], STAR if self.poke_info[mon]['legendary'] else GLOWING_STAR if self.poke_info[mon]['mythical'] else '', f' *x{found[mon]}*' if found[mon] > 1 else '') for mon in found_sorted]
         if not options:
             await ctx.send("You don't have any pokemon to sell.", delete_after=60)
             return
