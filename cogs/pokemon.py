@@ -309,7 +309,7 @@ class Pokemon(Menus):
 #                 #
 ###################
 
-    @pokemon.command()
+    @commands.command()
     @pokechannel()
     async def trade(self, ctx, user: discord.Member):
         """Trade pokemon with another user."""
