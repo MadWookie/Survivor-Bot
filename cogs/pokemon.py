@@ -151,24 +151,24 @@ class Pokemon(Menus):
                         user == ctx.author)
             reaction, _ = await self.bot.wait_for('reaction_add', check=check, timeout=20)
         except asyncio.TimeoutError:
-            embed.description = f'**{mon["name"]}** escaped because you took too long! :stopwatch:'
+            embed.description = f'**{mon["name"]}**{star} escaped because you took too long! :stopwatch:'
             await msg.edit(embed=embed, delete_after=60)
             await msg.clear_reactions()
             return
         await msg.clear_reactions()
         if reaction.emoji in balls:
             if catch(mon, balls.index(reaction.emoji)):
-                embed.description = wrap(f'You caught **{mon["name"]}** successfully!', reaction.emoji)
+                embed.description = wrap(f'You caught **{mon["name"]}**{star} successfully!', reaction.emoji)
                 await msg.edit(embed=embed, delete_after=60)
                 userdata['pokemon'][poke_bullet] += 1
             else:
-                embed.description = f'**{mon["name"]}** has escaped!'
+                embed.description = f'**{mon["name"]}**{star} has escaped!'
                 await msg.edit(embed=embed, delete_after=60)
             item = reaction.emoji.name.lower() + 's'
             userdata['inventory'][item] -= 1
             await self.found_pokemon.save()
         else:
-            embed.description = wrap(f'You ran away from **{mon["name"]}**!', ':chicken:')
+            embed.description = wrap(f'You ran away from **{mon["name"]}**{star}!', ':chicken:')
             await msg.edit(embed=embed, delete_after=60)
 
 ###################
