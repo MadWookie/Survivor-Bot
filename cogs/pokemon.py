@@ -131,7 +131,10 @@ class Pokemon(Menus):
         mon = self.poke_info[poke_bullet]
         userdata = self.get_player(player_id)
         balls = [item['display'](ctx) for item in ITEMS]
-        embed = discord.Embed(description=f'A wild **{mon["name"]}** appears!\nUse a {balls[0]} to catch it!')
+        star = '\\\N{WHITE MEDIUM STAR}'
+        glowing_star = '\\\N{GLOWING STAR}'
+        stars = star if self.poke_info[mon]['legendary'] else glowing_star if self.poke_info[mon]['mythical'] else '',
+        embed = discord.Embed(description=f'A wild **{mon["name"]}**{stars} appears!\nUse a {balls[0]} to catch it!')
         embed.set_author(icon_url=ctx.author.avatar_url, name=player_name)
         embed.set_image(url='attachment://pokemon.gif')
         msg = await ctx.send(embed=embed, file=discord.File(open(self.image_path.format('normal', poke_bullet, 0), 'rb'), filename='pokemon.gif'))
@@ -149,14 +152,14 @@ class Pokemon(Menus):
                         user == ctx.author)
             reaction, _ = await self.bot.wait_for('reaction_add', check=check, timeout=20)
         except asyncio.TimeoutError:
-            embed.description = f'**{mon["name"]}** escaped because you took too long! :stopwatch:'
+            embed.description = f'**{mon["name"]}**{stars} escaped because you took too long! :stopwatch:'
             await msg.edit(embed=embed, delete_after=60)
             await msg.clear_reactions()
             return
         await msg.clear_reactions()
         if reaction.emoji in balls:
             if catch(mon, balls.index(reaction.emoji)):
-                embed.description = wrap(f'You caught **{mon["name"]}** successfully!', reaction.emoji)
+                embed.description = wrap(f'You caught **{mon["name"]}**{stars} successfully!', reaction.emoji)
                 await msg.edit(embed=embed, delete_after=60)
                 userdata['pokemon'][poke_bullet] += 1
             else:
@@ -166,7 +169,7 @@ class Pokemon(Menus):
             userdata['inventory'][item] -= 1
             await self.found_pokemon.save()
         else:
-            embed.description = wrap(f'You ran away from **{mon["name"]}**!', ':chicken:')
+            embed.description = wrap(f'You ran away from **{mon["name"]}**{stars}!', ':chicken:')
             await msg.edit(embed=embed, delete_after=60)
 
 ###################
