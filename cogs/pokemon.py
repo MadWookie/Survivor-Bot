@@ -200,8 +200,8 @@ class Pokemon(Menus):
             star = '\N{WHITE MEDIUM STAR}'
             glowing_star = '\N{GLOWING STAR}'
             key = f'{ARROWS[0]} Click to go back a page.\n{ARROWS[1]} Click to go forward a page.\n{CANCEL} Click to exit your pokedex.'
-            counts = wrap(f'**{total}** collected out of {remaining} total Pokemon.**\n**{total - mythics - legendaries}** Normal | **{legendaries}** Legendary {star} | {mythics} Mythical {glowing_star}', spacer, sep='\n')
-            header = '\n'.join([header, 'Use **!pokedex ``#``** to take a closer look at your Pokémon!', key, counts])
+            counts = wrap(f'**{total}** collected out of {remaining} total Pokemon.\n**{total - mythics - legendaries}** Normal | **{legendaries}** Legendary {star} | **{mythics}** Mythical {glowing_star}', spacer, sep='\n')
+            header = '\n'.join([header, 'Use **!pokedex** ``#`` to take a closer look at your Pokémon!', key, counts])
             options = ['**{}.** {[name]}{}'.format(mon, self.poke_info[mon], f' *x{found[mon]}*' if found[mon] > 1 else '') for mon in found_sorted]
             await self.reaction_menu(options, ctx.author, ctx.channel, 0, per_page=20, code=False, header=header)
         else:
