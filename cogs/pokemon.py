@@ -30,8 +30,9 @@ def catch(mon, ball):
         return True
     r = randint(1, 100)
     legendary = mon['legendary']
-    if (ball == 0 and r < (25 if legendary else 50)) \
-            or (ball == 1 and r < (50 if legendary else 90)):
+    mythical = mon['mythical']
+    if (ball == 0 and r < (15 if mythical else 25 if legendary else 50)) \
+            or (ball == 1 and r < (35 if mythical else 50 if legendary else 90)):
         return True
     return False
 
