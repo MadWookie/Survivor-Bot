@@ -180,6 +180,8 @@ class Pokemon(Menus):
     async def pokedex(self, ctx, user_or_num=None, shiny=''):
         """Shows you your Pokedex through a reaction menu."""
         pokedex_emote = discord.utils.get(ctx.guild.emojis, name='Pokedex')
+        star = '\\\N{WHITE MEDIUM STAR}'
+        glowing_star = '\\\N{GLOWING STAR}'
         user_or_num = poke_converter(ctx, user_or_num) or ctx.author
         if isinstance(user_or_num, discord.abc.User):
             player = user_or_num
@@ -196,9 +198,7 @@ class Pokemon(Menus):
             if total == 0:
                 await ctx.send(header, delete_after=60)
                 return
-            spacer = '\\N{BLACK PARALLELOGRAM}' * 21
-            star = '\\N{WHITE MEDIUM STAR}'
-            glowing_star = '\\N{GLOWING STAR}'
+            spacer = '\N{BLACK PARALLELOGRAM}' * 21
             key = f'{ARROWS[0]} Click to go back a page.\n{ARROWS[1]} Click to go forward a page.\n{CANCEL} Click to exit your pokedex.'
             counts = wrap(f'**{total}** collected out of {remaining} total Pokemon.\n**{total - mythics - legendaries}** Normal | **{legendaries}** Legendary {star} | **{mythics}** Mythical {glowing_star}', spacer, sep='\n')
             header = '\n'.join([header, 'Use **!pokedex** ``#`` to take a closer look at your Pokémon!', key, counts])
