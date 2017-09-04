@@ -70,9 +70,9 @@ class Utility:
             return
         if message.author.bot:
             return
-        if not message.content:
+        if not message.content and message.attachments:
             content = 'Attachments:'
-            content += '\n'.join(f'{attach[filename]} {attach[url]}' for attach in message.attachments)
+            content += '\n'.join('{0[filename]} {0[url]}'.format(attach) for attach in message.attachments)
         else:
             content = message.content
         description = f'{message.channel.mention}\n{content}'

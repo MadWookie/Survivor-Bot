@@ -12,9 +12,10 @@ from utils.json import Dict, List
 from utils.utils import wrap
 from utils import errors
 
-ITEMS = [{'price': 10, 'name': 'pokeballs', 'display': lambda c: discord.utils.get(c.guild.emojis, name='Pokeball')},
-         {'price': 100, 'name': 'ultraballs', 'display': lambda c: discord.utils.get(c.guild.emojis, name='Ultraball')},
-         {'price': 500, 'name': 'masterballs', 'display': lambda c: discord.utils.get(c.guild.emojis, name='Masterball')}]
+ITEMS = [{'price': 10, 'name': 'pokeballs', 'display': lambda c: discord.utils.get(c.bot.emojis, name='Pokeball')},
+         {'price': 100, 'name': 'greatballs', 'display': lambda c: discord.utils.get(c.bot.emojis, name='Greatball')},
+         {'price': 250, 'name': 'ultraballs', 'display': lambda c: discord.utils.get(c.bot.emojis, name='Ultraball')},
+         {'price': 1000, 'name': 'masterballs', 'display': lambda c: discord.utils.get(c.bot.emojis, name='Masterball')}]
 
 
 def pokechannel():
@@ -30,8 +31,9 @@ def catch(mon, ball):
     legendary = mon['legendary']
     mythical = mon['mythical']
     if (ball == 0 and r < (15 if mythical else 25 if legendary else 50)) \
-            or (ball == 1 and r < (35 if mythical else 50 if legendary else 90)) \
-            or (ball == 2 and r < (65 if mythical else 90 if legendary else 100)):
+            or (ball == 1 and r < (25 if mythical else 35 if legendary else 75)) \
+            or (ball == 2 and r < (35 if mythical else 50 if legendary else 90)) \
+            or (ball == 3 and r < (65 if mythical else 90 if legendary else 100)):
         return True
     return False
 
@@ -67,7 +69,7 @@ class Pokemon(Menus):
 
     def get_player(self, uid):
         if uid not in self.found_pokemon:
-            self.found_pokemon[uid] = {'pokemon': Counter(), 'inventory': {'money': 1500, 'pokeballs': 40, 'ultraballs': 5, 'masterballs': 1}}
+            self.found_pokemon[uid] = {'pokemon': Counter(), 'inventory': {'money': 1500, 'pokeballs': 40, 'greatballs': 10, 'ultraballs': 5, 'masterballs': 1}}
         return self.found_pokemon[uid]
 
 ###################
@@ -137,7 +139,7 @@ class Pokemon(Menus):
         embed.set_image(url='attachment://pokemon.gif')
         msg = await ctx.send(embed=embed, file=discord.File(open(self.image_path.format('normal', poke_bullet, 0), 'rb'), filename='pokemon.gif'))
         can_react_with = []
-        for item, emoji in zip(('pokeballs', 'ultraballs', 'masterballs'), balls):
+        for item, emoji in zip(('pokeballs', 'greatballs', 'ultraballs', 'masterballs'), balls):
             if userdata['inventory'][item]:
                 can_react_with.append(emoji)
         can_react_with.append('\u274c')
