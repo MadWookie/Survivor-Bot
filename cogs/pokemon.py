@@ -266,13 +266,15 @@ class Pokemon(Menus):
     @shop.command()
     @pokechannel()
     async def sell(self, ctx):
+        star = '\\\N{WHITE MEDIUM STAR}'
+        glowing_star = '\\\N{GLOWING STAR}'
         player_name = ctx.author.name
         userdata = self.get_player(ctx.author.id)
         found = {k: v for k, v in userdata['pokemon'].items() if v}
         found_sorted = sorted(found)
         found_names = [self.poke_info[num]['name'] for num in found_sorted]
         header = f'**{player_name}**,\nSelect Pokemon to sell.\nNormal = 100\ua750\nLegendary = 600\ua750'
-        options = ['**{}.** {[name]}{}'.format(mon, self.poke_info[mon], f' *x{found[mon]}*' if found[mon] > 1 else '') for mon in found_sorted]
+        options = ['**{}.** {[name]}{}{}'.format(mon, self.poke_info[mon], star if self.poke_info[mon]['legendary'] else glowing_star if self.poke_info[mon]['mythical'] else '', f' *x{found[mon]}*' if found[mon] > 1 else '') for mon in found_sorted]
         if not options:
             await ctx.send("You don't have any pokemon to sell.", delete_after=60)
             return
