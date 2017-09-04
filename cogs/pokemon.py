@@ -188,6 +188,7 @@ class Pokemon(Menus):
             total = len(found)
             remaining = len(self.poke_info)
             legendaries = sum(1 for p in found if self.poke_info[p]['legendary'])
+            mythics = sum(1 for p in found if self.poke_info[p]['mythical'])
             header = f"__{player.name}'s Pokedex__"
             if total == 0:
                 header += " __is empty.__"
@@ -195,9 +196,11 @@ class Pokemon(Menus):
             if total == 0:
                 await ctx.send(header, delete_after=60)
                 return
-            spacer = '-=-=-=--=-=-=--=-=-=--=-=-=-=-=-=-=-=-=-=-=-=-=-=-'
+            spacer = '\N{BLACK PARALLELOGRAM}' * 21
+            star = '\N{WHITE MEDIUM STAR}'
+            glowing_star = '\N{GLOWING STAR}'
             key = f'{ARROWS[0]} Click to go back a page.\n{ARROWS[1]} Click to go forward a page.\n{CANCEL} Click to exit your pokedex.'
-            counts = wrap(f'**{total}** Pokémon out of {remaining}, **{total - legendaries}** Normals, **{legendaries}** Legendaries', spacer, sep='\n')
+            counts = wrap(f'**{total}** collected out of {remaining} total Pokemon.**\n**{total - mythics - legendaries}** Normal | **{legendaries}** Legendary {star} | {mythics} Mythical {glowing_star}', spacer, sep='\n')
             header = '\n'.join([header, 'Use **!pokedex ``#``** to take a closer look at your Pokémon!', key, counts])
             options = ['**{}.** {[name]}{}'.format(mon, self.poke_info[mon], f' *x{found[mon]}*' if found[mon] > 1 else '') for mon in found_sorted]
             await self.reaction_menu(options, ctx.author, ctx.channel, 0, per_page=20, code=False, header=header)
