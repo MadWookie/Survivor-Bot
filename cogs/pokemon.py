@@ -26,13 +26,12 @@ def pokechannel():
 
 
 def catch(mon, ball):
-    if ball == 2:
-        return True
     r = randint(1, 100)
     legendary = mon['legendary']
     mythical = mon['mythical']
     if (ball == 0 and r < (15 if mythical else 25 if legendary else 50)) \
-            or (ball == 1 and r < (35 if mythical else 50 if legendary else 90)):
+            or (ball == 1 and r < (35 if mythical else 50 if legendary else 90)) \
+            or (ball == 2 and r < (65 if mythical else 90 if legendary else 100)):
         return True
     return False
 
