@@ -102,7 +102,7 @@ class Pokemon(Menus):
         """Collect a reward for free every 3 hours!"""
         player_name = ctx.author.name
         userdata = self.get_player(ctx.author.id)
-        reward_bullet = randint(1, 5)
+        reward_bullet = randint(1, 6)
         if reward_bullet == 1:
             userdata['inventory']['money'] += 250
         elif reward_bullet == 2:
@@ -112,6 +112,8 @@ class Pokemon(Menus):
         elif reward_bullet == 4:
             userdata['inventory']['pokeballs'] += 5
         elif reward_bullet == 5:
+            userdata['inventory']['greatballs'] += 3
+        elif reward_bullet == 6:
             userdata['inventory']['ultraballs'] += 1
         await ctx.send(f'{player_name} has recived **{self.rewards[reward_bullet - 1]}**!', delete_after=60)
         await self.found_pokemon.save()
