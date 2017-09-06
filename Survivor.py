@@ -10,7 +10,20 @@ from utils import errors
 import config
 
 
+async def set_codecs(con):
+    await con.set_type_codec('json', schema='pg_catalog',
+                             encoder=lambda v: json.dumps(v),
+                             decoder=lambda v: json.loads(v))
+
+
 class SurvivorBot(commands.Bot):
+    async def logout(self):
+        await self.db_pool.close()
+        await super().logout()
+
+    def get_emoji_named(self, name):
+        return discord.utils.get(self.emojis, name=name.replace('-', '').replace(' ', ''))
+
     async def is_command(self, message):
         cmds = []
         for cmd in self.commands:
@@ -56,9 +69,14 @@ class SurvivorBot(commands.Bot):
 
     async def on_message(self, message):
         if message.guild is None or \
-                message.author.id in self.plonks or \
                 not self.ready:
             return
+        async with self.db_pool.acquire() as con:
+            plonked = await con.fetchval('''
+                SELECT EXISTS(SELECT * FROM plonks WHERE user_id = $1 and guild_id = $2)
+                ''', message.author.id, message.guild.id)
+            if plonked:
+                return
         await bot.process_commands(message)
 
     async def on_command_error(self, ctx, error):
@@ -100,6 +118,7 @@ description = 'Survivor Bot - Created by MadWookie & sgtlaggy.'
 bot = SurvivorBot(command_prefix=['!'], description=description, formatter=formatter, request_offline_members=True)
 bot.ready = False
 bot.plonks = List('plonk', loop=bot.loop, sync_load=True)
+bot.db_pool = bot.loop.run_until_complete(asyncpg.create_pool(config.dsn, init=set_codecs))
 
 for ext in initial_extensions:
     try:
@@ -109,6 +128,11 @@ for ext in initial_extensions:
         print(e)
 
 
+@bot.before_invoke
+async def before_invoke(ctx):
+    if getattr(ctx.command, '_db', False):
+        ctx.con = await bot.db_pool.acquire()
+
 @bot.after_invoke
 async def after_invoke(ctx):
     if getattr(ctx, '_delete_ctx', True):
@@ -116,6 +140,10 @@ async def after_invoke(ctx):
             await ctx.message.delete()
         except:
             pass
+    try:
+        await bot.db_pool.release(ctx.con)
+    except AttributeError:
+        pass
 
 
 try:

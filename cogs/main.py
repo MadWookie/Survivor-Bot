@@ -4,11 +4,7 @@ import time
 from discord.ext import commands
 import discord
 
-from utils.json import Dict
 from utils import checks
-
-
-DEFAULT_SETTINGS = {'GREETING': 'Welcome {0.name} to {1.name}!', 'ON': False}
 
 
 ###################
@@ -21,7 +17,6 @@ DEFAULT_SETTINGS = {'GREETING': 'Welcome {0.name} to {1.name}!', 'ON': False}
 class Main:
     def __init__(self, bot):
         self.bot = bot
-        self.settings = Dict('welcome', loop=bot.loop, int_keys=True)
 
 ###################
 #                 #
@@ -98,76 +93,130 @@ class Main:
             return None
         return discord.utils.get(guild.roles, name='Member')
 
-    def get_welcome_channel(self, guild):
+    async def get_welcome_channel(self, guild, *, channel_id=None, con=None):
         if guild is None:
             return None
-        return discord.utils.get(guild.channels, name='welcome')
+        if con:
+            channel_id = await con.fetchval('''
+                SELECT channel_id FROM greetings WHERE guild_id = $1
+                ''', guild.id)
+        channel = None
+        if channel_id:
+            channel = discord.utils.get(guild.channels, id=channel_id)
+        return channel or discord.utils.get(guild.channels, name='welcome')
 
+    @checks.db
     @commands.group()
     @commands.has_permissions(manage_guild=True)
     async def welcomeset(self, ctx):
         """Sets welcome module settings."""
         guild = ctx.guild
-        if guild.id not in self.settings:
-            self.settings[guild.id] = DEFAULT_SETTINGS
-            await self.settings.save()
-        settings = self.settings[guild.id]
+        async with ctx.con.transaction():
+            settings = await ctx.con.fetchrow('''
+                INSERT INTO greetings (guild_id) VALUES ($1)
+                ON CONFLICT (guild_id) DO
+                UPDATE SET guild_id = $1 RETURNING *
+                ''', guild.id)
         if ctx.invoked_subcommand is None:
-            msg = "```\n"
-            msg += f'GREETING: {settings["GREETING"]}\n'
-            msg += f'ON: {settings["ON"]}\n'
-            msg += '```'
-            await ctx.send(msg)
+            msg = ['```']
+            msg.append(f"Enabled: {settings['enabled']}")
+            channel = await self.get_welcome_channel(guild, channel_id=settings['channel_id'])
+            msg.append(f'Channel: {channel.mention if channel else None}')
+            msg.append(f"Message: {settings['message']}")
+            msg.append('```')
+            await ctx.send('\n'.join(msg))
 
+    @checks.db
     @checks.no_delete
-    @welcomeset.command()
+    @welcomeset.command(aliases=['message'])
     async def greeting(self, ctx, *, format_msg):
         """Sets the welcome message format for the server.
 
         {0} is user
         {1} is server"""
-        guild = ctx.guild
-        self.settings[guild.id]['GREETING'] = format_msg
-        await self.settings.save()
+        async with ctx.con.transaction():
+            await ctx.con.execute('''
+                UPDATE greetings SET message = $1 WHERE guild_id = $2
+                ''', format_msg, ctx.guild.id)
         await ctx.send('Welcome message set for the server.')
         await self.send_testing_msg(ctx)
 
+    @checks.db
     @welcomeset.command()
-    async def toggle(self, ctx):
-        """Turns on/off welcoming new users to the server"""
+    async def toggle(self, ctx, enable: bool=None):
+        """Turns on/off welcoming new users to the server."""
         guild = ctx.guild
-        self.settings[guild.id]['ON'] = not self.settings[guild.id]['ON']
-        if self.settings[guild.id]['ON']:
+        async with ctx.con.transaction():
+            before = await ctx.con.fetchval('''
+                SELECT enabled FROM greetings WHERE guild_id = $1
+                ''', guild.id)
+            if enable is None or enable != before:
+                after = await ctx.con.fetchval('''
+                    UPDATE greetings SET enabled = NOT enabled WHERE guild_id = $1 RETURNING enabled
+                    ''', guild.id)
+            else:
+                after = before
+        if after == before:
+            if after:
+                await ctx.send('Welcome message is already enabled.')
+            else:
+                await ctx.send('Welcome message is already disabled.')
+        elif after:
             await ctx.send('I will now welcome new users to the server.')
             await self.send_testing_msg(ctx)
         else:
             await ctx.send('I will no longer welcome new users.')
-        await self.settings.save()
+
+    @checks.db
+    @welcomeset.command()
+    async def channel(self, ctx, channel: discord.Channel=None):
+        """Sets the channel for welcoming new users."""
+        guild = ctx.guild
+        channel = channel or ctx.channel
+        async with ctx.con.transaction():
+            await ctx.con.execute('''
+                UPDATE greetings SET channel_id = $1 WHERE guild_id = $2
+                ''', channel.id, guild.id)
+        await ctx.send(f'Set {channel.mention} as welcome channel.')
 
     async def on_member_join(self, member):
         guild = member.guild
-        channel = self.get_welcome_channel(guild)
+        async with self.bot.db_pool.acquire() as con:
+            settings = await con.fetchrow('''
+                SELECT * FROM greetings WHERE guild_id = $1
+                ''', guild.id)
+        channel = await self.get_welcome_channel(guild, channel_id=settings['channel_id'])
         member_role = self.get_role_member(guild)
-        if guild.id not in self.settings:
-            self.settings[guild.id] = DEFAULT_SETTINGS
-            await self.settings.save()
-        if not self.settings[guild.id]['ON']:
+        if not settings['enabled']:
             return
         if channel is not None:
-            await channel.send(self.settings[guild.id]['GREETING'].format(member, guild))
+            await channel.send(settings['message'].format(member, guild))
         if member_role is not None:
             await member.add_roles(member_role)
 
     async def send_testing_msg(self, ctx):
         guild = ctx.guild
-        channel = self.get_welcome_channel(guild)
-        await ctx.channel.send(f'Sending a testing message to {channel.mention}')
+        con = getattr(ctx, 'con', None)
+        local = con is None
+        if local:
+            con = await self.bot.db_pool.acquire()
         try:
-            await channel.send(self.settings[guild.id]['GREETING'].format(ctx.author, guild))
-        except AttributeError:
-            await ctx.channel.send('Channel does not exist.')
-        except discord.DiscordException as e:
-            await ctx.channel.send(f'`{e}`')
+            channel = await self.get_welcome_channel(guild, con=con)
+            message = await con.fetchval('''
+                SELECT message FROM greetings WHERE guild_id = $1
+                ''', guild.id)
+        finally:
+            if local:
+                await self.bot.db_pool.release(con)
+
+        if channel is not None:
+            await ctx.channel.send(f'Sending a testing message to {channel.mention}')
+            try:
+                await channel.send(self.settings[guild.id]['GREETING'].format(ctx.author, guild))
+            except discord.DiscordException as e:
+                await ctx.channel.send(f'`{e}`')
+        else:
+            await ctx.channel.send('Neither the set channel nor channel named "welcome" exists.')
 
 ###################
 #                 #

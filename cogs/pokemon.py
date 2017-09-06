@@ -7,15 +7,13 @@ from discord.ext import commands
 import aiohttp
 import discord
 
-from cogs.menus import Menus, STAR, GLOWING_STAR, SPACER, ARROWS, DONE, CANCEL
+from cogs.menus import Menus, STAR, GLOWING_STAR, SPARKLES, SPACER, ARROWS, DONE, CANCEL
 from utils.json import Dict, List
+from utils import errors, checks
 from utils.utils import wrap
-from utils import errors
 
-ITEMS = [{'price': 10, 'name': 'pokeballs', 'display': lambda c: discord.utils.get(c.bot.emojis, name='Pokeball')},
-         {'price': 100, 'name': 'greatballs', 'display': lambda c: discord.utils.get(c.bot.emojis, name='Greatball')},
-         {'price': 250, 'name': 'ultraballs', 'display': lambda c: discord.utils.get(c.bot.emojis, name='Ultraball')},
-         {'price': 1000, 'name': 'masterballs', 'display': lambda c: discord.utils.get(c.bot.emojis, name='Masterball')}]
+
+pokeballs = ('Pokeball', 'Greatball', 'Ultraball', 'Masterball')
 
 
 def pokechannel():
@@ -24,6 +22,14 @@ def pokechannel():
             return True
         raise errors.WrongChannel(discord.utils.get(ctx.guild.channels, name='pokemon'))
     return commands.check(check)
+
+
+def xp_to_level(level):
+    return (level ** 3) // 2
+
+
+def level_from_xp(xp):
+    return int((xp * 2) ** (1/3))
 
 
 def catch(mon, ball):
@@ -50,27 +56,130 @@ def poke_converter(ctx, user_or_num):
         return None
 
 
+def is_shiny(trainer: asyncpg.Record, personality: int):
+    b = bin(personality)[2:].zfill(32)
+    upper, lower = map(int, (b[:16], b[16:]))
+    return (((trainer['user_id'] % 65536) ^ trainer['secret_id']) ^ (upper ^ lower)) <= (65536 / 400)
+
+
+def get_star(mon: asyncpg.Recor):
+    return GLOWING_STAR if mon['mythical'] else STAR if mon['legendary'] else ''
+
+
+async def get_pokemon_color(ctx, num=0, *, mon: asyncpg.Record=None):
+    if num:
+        mon = await ctx.con.fetch('''
+            SELECT type FROM pokemon WHERE num = $1 AND form_id = 0
+            ''', num)
+    if mon is not None:
+        colors = await ctx.con.fetch('''
+            SELECT color FROM types WHERE name = ANY($1)
+            ''', mon['type'])
+        return sum(colors) / len(colors)
+    return 0
+
+
+async def get_trainer(ctx, uid):
+    return await ctx.con.fetchval('''
+        INSERT INTO trainers (user_id) VALUES ($1)
+        ON CONFLICT (user_id) DO
+        UPDATE SET user_id = $1 RETURNING *
+        ''', uid)
+
+
+async def get_inventory(ctx, uid):
+    return dict(await ctx.con.fetchval('''
+        INSERT INTO trainers (user_id) VALUES ($1)
+        ON CONFLICT (user_id) DO
+        UPDATE SET user_id = $1 RETURNING inventory
+        ''', uid))
+
+
+async def set_inventory(ctx, uid, inv):
+    return await ctx.con.execute('''
+        UPDATE trainers SET inventory = $1 WHERE user_id = $2
+        ''', inv, uid)
+
+
+async def get_found_counts(ctx, uid):
+    return await ctx.con.fetch('''
+        SELECT num, form_id, COUNT(*) AS count,
+        (SELECT name || (CASE WHEN mythical THEN '$2' WHEN legendary THEN '$3' ELSE '' END) FROM pokemon WHERE pokemon.num = found.num LIMIT 1),
+        (SELECT form FROM pokemon WHERE pokemon.num = found.num AND pokemon.form_id = found.form_id)
+        FROM found WHERE owner = $1 GROUP BY num, form_id ORDER BY num, form_id
+        ''', uid, GLOWING_STAR, STAR)
+
+
+async def get_pokemon(ctx, num):
+    return await ctx.con.fetch('''
+        SELECT * FROM pokemon WHERE num = $1
+        ''', num)
+
+
+async def get_rewards(ctx):
+    return await ctx.con.fetch('''
+        SELECT * FROM rewards
+        ''')
+
+
+async def get_evolution_chain(ctx, num):
+    chain = [await ctx.con.fetchrow('''
+        SELECT prev, next,
+        (SELECT name || (CASE WHEN mythical THEN '$2' WHEN legendary THEN '$3' ELSE '' END) FROM pokemon p WHERE p.num = e.num LIMIT 1) AS name
+        FROM evolutions e WHERE num = $1
+        ''', num, GLOWING_STAR, STAR)]
+    cur_ind = 0
+    if chain[0]['prev'] is not None:
+        chain.insert(0, await ctx.con.fetchrow('''
+            SELECT prev,
+            (SELECT name || (CASE WHEN mythical THEN '$2' WHEN legendary THEN '$3' ELSE '' END) FROM pokemon p WHERE p.num = e.num LIMIT 1) AS name
+            FROM evolutions e WHERE next = $1
+            ''', num, GLOWING_STAR, STAR))
+        cur_ind += 1
+        if chain[0]['prev'] is not None:
+            chain.insert(0, await ctx.con.fetchrow('''
+                SELECT name || (CASE WHEN mythical THEN '$2' WHEN legendary THEN '$3' ELSE '' END) AS name FROM pokemon WHERE num = $1 LIMIT 1
+                ''', chain[0]['prev'], GLOWING_STAR, STAR))
+            cur_ind += 1
+    if chain[-1]['next'] is not None:
+        chain.extend(await ctx.con.fetch('''
+            SELECT
+            (SELECT name || (CASE WHEN mythical THEN '$2' WHEN legendary THEN '$3' ELSE '' END) FROM pokemon p WHERE p.num = e.num LIMIT 1) AS name,
+            (SELECT ARRAY(SELECT (SELECT name || (CASE WHEN mythical THEN '$2' WHEN legendary THEN '$3' ELSE '' END) AS name FROM pokemon p WHERE p.num = e2.num LIMIT 1)
+                          FROM evolutions e2 WHERE e2.num = e.next)) AS next
+            FROM evolutions e WHERE prev = $1
+            ''', num, GLOWING_STAR, STAR))
+    if len(chain) == 1:
+        return 'This Pokémon does not evolve.'
+    start = '\N{BALLOT BOT WITH CHECK}'.join(r['name'] for r in chain[:cur_ind + 1])
+    after = chain[cur_ind + 1:]
+    chains = []
+    # Option 1
+    # A -> B -> D
+    # A -> C -> E
+    if not after:
+        chains.append(start)
+    else:
+        for m in after:
+            m['name'], m['next'] = 'Something', ['a', 'b']
+            if not m['next']:
+                chains.append(ARROWS[1].join((start, m['name'])))
+            else:
+                for name in m['next']:
+                    chains.append(ARROWS[1].join((start, m['name'], name)))
+    return '\n'.join(chains)
+    # Option 2
+    # A -> B | C -> D | E
+    # return ARROWS[1].join((start,
+    #                        ' | '.join(nxt['name'] for nxt in after),
+    #                        ' | '.join(last for nxt in after for last in nxt['next'])))
+
+
 class Pokemon(Menus):
     def __init__(self, bot):
         self.bot = bot
         self.image_path = 'data/pokemon/images/{}/{}-{}.gif'
         self.trades = {}
-        self.poke_info = Dict('pokemon', 'pokemon', loop=bot.loop, int_keys=True)
-        self.rewards = List('rewards', 'pokemon', loop=bot.loop)
-
-        def int_keys_and_counter():
-            for uid, data in self.found_pokemon.copy().items():
-                self.found_pokemon[int(uid)] = self.found_pokemon.pop(uid)
-                for mon, count in data['pokemon'].copy().items():
-                    if count:
-                        data['pokemon'][int(mon)] = data['pokemon'].pop(mon)
-                data['pokemon'] = Counter(data['pokemon'])
-        self.found_pokemon = Dict('found_pokemon', 'pokemon', loop=bot.loop, after_load=int_keys_and_counter)
-
-    def get_player(self, uid):
-        if uid not in self.found_pokemon:
-            self.found_pokemon[uid] = {'pokemon': Counter(), 'inventory': {'money': 1500, 'pokeballs': 40, 'greatballs': 10, 'ultraballs': 5, 'masterballs': 1}}
-        return self.found_pokemon[uid]
 
 ###################
 #                 #
@@ -78,13 +187,21 @@ class Pokemon(Menus):
 #                 #
 ###################
 
+    @checks.db
     @commands.command(aliases=['inv'])
     @pokechannel()
     async def inventory(self, ctx):
         thumbnail = 'http://unitedsurvivorsgaming.com/backpack.png'
-        inv = self.get_player(ctx.author.id)['inventory']
+        inv = await get_inventory(ctx, ctx.author.id)
+        all_items = await ctx.con.fetch('''
+            SELECT name FROM items ORDER BY id DESC
+            ''')
         em = discord.Embed(title=f'{ctx.author.name} | {inv["money"]}\ua750')
-        items = [f'{item["display"](ctx)} | {inv[item["name"]]}' for item in ITEMS]
+        items = []
+        for item in all_items[1:]:
+            if inv[item] or item.endswith('ball'):
+                key = self.bot.get_emoji_named(item) or item
+                items.append(f"{key} | {inv[item]}")
         em.set_thumbnail(url=thumbnail)
         em.add_field(name='Inventory', value='\n'.join(items))
         await ctx.send(embed=em, delete_after=60)
@@ -95,28 +212,24 @@ class Pokemon(Menus):
 #                 #
 ###################
 
+    @checks.db
     @commands.command()
     @commands.cooldown(1, 10800, commands.BucketType.user)
     @pokechannel()
     async def reward(self, ctx):
         """Collect a reward for free every 3 hours!"""
-        player_name = ctx.author.name
-        userdata = self.get_player(ctx.author.id)
-        reward_bullet = randint(1, 6)
-        if reward_bullet == 1:
-            userdata['inventory']['money'] += 250
-        elif reward_bullet == 2:
-            userdata['inventory']['money'] += 500
-        elif reward_bullet == 3:
-            userdata['inventory']['pokeballs'] += 1
-        elif reward_bullet == 4:
-            userdata['inventory']['pokeballs'] += 5
-        elif reward_bullet == 5:
-            userdata['inventory']['greatballs'] += 3
-        elif reward_bullet == 6:
-            userdata['inventory']['ultraballs'] += 1
-        await ctx.send(f'{player_name} has recived **{self.rewards[reward_bullet - 1]}**!', delete_after=60)
-        await self.found_pokemon.save()
+        user = ctx.author
+        inv = await get_inventory(ctx, user.id)
+        reward = await ctx.con.fetchrow('''
+            SELECT * FROM rewards ORDER BY random() LIMIT 1
+            ''')
+        item, count = reward['name'], reward['num']
+        inv[item] = inv.get(item, 0) + count
+        async with ctx.con.transaction():
+            await ctx.con.execute('''
+                UPDATE trainers SET inventory = $1 WHERE user_id = $2
+                ''', inv, user.id)
+        await ctx.send(f"{user.name} has recived {count} **{item}{'s' if count != 1 else ''}**!", delete_after=60)
 
 ###################
 #                 #
@@ -124,6 +237,7 @@ class Pokemon(Menus):
 #                 #
 ###################
 
+    @checks.db
     @commands.group(invoke_without_command=True, aliases=['pokemen', 'pokermon'])
     @commands.cooldown(1, 150, commands.BucketType.user)
     @pokechannel()
@@ -131,20 +245,40 @@ class Pokemon(Menus):
         """Gives you a random Pokemon!"""
         player_name = ctx.author.name
         player_id = ctx.author.id
-        poke_bullet = randint(1, len(self.poke_info))
-        mon = self.poke_info[poke_bullet]
-        userdata = self.get_player(player_id)
-        balls = [item['display'](ctx) for item in ITEMS]
+        mon = await ctx.con.fetchrow('''
+            SELECT num, name, form, form_id, legendary, mythical, rand(4294967295) as personality,
+            (SELECT form FROM pokemon p2 WHERE p2.num = pokemon.num AND p2.form_id = 0) AS base_form,
+            (SELECT ARRAY(SELECT color FROM types WHERE types.name = ANY(type))) AS colors,
+            FROM pokemon ORDER BY random() LIMIT 1
+            ''')
+        trainer = await get_trainer(ctx, uid)
+        inv = dict(trainer['inventory'])
+        balls = [self.bot.get_emoji_named(item) for ball in pokeballs if inv.get(ball)]
         star = GLOWING_STAR if mon['mythical'] else STAR if mon['legendary'] else ''
-        embed = discord.Embed(description=f'A wild **{mon["name"]}**{star} appears!\nUse a {balls[0]} to catch it!')
+        shiny = is_shiny(trainer, mon['personality'])
+        if shiny:
+            if mon['base_form']:
+                form = mon['base_form'] + ' '
+            else:
+                form = ''
+            form_id = 0
+        else:
+            if mon['form']:
+                form = mon['form'] + ' '
+            else:
+                form = ''
+            form_id = mon['form_id']
+        shine = SPARKLES if shiny else ''
+        embed = discord.Embed(description=f'A wild {shine}**{form}{mon["name"]}**{star} appears!\nUse a {balls[0]} to catch it!')
+        embed.color = sum(mon['colors']) / len(mon['colors'])
         embed.set_author(icon_url=ctx.author.avatar_url, name=player_name)
         embed.set_image(url='attachment://pokemon.gif')
-        msg = await ctx.send(embed=embed, file=discord.File(open(self.image_path.format('normal', poke_bullet, 0), 'rb'), filename='pokemon.gif'))
-        can_react_with = []
-        for item, emoji in zip(('pokeballs', 'greatballs', 'ultraballs', 'masterballs'), balls):
-            if userdata['inventory'][item]:
-                can_react_with.append(emoji)
-        can_react_with.append('\u274c')
+        await ctx.con.execute('''
+            INSERT INTO seen (user_id, num) VALUES ($1, $2)
+            ON CONFLICT DO NOTHING
+            ''', player_id, mon['num'])
+        msg = await ctx.send(embed=embed, file=discord.File(open(self.image_path.format('normal', mon['num'], 0), 'rb'), filename='pokemon.gif'))
+        can_react_with = [*balls, CANCEL]
         for emoji in can_react_with:
             await msg.add_reaction(emoji)
         try:
@@ -154,24 +288,29 @@ class Pokemon(Menus):
                         user == ctx.author)
             reaction, _ = await self.bot.wait_for('reaction_add', check=check, timeout=20)
         except asyncio.TimeoutError:
-            embed.description = f'**{mon["name"]}**{star} escaped because you took too long! :stopwatch:'
+            embed.description = f'{shine}**{form}{mon["name"]}**{star} escaped because you took too long! :stopwatch:'
             await msg.edit(embed=embed, delete_after=60)
             await msg.clear_reactions()
             return
         await msg.clear_reactions()
         if reaction.emoji in balls:
             if catch(mon, balls.index(reaction.emoji)):
-                embed.description = wrap(f'You caught **{mon["name"]}**{star} successfully!', reaction.emoji)
+                embed.description = wrap(f'You caught {shine}**{form}{mon["name"]}**{star} successfully!', reaction.emoji)
                 await msg.edit(embed=embed, delete_after=60)
-                userdata['pokemon'][poke_bullet] += 1
+                level = await ctx.con.fetchval('''
+                    SELECT level FROM evolutions WHERE next = $1
+                    ''', mon['num']) or 0
+                async with ctx.con.transaction():
+                    await ctx.con.execute('''
+                        INSERT INTO found (num, form_id, ball, exp, owner, original_owner, personality) VALUES ($1, $2, $3, $4, $5, $5, $6)
+                        ''', mon['num'], form_id, reaction.emoji.name, xp_to_level(level), player_id, mon['personality'])
             else:
-                embed.description = f'**{mon["name"]}**{star} has escaped!'
+                embed.description = f'{shine}**{form}{mon["name"]}**{star} has escaped!'
                 await msg.edit(embed=embed, delete_after=60)
-            item = reaction.emoji.name.lower() + 's'
-            userdata['inventory'][item] -= 1
-            await self.found_pokemon.save()
+            inv[reaction.emoji.name] -= 1
+            await set_inventory(ctx, player_id, inv)
         else:
-            embed.description = wrap(f'You ran away from **{mon["name"]}**{star}!', ':chicken:')
+            embed.description = wrap(f'You ran away from {shine}**{form}{mon["name"]}**{star}!', ':chicken:')
             await msg.edit(embed=embed, delete_after=60)
 
 ###################
@@ -184,7 +323,7 @@ class Pokemon(Menus):
     @pokechannel()
     async def pokedex(self, ctx, user_or_num=None, shiny=''):
         """Shows you your Pokedex through a reaction menu."""
-        pokedex_emote = discord.utils.get(ctx.guild.emojis, name='Pokedex')
+        pokedex = self.bot.get_emoji_named('Pokedex')
         user_or_num = poke_converter(ctx, user_or_num) or ctx.author
         if isinstance(user_or_num, discord.abc.User):
             player = user_or_num
@@ -197,7 +336,7 @@ class Pokemon(Menus):
             header = f"__{player.name}'s Pokedex__"
             if total == 0:
                 header += " __is empty.__"
-            header = wrap(header, pokedex_emote)
+            header = wrap(header, pokedex)
             if total == 0:
                 await ctx.send(header, delete_after=60)
                 return
@@ -209,9 +348,14 @@ class Pokemon(Menus):
             await self.reaction_menu(options, ctx.author, ctx.channel, 0, per_page=20, code=False, header=header)
         else:
             image = self.image_path.format('shiny' if shiny else 'normal', user_or_num, 0)
-            info = self.poke_info[user_or_num]
-            evo = info['evolutions'].format(ething='é', evolved=':ballot_box_with_check:', not_evolved=':arrow_right:')
-            embed = discord.Embed(description=wrap(f"__{info['name']}'s Information__", pokedex_emote) + f"\n**Type:** {info['type']}\n**Evolutions:** {evo}")
+            try:
+                info = (await get_pokemon(ctx, user_or_num))[0]
+            except IndexError:
+                await ctx.send(f'Pokemon {user_or_num} does not exist.')
+                return
+            evo = await get_evolution_chain(ctx, user_or_num)
+            embed = discord.Embed(description=wrap(f"__{info['name']}{get_star(info)}'s Information__", pokedex) + f"\n**Type:** {' & '.join(info['type'])}\n**Evolutions:** {evo}")
+            embed.color = await get_pokemon_color(ctx, mon=info)
             embed.set_image(url='attachment://pokemon.gif')
             await ctx.send(embed=embed, file=discord.File(open(image, 'rb'), filename='pokemon.gif'), delete_after=120)
 
