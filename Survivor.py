@@ -2,6 +2,7 @@ import traceback
 import asyncpg
 import discord
 import asyncio
+import json
 import time
 
 from discord.ext.commands.view import StringView
