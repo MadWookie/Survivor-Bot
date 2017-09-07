@@ -98,7 +98,8 @@ class Utility:
             embed.description = '**[MESSAGE EDITED 2/2]**\n{0.channel.mention}\n**NEW ⮞** {0.content}'.format(edit)
             await logging_channel.send(embed=embed)
         else:
-            embed.description = '**[MESSAGE EDITED]**\n{0.channel.mention}\n**OLD ⮞** {0.content}\n**NEW ⮞** {1.content}'.format(message, edit)
+            embed.description = '**[MESSAGE EDITED]**\n{0.channel.mention}\n**OLD ⮞** {0.content}\n**NEW ⮞**' \
+                                ' {1.content}'.format(message, edit)
             await logging_channel.send(embed=embed)
 
 ###################
