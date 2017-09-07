@@ -61,9 +61,9 @@ class SurvivorBot(commands.Bot):
             return super().is_owner(user)
 
     async def on_ready(self):
-        if 'uptime' in dir(self):
-            return
-        self.uptime = int(time.perf_counter())
+        if not hasattr(self, 'uptime'):
+            self.uptime = int(time.perf_counter())
+
         self.ready = True
         print('------')
         print(f'{len(self.cogs)} active cogs with {len(self.commands)} commands')
@@ -134,6 +134,7 @@ for ext in initial_extensions:
 async def before_invoke(ctx):
     if getattr(ctx.command, '_db', False):
         ctx.con = await bot.db_pool.acquire()
+
 
 @bot.after_invoke
 async def after_invoke(ctx):
