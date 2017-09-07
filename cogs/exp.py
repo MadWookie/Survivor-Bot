@@ -1,5 +1,7 @@
 from random import randint
 import time
+import asyncpg
+import asyncio
 
 from discord.ext import commands
 import discord
