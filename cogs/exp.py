@@ -50,7 +50,7 @@ class Exp(Menus):
             return
         uid = message.author.id
         gid = message.guild.id
-        if self.check_cd(uid):
+        if self.check_cd(message.author):
             prestiged = False
             leveled = False
             add_xp = randint(xp_min_amount, xp_max_amount)
