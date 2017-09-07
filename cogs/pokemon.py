@@ -61,7 +61,7 @@ def is_shiny(trainer: asyncpg.Record, personality: int):
     return (((trainer['user_id'] % 65536) ^ trainer['secret_id']) ^ (upper ^ lower)) <= (65536 / 400)
 
 
-def get_star(mon: asyncpg.Recor):
+def get_star(mon: asyncpg.Record):
     return GLOWING_STAR if mon['mythical'] else STAR if mon['legendary'] else ''
 
 
