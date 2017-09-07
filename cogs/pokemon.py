@@ -173,6 +173,10 @@ async def get_evolution_chain(ctx, num):
     #                        ' | '.join(nxt['name'] for nxt in after),
     #                        ' | '.join(last for nxt in after for last in nxt['next'])))
 
+async def get_player(ctx, uid):
+    player_data = await ctx.con.fetchrow("""SELECT * FROM trainers WHERE user_id=$1""", uid)
+    return player_data
+
 
 class Pokemon(Menus):
     def __init__(self, bot):
@@ -364,44 +368,51 @@ class Pokemon(Menus):
 #                 #
 ###################
 
+    @checks.db
     @commands.group(invoke_without_command=True)
     @pokechannel()
     async def shop(self, ctx, multiple=1):
         if not multiple:
             return
         player_name = ctx.author.name
-        userdata = self.get_player(ctx.author.id)
+        player_data = await get_player(ctx, ctx.author.id)
+        inventory = player_data['inventory']
         thumbnail = 'http://unitedsurvivorsgaming.com/shop.png'
-        title = f'{player_name} | {userdata["inventory"]["money"]}\ua750'
+        title = f'{player_name} | {inventory["money"]}\ua750'
         description = 'Select items to buy{}.'.format(f' in multiples of {multiple}' if multiple > 1 else '')
-        options = ['{} {[price]}\ua750 **|** Inventory: {}'.format(data['display'](ctx), data, userdata['inventory'][data['name']]) for data in ITEMS]
-        balls = [item['display'](ctx) for item in ITEMS]
-        selected = await self.embed_menu(options, 'Shop', ctx.author, ctx.channel, -1, description=description, title=title, thumbnail=thumbnail, return_from=list(range(len(ITEMS))), multi=True, display=balls)
+        balls = await ctx.con.fetch("""SELECT name, price FROM items WHERE price != 0 AND name LIKE '%ball'""")
+        display_dict = {}
+        for ball in balls:
+            display_dict[ball['name']] = discord.utils.get(self.bot.emojis, name=ball['name'])
+        options = ['{} {[price]}\ua750 **|** Inventory: {}'.format(display_dict[data['name']], data, inventory[data['name']]) for data in balls]
+        selected = await self.embed_menu(options, 'Shop', ctx.author, ctx.channel, -1, description=description, title=title, thumbnail=thumbnail, return_from=list(range(len(balls))), multi=True, display=list(display_dict.values()))
         if not selected:
             return
         bought = []
         total = 0
         for item in set(selected):
             count = selected.count(item) * multiple
-            price = ITEMS[item]['price'] * count
-            after = userdata['inventory']['money'] - price
+            item_info = balls[item]
+            item_price, item_name = item_info['price'], item_info['name']
+            price = item_price * count
+            after = inventory['money'] - price
             if after < 0:
                 continue
             total += price
             bought.extend([item] * count)
-            userdata['inventory']['money'] = after
-            userdata['inventory'][ITEMS[item]['name']] += count
+            inventory['money'] = after
+            inventory[item_name] += count
         if total == 0:
             await ctx.send(f"{player_name} didn't buy anything because they're too poor.", delete_after=60)
         else:
             display = []
             for item in set(bought):
-                display.append(str(ITEMS[item]['display'](ctx)))
+                display.append(str(list(display_dict.values())[item]))
                 count = bought.count(item)
                 if count > 1:
                     display[-1] += f' x{count}'
             await ctx.send(f'{player_name} bought the following for {total}\ua750:\n' + '\n'.join(display), delete_after=60)
-            await self.found_pokemon.save()
+            await ctx.con.execute("""UPDATE trainers SET inventory=$1 WHERE user_id=$2""", inventory, ctx.author.id)
 
 ###################
 #                 #
