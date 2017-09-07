@@ -151,7 +151,7 @@ async def get_evolution_chain(ctx, num):
             ''', num, GLOWING_STAR, STAR))
     if len(chain) == 1:
         return 'This Pokémon does not evolve.'
-    start = '\N{BALLOT BOT WITH CHECK}'.join(r['name'] for r in chain[:cur_ind + 1])
+    start = '\N{BALLOT BOX WITH CHECK}'.join(r['name'] for r in chain[:cur_ind + 1])
     after = chain[cur_ind + 1:]
     chains = []
     # Option 1
