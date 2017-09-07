@@ -1,5 +1,5 @@
-from collections import Counter
 from random import randint
+import asyncpg
 import asyncio
 import re
 
@@ -8,7 +8,6 @@ import aiohttp
 import discord
 
 from cogs.menus import Menus, STAR, GLOWING_STAR, SPARKLES, SPACER, ARROWS, DONE, CANCEL
-from utils.json import Dict, List
 from utils import errors, checks
 from utils.utils import wrap
 
