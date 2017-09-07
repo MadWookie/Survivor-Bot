@@ -169,7 +169,7 @@ class Main:
 
     @checks.db
     @welcomeset.command()
-    async def channel(self, ctx, channel: discord.Channel=None):
+    async def channel(self, ctx, channel: discord.TextChannel=None):
         """Sets the channel for welcoming new users."""
         guild = ctx.guild
         channel = channel or ctx.channel
