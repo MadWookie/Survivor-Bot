@@ -61,7 +61,7 @@ class Exp(Menus):
                     try:
                         async with con.transaction(isolation='serializable'):
                             rec = await con.fetchrow('''
-                                SELECT xp, level, prestige FROM experience WHERE user_id = $1 AND guild_id = $2
+                                SELECT exp, level, prestige FROM experience WHERE user_id = $1 AND guild_id = $2
                                 ''', uid, gid) or {'xp': 0, 'level': 0, 'prestige': 0}
                             self.cooldowns[gid][uid] = time.time()
                             xp = rec['xp'] + add_xp
@@ -78,9 +78,9 @@ class Exp(Menus):
                                 else:
                                     leveled = True
                             await con.execute('''
-                                INSERT INTO experience (guild_id, user_id, xp, level, prestige) VALUES ($1, $2, $3, $4, $5)
+                                INSERT INTO experience (guild_id, user_id, exp, level, prestige) VALUES ($1, $2, $3, $4, $5)
                                 ON CONFLICT (guild_id, user_id) DO
-                                UPDATE SET xp = $3, level = $4, prestige = $5
+                                UPDATE SET exp = $3, level = $4, prestige = $5
                                 ''', gid, uid, xp, level, prestige)
                     except asyncpg.SerializationError:
                         prestiged = False  # in case fails 3 times
@@ -110,7 +110,7 @@ class Exp(Menus):
         uid = user.id
         gid = ctx.guild.id
         rec = await ctx.con.fetchrow('''
-            SELECT xp, level, prestige FROM experience WHERE user_id = $1 AND guild_id = $2
+            SELECT exp, level, prestige FROM experience WHERE user_id = $1 AND guild_id = $2
             ''', uid, gid) or {'xp': 0, 'level': 0, 'prestige': 0}
         xp, level, prestige = rec['xp'], rec['level'], rec['prestige']
         to_next_level = level_req(level + 1)
