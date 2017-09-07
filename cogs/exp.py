@@ -64,7 +64,7 @@ class Exp(Menus):
                                 SELECT exp, level, prestige FROM experience WHERE user_id = $1 AND guild_id = $2
                                 ''', uid, gid) or {'xp': 0, 'level': 0, 'prestige': 0}
                             self.cooldowns[gid][uid] = time.time()
-                            xp = rec['xp'] + add_xp
+                            xp = rec['exp'] + add_xp
                             level = rec['level']
                             prestige = rec['prestige']
                             to_next_level = level_req(level + 1)
