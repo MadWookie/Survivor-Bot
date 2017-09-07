@@ -1,4 +1,6 @@
 import traceback
+import asyncpg
+import discord
 import asyncio
 import time
 
