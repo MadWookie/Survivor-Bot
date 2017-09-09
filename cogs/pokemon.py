@@ -335,9 +335,9 @@ class Pokemon(Menus):
 
         user_or_num = poke_converter(ctx, user_or_num) or ctx.author
 
-        total_pokemon = await ctx.con.fetchval("""
+        total_pokemon = len(await ctx.con.fetch("""
                                       SELECT COUNT(*) FROM pokemon GROUP BY num
-                                      """)
+                                      """))
         if isinstance(user_or_num, discord.Member):
             found = await get_player_pokemon(ctx, user_or_num.id)
             found_sorted = sorted([mon['name'] for mon in found])
@@ -371,9 +371,7 @@ class Pokemon(Menus):
                     count > 1 else ''))
             await self.reaction_menu(options, ctx.author, ctx.channel, 0, per_page=20, code=False, header=header)
         else:
-            print(user_or_num)
-            print(total_pokemon)
-            if user_or_num > total_pokemon:
+            if 0 >= user_or_num or user_or_num > total_pokemon:
                 return await ctx.send(f'Pokemon {user_or_num} does not exist.')
 
             image = self.image_path.format('shiny' if shiny else 'normal', user_or_num, 0)
