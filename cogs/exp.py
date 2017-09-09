@@ -62,7 +62,7 @@ class Exp(Menus):
                         async with con.transaction(isolation='serializable'):
                             rec = await con.fetchrow('''
                                 SELECT exp, level, prestige FROM experience WHERE user_id = $1 AND guild_id = $2
-                                ''', uid, gid) or {'xp': 0, 'level': 0, 'prestige': 0}
+                                ''', uid, gid) or {'exp': 0, 'level': 0, 'prestige': 0}
                             self.cooldowns[gid][uid] = time.time()
                             xp = rec['exp'] + add_xp
                             level = rec['level']
