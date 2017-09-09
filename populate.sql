@@ -1,6 +1,5 @@
 ﻿-- This data is scraped from Bulbapedia. Some by hand, some by script.
 -- Evolution data up to #721 was acquired from pokeapi.co
-TRUNCATE types, natures, pokenum, pokemon, items, rewards, evolutions;
 INSERT INTO types (name, color, noeffect, effective, ineffective) VALUES
     ('Normal', 11053176, '{"Ghost"}', '{}', '{"Rock", "Steel"}'),
     ('Fighting', 12595240, '{"Ghost"}', '{"Normal", "Rock", "Steel", "Ice", "Dark"}', '{"Flying", "Poison", "Bug", "Psychic", "Fairy"}'),
@@ -1224,7 +1223,7 @@ INSERT INTO evolutions (num, prev, next, level, item, trade, trade_for) VALUES
     (267, 266, NULL, 100, NULL, FALSE, NULL),
     (265, NULL, 268, 7, NULL, FALSE, NULL),
     (268, 265, 269, 10, NULL, FALSE, NULL),
-    (269, 266, NULL, 100, NULL, FALSE, NULL),
+    (269, 268, NULL, 100, NULL, FALSE, NULL),
     (270, NULL, 271, 14, NULL, FALSE, NULL),
     (271, 270, 272, 1, 'Water Stone', FALSE, NULL),
     (272, 271, NULL, 100, NULL, FALSE, NULL),
