@@ -328,7 +328,7 @@ class Pokemon(Menus):
 ###################
 
     @checks.db
-    @commands.group()
+    @commands.group(invoke_without_command=True)
     @pokechannel()
     async def pokedex(self, ctx, *, query):
         """Shows you your Pokedex through a reaction menu."""
@@ -396,6 +396,82 @@ class Pokemon(Menus):
                                            """, result[0])
             info = await get_pokemon(ctx, pokemon_number)
             image = self.image_path.format('shiny' if 'shiny' in query.lower() else 'normal', info['num'], 0)
+
+            evo = await get_evolution_chain(ctx, info['num'])
+            embed = discord.Embed(description=wrap(f"__{info['name']}{get_star(info)}'s Information__",
+                                                   pokedex) + f"\n**Type:** {' & '.join(info['type'])}\n**Evolutions:**\n {evo}")
+            embed.color = await get_pokemon_color(ctx, mon=info)
+            embed.set_image(url='attachment://pokemon.gif')
+            await ctx.send(embed=embed, file=discord.File(open(image, 'rb'), filename='pokemon.gif'), delete_after=120)
+
+    @checks.db
+    @pokedex.command(name='shiny')
+    @pokechannel()
+    async def pokedex_shiny(self, ctx, *, query):
+        pokedex = self.bot.get_emoji_named('Pokedex')
+
+        query = poke_converter(ctx, query) or ctx.author
+
+        total_pokemon = await ctx.con.fetchval("""
+                                      SELECT COUNT(DISTINCT num) FROM pokemon
+                                      """)
+        if isinstance(query, discord.Member):
+            found = await get_player_pokemon(ctx, query.id)
+            found_sorted = sorted([mon['name'] for mon in found])
+            total_found = len(set(found_sorted))
+            remaining = total_pokemon - total_found
+
+            legendaries = await ctx.con.fetchval("""
+                                        SELECT COUNT(*) FROM found WHERE owner=$1 AND num=ANY((SELECT num FROM pokemon WHERE legendary=True))
+                                        """, query.id)
+            mythics = await ctx.con.fetchval("""
+                                    SELECT COUNT(*) FROM found WHERE owner=$1 AND num=ANY((SELECT num FROM pokemon WHERE mythical=True))
+                                    """, query.id)
+
+            header = f"__{query.name}'s Pokedex__"
+            if total_found == 0:
+                header += " __is empty.__"
+            header = wrap(header, pokedex)
+            if total_found == 0:
+                return await ctx.send(header, delete_after=60)
+            spacer = SPACER * 21
+            key = f'{ARROWS[0]} Click to go back a page.\n{ARROWS[1]} Click to go forward a page.\n{CANCEL} Click to exit your pokedex.'
+            counts = wrap(f'**{total_found}** collected out of {remaining} total Pokemon.\n**{total_found - mythics - legendaries}** Normal | **{legendaries}** Legendary {STAR} | **{mythics}** Mythical {GLOWING_STAR}', spacer, sep='\n')
+            header = '\n'.join([header, 'Use **!pokedex** ``#`` to take a closer look at your Pokémon!', key, counts])
+            options = []
+            for mon in found:
+                mythical = await is_mythical(ctx, mon['num'], ctx.author.id, mon['id'])
+                legendary = await is_legendary(ctx, mon['num'], ctx.author.id, mon['id'])
+                count = found.count(mon)
+                options.append("**{}.** {}{}{}".format(
+                    mon['num'], mon['name'], GLOWING_STAR if mythical else STAR if legendary else '', count if
+                    count > 1 else ''))
+            await self.reaction_menu(options, ctx.author, ctx.channel, 0, per_page=20, code=False, header=header)
+        elif isinstance(query, int):
+            if 0 >= query or query > total_pokemon:
+                return await ctx.send(f'Pokemon {query} does not exist.')
+
+            image = self.image_path.format('shiny', query, 0)
+            info = await get_pokemon(ctx, query)
+
+            evo = await get_evolution_chain(ctx, info['num'])
+            embed = discord.Embed(description=wrap(f"__{info['name']}{get_star(info)}'s Information__", pokedex) + f"\n**Type:** {' & '.join(info['type'])}\n**Evolutions:**\n {evo}")
+            embed.color = await get_pokemon_color(ctx, mon=info)
+            embed.set_image(url='attachment://pokemon.gif')
+            await ctx.send(embed=embed, file=discord.File(open(image, 'rb'), filename='pokemon.gif'), delete_after=120)
+        elif isinstance(query, str):
+            pokemon_records = await ctx.con.fetch("""
+                                          SELECT name FROM pokemon
+                                          """)
+            pokemon_names = [mon['name'] for mon in pokemon_records]
+            result = list(process.extractOne(query, pokemon_names))
+            if result[1] < 70:
+                return await ctx.send(f'Pokemon {query} does not exist.')
+            pokemon_number = await ctx.con.fetchval("""
+                                           SELECT num FROM pokemon WHERE name=$1
+                                           """, result[0])
+            info = await get_pokemon(ctx, pokemon_number)
+            image = self.image_path.format('shiny', info['num'], 0)
 
             evo = await get_evolution_chain(ctx, info['num'])
             embed = discord.Embed(description=wrap(f"__{info['name']}{get_star(info)}'s Information__",
