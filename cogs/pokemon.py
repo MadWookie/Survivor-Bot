@@ -73,9 +73,8 @@ async def get_pokemon_color(ctx, num=0, *, mon: asyncpg.Record=None):
             ''', num)
     if mon is not None:
         colors = await ctx.con.fetch('''
-            SELECT color FROM types WHERE name = ANY($1)
-            ''', mon['type'])
-        return sum(color['color'] for color in colors) / len(colors)
+            SELECT color FROM types WHERE name = ANY($1)''', mon['type'])
+        return round(sum(color['color'] for color in colors) / len(colors))
     return 0
 
 async def set_inventory(ctx, uid, inv):
@@ -138,7 +137,6 @@ async def get_evolution_chain(ctx, num):
     else:
         for m in after:
             m = dict(m)
-            m['name'], m['next'] = 'Something', ['a', 'b']
             if not m['next']:
                 chains.append(ARROWS[1].join((start, m['name'])))
             else:
@@ -152,7 +150,9 @@ async def get_evolution_chain(ctx, num):
     #                        ' | '.join(last for nxt in after for last in nxt['next'])))
 
 async def get_player(ctx, uid):
-    player_data = await ctx.con.fetchrow("""SELECT * FROM trainers WHERE user_id=$1""", uid)
+    player_data = await ctx.con.fetchrow("""INSERT INTO trainers (user_id) VALUES ($1)
+                                            ON CONFLICT (user_id) DO UPDATE SET user_id=$1
+                                            RETURNING *""", uid)
     return player_data
 
 async def get_player_pokemon(ctx, uid):
