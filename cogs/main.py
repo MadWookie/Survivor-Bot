@@ -66,6 +66,9 @@ class Main:
         embed = discord.Embed(colour=discord.Colour(0xffffff), title=title, description=description)
         inviters = {}
         for invite in await guild.invites():
+            if invite.inviter is None:
+                await invite.delete(reason='User left the server.')
+                continue
             if invite.inviter.bot or invite.inviter == guild.owner:
                 continue
             if invite.inviter in inviters:

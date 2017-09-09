@@ -286,8 +286,7 @@ class Pokemon(Menus):
             INSERT INTO seen (user_id, num) VALUES ($1, $2)
             ON CONFLICT DO NOTHING
             ''', player_id, mon['num'])
-        msg = await ctx.send(embed=embed, file=discord.File(open(self.image_path.format('normal', mon['num'], 0), 'rb'),
-                                                            filename='pokemon.gif'))
+        msg = await ctx.send(embed=embed, file=discord.File(self.image_path.format('normal', mon['num'], 0), filename='pokemon.gif'))
         can_react_with = [*balls, CANCEL]
         for emoji in can_react_with:
             await msg.add_reaction(emoji)
