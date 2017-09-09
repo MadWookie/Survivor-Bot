@@ -1,3 +1,4 @@
+from itertools import groupby
 from random import randint
 import asyncpg
 import asyncio
@@ -108,13 +109,6 @@ async def get_found_counts(ctx, uid):
         FROM found WHERE owner = $1 GROUP BY num, form_id ORDER BY num, form_id
         ''', uid, GLOWING_STAR, STAR)
 
-
-async def get_pokemon(ctx, num):
-    return await ctx.con.fetch('''
-        SELECT * FROM pokemon WHERE num = $1
-        ''', num)
-
-
 async def get_rewards(ctx):
     return await ctx.con.fetch('''
         SELECT * FROM rewards
@@ -176,6 +170,24 @@ async def get_evolution_chain(ctx, num):
 async def get_player(ctx, uid):
     player_data = await ctx.con.fetchrow("""SELECT * FROM trainers WHERE user_id=$1""", uid)
     return player_data
+
+async def get_player_pokemon(ctx, uid):
+    player_pokemon = await ctx.con.fetch("""SELECT * FROM found WHERE owner=$1""", uid)
+    return player_pokemon
+
+async def get_pokemon(ctx, num):
+    mon_info = await ctx.con.fetchrow("""SELECT * FROM pokemon WHERE num=$1""", num)
+    return mon_info
+
+async def is_legendary(ctx, num, uid, id):
+    count = await ctx.con.fetch("""SELECT COUNT(*) FROM found WHERE owner=$1 AND id=$2 AND num=ANY(SELECT num 
+                                  FROM pokemon WHERE num=$3 AND legendary=True)""", uid, id, num)
+    return count[0]['count'] > 0
+
+async def is_mythical(ctx, num, uid, id):
+    count = await ctx.con.fetch("""SELECT COUNT(*) FROM found WHERE owner=$1 AND id=$2 AND num=ANY(SELECT num 
+                                  FROM pokemon WHERE num=$3 AND mythical=True)""", uid, id, num)
+    return count[0]['count'] > 0
 
 
 class Pokemon(Menus):
@@ -251,12 +263,11 @@ class Pokemon(Menus):
         mon = await ctx.con.fetchrow('''
             SELECT num, name, form, form_id, legendary, mythical, rand(4294967295) as personality,
             (SELECT form FROM pokemon p2 WHERE p2.num = pokemon.num AND p2.form_id = 0) AS base_form,
-            (SELECT ARRAY(SELECT color FROM types WHERE types.name = ANY(type))) AS colors,
-            FROM pokemon ORDER BY random() LIMIT 1
-            ''')
-        trainer = await get_trainer(ctx, uid)
-        inv = dict(trainer['inventory'])
-        balls = [self.bot.get_emoji_named(item) for ball in pokeballs if inv.get(ball)]
+            (SELECT ARRAY(SELECT color FROM types WHERE types.name = ANY(type))) AS colors 
+            FROM pokemon ORDER BY random() LIMIT 1''')
+        trainer = await get_player(ctx, player_id)
+        inv = trainer['inventory']
+        balls = [self.bot.get_emoji_named(ball) for ball in pokeballs if inv.get(ball)]
         star = GLOWING_STAR if mon['mythical'] else STAR if mon['legendary'] else ''
         shiny = is_shiny(trainer, mon['personality'])
         if shiny:
@@ -273,7 +284,7 @@ class Pokemon(Menus):
             form_id = mon['form_id']
         shine = SPARKLES if shiny else ''
         embed = discord.Embed(description=f'A wild {shine}**{form}{mon["name"]}**{star} appears!\nUse a {balls[0]} to catch it!')
-        embed.color = sum(mon['colors']) / len(mon['colors'])
+        #embed.color = sum(mon['colors']) / len(mon['colors'])
         embed.set_author(icon_url=ctx.author.avatar_url, name=player_name)
         embed.set_image(url='attachment://pokemon.gif')
         await ctx.con.execute('''
@@ -305,8 +316,8 @@ class Pokemon(Menus):
                     ''', mon['num']) or 0
                 async with ctx.con.transaction():
                     await ctx.con.execute('''
-                        INSERT INTO found (num, form_id, ball, exp, owner, original_owner, personality) VALUES ($1, $2, $3, $4, $5, $5, $6)
-                        ''', mon['num'], form_id, reaction.emoji.name, xp_to_level(level), player_id, mon['personality'])
+                        INSERT INTO found (num, name, form_id, ball, exp, owner, original_owner, personality) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
+                        ''', mon['num'], mon['name'], form_id, reaction.emoji.name, xp_to_level(level), player_id, player_id, mon['personality'])
             else:
                 embed.description = f'{shine}**{form}{mon["name"]}**{star} has escaped!'
                 await msg.edit(embed=embed, delete_after=60)
@@ -322,6 +333,7 @@ class Pokemon(Menus):
 #                 #
 ###################
 
+    @checks.db
     @commands.command()
     @pokechannel()
     async def pokedex(self, ctx, user_or_num=None, shiny=''):
@@ -330,7 +342,7 @@ class Pokemon(Menus):
         user_or_num = poke_converter(ctx, user_or_num) or ctx.author
         if isinstance(user_or_num, discord.abc.User):
             player = user_or_num
-            found = {k: v for k, v in self.get_player(player.id)['pokemon'].items() if v}
+            found = await get_player_pokemon(ctx, user_or_num)
             found_sorted = sorted(found)
             total = len(found)
             remaining = len(self.poke_info)
@@ -420,41 +432,45 @@ class Pokemon(Menus):
 #                 #
 ###################
 
+    @checks.db
     @shop.command()
     @pokechannel()
     async def sell(self, ctx):
         spacer = SPACER * 24
         player_name = ctx.author.name
-        userdata = self.get_player(ctx.author.id)
-        found = {k: v for k, v in userdata['pokemon'].items() if v}
-        found_sorted = sorted(found)
-        found_names = [self.poke_info[num]['name'] for num in found_sorted]
+        user_pokemon = await get_player_pokemon(ctx, ctx.author.id)
+        player_data = await get_player(ctx, ctx.author.id)
+        found_names = [poke['name'] for poke in user_pokemon]
         header = f'**{player_name}**,\nSelect Pokemon to sell.\n' + wrap(f'**100**\ua750 Normal | **600**\ua750 Legendary {STAR} | **1000**\ua750 Mythical {GLOWING_STAR}', spacer, sep='\n')
-        options = ['**{}.** {[name]}{}{}'.format(mon, self.poke_info[mon], GLOWING_STAR if self.poke_info[mon]['mythical'] else STAR if self.poke_info[mon]['legendary'] else '', f' *x{found[mon]}*' if found[mon] > 1 else '') for mon in found_sorted]
+        options = []
+        for mon in user_pokemon:
+            mythical = await is_mythical(ctx, mon['num'], ctx.author.id, mon['id'])
+            legendary = await is_legendary(ctx, mon['num'], ctx.author.id, mon['id'])
+            count = user_pokemon.count(mon)
+            options.append("**{}.** {}{}{}".format(
+                mon['num'], mon['name'], GLOWING_STAR if mythical else STAR if legendary else '', count if
+                count > 1 else ''))
         if not options:
             await ctx.send("You don't have any pokemon to sell.", delete_after=60)
             return
-        selected = await self.reaction_menu(options, ctx.author, ctx.channel, -1, per_page=20, header=header, code=False, multi=True, return_from=found_sorted, display=found_names)
+        selected = await self.reaction_menu(options, ctx.author, ctx.channel, -1, per_page=20, header=header, code=False, multi=True, return_from=user_pokemon, display=found_names)
         if not selected:
             return
         sold = []
         total = 0
-        for mon in set(selected):
-            while selected.count(mon) > found[mon]:
-                selected.remove(mon)
+        for mon in [k for k, v in groupby(sorted(selected))]:
             count = selected.count(mon)
-            if self.poke_info[mon]['mythical']:
+            if await is_mythical(ctx, mon['num'], ctx.author.id, mon['id']):
                 total += 1000
-            elif self.poke_info[mon]['legendary']:
+            elif await is_legendary(ctx, mon['num'], ctx.author.id, mon['id']):
                 total += 600
             else:
                 total += 100
-            userdata['pokemon'][mon] -= count
-            if not userdata['pokemon'][mon]:
-                userdata['pokemon'].pop(mon)
-            sold.append('**{[name]}**{}'.format(self.poke_info[mon], f' *x{count}*' if count > 1 else ''))
-        userdata['inventory']['money'] += total
-        await self.found_pokemon.save()
+            await ctx.con.execute("""DELETE FROM found WHERE id=$1""", mon['id'])
+            sold.append("**{}**{}".format(mon['name'], f' *x{count}*' if count > 1 else ''))
+        player_data['inventory']['money'] += total
+        await ctx.con.execute("""UPDATE trainers SET inventory=$1 
+                                 WHERE user_id=$2""", player_data['inventory'], ctx.author.id)
         await ctx.send(f'{player_name} sold the following for {total}\ua750:\n' + '\n'.join(sold), delete_after=60)
 
 ###################
