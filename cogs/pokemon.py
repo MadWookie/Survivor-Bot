@@ -118,27 +118,27 @@ async def get_rewards(ctx):
 async def get_evolution_chain(ctx, num):
     chain = [await ctx.con.fetchrow('''
         SELECT prev, next,
-        (SELECT name || (CASE WHEN mythical THEN '$2' WHEN legendary THEN '$3' ELSE '' END) FROM pokemon p WHERE p.num = e.num LIMIT 1) AS name
+        (SELECT name || (CASE WHEN mythical THEN $2 WHEN legendary THEN $3 ELSE '' END) FROM pokemon p WHERE p.num = e.num LIMIT 1) AS name
         FROM evolutions e WHERE num = $1
         ''', num, GLOWING_STAR, STAR)]
     cur_ind = 0
     if chain[0]['prev'] is not None:
         chain.insert(0, await ctx.con.fetchrow('''
             SELECT prev,
-            (SELECT name || (CASE WHEN mythical THEN '$2' WHEN legendary THEN '$3' ELSE '' END) FROM pokemon p WHERE p.num = e.num LIMIT 1) AS name
+            (SELECT name || (CASE WHEN mythical THEN $2 WHEN legendary THEN $3 ELSE '' END) FROM pokemon p WHERE p.num = e.num LIMIT 1) AS name
             FROM evolutions e WHERE next = $1
             ''', num, GLOWING_STAR, STAR))
         cur_ind += 1
         if chain[0]['prev'] is not None:
             chain.insert(0, await ctx.con.fetchrow('''
-                SELECT name || (CASE WHEN mythical THEN '$2' WHEN legendary THEN '$3' ELSE '' END) AS name FROM pokemon WHERE num = $1 LIMIT 1
+                SELECT name || (CASE WHEN mythical THEN $2 WHEN legendary THEN $3 ELSE '' END) AS name FROM pokemon WHERE num = $1 LIMIT 1
                 ''', chain[0]['prev'], GLOWING_STAR, STAR))
             cur_ind += 1
     if chain[-1]['next'] is not None:
         chain.extend(await ctx.con.fetch('''
             SELECT
-            (SELECT name || (CASE WHEN mythical THEN '$2' WHEN legendary THEN '$3' ELSE '' END) FROM pokemon p WHERE p.num = e.num LIMIT 1) AS name,
-            (SELECT ARRAY(SELECT (SELECT name || (CASE WHEN mythical THEN '$2' WHEN legendary THEN '$3' ELSE '' END) AS name FROM pokemon p WHERE p.num = e2.num LIMIT 1)
+            (SELECT name || (CASE WHEN mythical THEN $2 WHEN legendary THEN $3 ELSE '' END) FROM pokemon p WHERE p.num = e.num LIMIT 1) AS name,
+            (SELECT ARRAY(SELECT (SELECT name || (CASE WHEN mythical THEN $2 WHEN legendary THEN $3 ELSE '' END) AS name FROM pokemon p WHERE p.num = e2.num LIMIT 1)
                           FROM evolutions e2 WHERE e2.num = e.next)) AS next
             FROM evolutions e WHERE prev = $1
             ''', num, GLOWING_STAR, STAR))
@@ -154,6 +154,7 @@ async def get_evolution_chain(ctx, num):
         chains.append(start)
     else:
         for m in after:
+            m = dict(m)
             m['name'], m['next'] = 'Something', ['a', 'b']
             if not m['next']:
                 chains.append(ARROWS[1].join((start, m['name'])))
@@ -340,38 +341,48 @@ class Pokemon(Menus):
     async def pokedex(self, ctx, user_or_num=None, shiny=''):
         """Shows you your Pokedex through a reaction menu."""
         pokedex = self.bot.get_emoji_named('Pokedex')
+
         user_or_num = poke_converter(ctx, user_or_num) or ctx.author
-        if isinstance(user_or_num, discord.abc.User):
-            player = user_or_num
-            found = await get_player_pokemon(ctx, user_or_num)
-            found_sorted = sorted(found)
-            total = len(found)
-            remaining = len(self.poke_info)
-            legendaries = sum(1 for p in found if self.poke_info[p]['legendary'])
-            mythics = sum(1 for p in found if self.poke_info[p]['mythical'])
-            header = f"__{player.name}'s Pokedex__"
-            if total == 0:
+
+        total_pokemon = await ctx.con.fetchval("""SELECT COUNT(*) FROM pokemon""")
+        if isinstance(user_or_num, discord.Member):
+            found = await get_player_pokemon(ctx, user_or_num.id)
+            found_sorted = sorted([mon['name'] for mon in found])
+            total_found = len(set(found_sorted))
+            remaining = total_pokemon - total_found
+
+            legendaries = await ctx.con.fetchval("""SELECT COUNT(*) FROM found WHERE owner=$1 AND num=ANY((SELECT num FROM pokemon WHERE legendary=True))""", user_or_num.id)
+            mythics = await ctx.con.fetchval("""SELECT COUNT(*) FROM found WHERE owner=$1 AND num=ANY((SELECT num FROM pokemon WHERE mythical=True))""", user_or_num.id)
+
+            header = f"__{user_or_num.name}'s Pokedex__"
+            if total_found == 0:
                 header += " __is empty.__"
             header = wrap(header, pokedex)
-            if total == 0:
-                await ctx.send(header, delete_after=60)
-                return
+            if total_found == 0:
+                return await ctx.send(header, delete_after=60)
             spacer = SPACER * 21
             key = f'{ARROWS[0]} Click to go back a page.\n{ARROWS[1]} Click to go forward a page.\n{CANCEL} Click to exit your pokedex.'
-            counts = wrap(f'**{total}** collected out of {remaining} total Pokemon.\n**{total - mythics - legendaries}** Normal | **{legendaries}** Legendary {STAR} | **{mythics}** Mythical {GLOWING_STAR}', spacer, sep='\n')
+            counts = wrap(f'**{total_found}** collected out of {remaining} total Pokemon.\n**{total_found - mythics - legendaries}** Normal | **{legendaries}** Legendary {STAR} | **{mythics}** Mythical {GLOWING_STAR}', spacer, sep='\n')
             header = '\n'.join([header, 'Use **!pokedex** ``#`` to take a closer look at your Pokémon!', key, counts])
-            options = ['**{}.** {[name]}{}{}'.format(mon, self.poke_info[mon], GLOWING_STAR if self.poke_info[mon]['mythical'] else STAR if self.poke_info[mon]['legendary'] else '', f' *x{found[mon]}*' if found[mon] > 1 else '') for mon in found_sorted]
+            options = []
+            for mon in found:
+                mythical = await is_mythical(ctx, mon['num'], ctx.author.id, mon['id'])
+                legendary = await is_legendary(ctx, mon['num'], ctx.author.id, mon['id'])
+                count = found.count(mon)
+                options.append("**{}.** {}{}{}".format(
+                    mon['num'], mon['name'], GLOWING_STAR if mythical else STAR if legendary else '', count if
+                    count > 1 else ''))
             await self.reaction_menu(options, ctx.author, ctx.channel, 0, per_page=20, code=False, header=header)
         else:
+            if user_or_num > total_pokemon:
+                return await ctx.send(f'Pokemon {user_or_num} does not exist.')
+
             image = self.image_path.format('shiny' if shiny else 'normal', user_or_num, 0)
-            try:
-                info = (await get_pokemon(ctx, user_or_num))[0]
-            except IndexError:
-                await ctx.send(f'Pokemon {user_or_num} does not exist.')
-                return
+            info = await get_pokemon(ctx, user_or_num)
+
             evo = await get_evolution_chain(ctx, user_or_num)
             embed = discord.Embed(description=wrap(f"__{info['name']}{get_star(info)}'s Information__", pokedex) + f"\n**Type:** {' & '.join(info['type'])}\n**Evolutions:** {evo}")
-            embed.color = await get_pokemon_color(ctx, mon=info)
+            #embed.color = await get_pokemon_color(ctx, mon=info)
             embed.set_image(url='attachment://pokemon.gif')
             await ctx.send(embed=embed, file=discord.File(open(image, 'rb'), filename='pokemon.gif'), delete_after=120)
 
