@@ -207,16 +207,17 @@ class Pokemon(Menus):
     @pokechannel()
     async def inventory(self, ctx):
         thumbnail = 'http://unitedsurvivorsgaming.com/backpack.png'
-        inv = await get_inventory(ctx, ctx.author.id)
+        player_data = await get_player(ctx, ctx.author.id)
+        inv = player_data['inventory']
         all_items = await ctx.con.fetch('''
-            SELECT name FROM items ORDER BY id DESC
+            SELECT name FROM items ORDER BY id ASC
             ''')
         em = discord.Embed(title=f'{ctx.author.name} | {inv["money"]}\ua750')
         items = []
         for item in all_items[1:]:
-            if inv[item] or item.endswith('ball'):
-                key = self.bot.get_emoji_named(item) or item
-                items.append(f"{key} | {inv[item]}")
+            if inv.get(item['name']) or item['name'].endswith('ball'):
+                key = self.bot.get_emoji_named(item['name']) or item['name']
+                items.append(f"{key} | {inv.get(item['name'])}")
         em.set_thumbnail(url=thumbnail)
         em.add_field(name='Inventory', value='\n'.join(items))
         await ctx.send(embed=em, delete_after=60)
