@@ -379,7 +379,9 @@ class Pokemon(Menus):
             info = await get_pokemon(ctx, query)
 
             evo = await get_evolution_chain(ctx, info['num'])
-            embed = discord.Embed(description=wrap(f"__{info['name']}{get_star(info)}'s Information__", pokedex) + f"\n**Type:** {' & '.join(info['type'])}\n**Evolutions:**\n {evo}")
+            embed = discord.Embed(description=wrap(f"__{info['name']}{get_star(info)}'s Information__", pokedex) +
+                                              f"\n**ID:** {info['num']}"
+                                              f"\n**Type:** {' & '.join(info['type'])}\n**Evolutions:**\n {evo}")
             embed.color = await get_pokemon_color(ctx, mon=info)
             embed.set_image(url='attachment://pokemon.gif')
             await ctx.send(embed=embed, file=discord.File(open(image, 'rb'), filename='pokemon.gif'), delete_after=120)
@@ -398,8 +400,9 @@ class Pokemon(Menus):
             image = self.image_path.format('shiny' if 'shiny' in query.lower() else 'normal', info['num'], 0)
 
             evo = await get_evolution_chain(ctx, info['num'])
-            embed = discord.Embed(description=wrap(f"__{info['name']}{get_star(info)}'s Information__",
-                                                   pokedex) + f"\n**Type:** {' & '.join(info['type'])}\n**Evolutions:**\n {evo}")
+            embed = discord.Embed(description=wrap(f"__{info['name']}{get_star(info)}'s Information__", pokedex) +
+                                              f"\n**ID:** {info['num']}"
+                                              f"\n**Type:** {' & '.join(info['type'])}\n**Evolutions:**\n {evo}")
             embed.color = await get_pokemon_color(ctx, mon=info)
             embed.set_image(url='attachment://pokemon.gif')
             await ctx.send(embed=embed, file=discord.File(open(image, 'rb'), filename='pokemon.gif'), delete_after=120)
@@ -455,7 +458,9 @@ class Pokemon(Menus):
             info = await get_pokemon(ctx, query)
 
             evo = await get_evolution_chain(ctx, info['num'])
-            embed = discord.Embed(description=wrap(f"__{info['name']}{get_star(info)}'s Information__", pokedex) + f"\n**Type:** {' & '.join(info['type'])}\n**Evolutions:**\n {evo}")
+            embed = discord.Embed(description=wrap(f"__{info['name']}{get_star(info)}'s Information__", pokedex) +
+                                              f"\n**ID:** {info['num']}"
+                                              f"\n**Type:** {' & '.join(info['type'])}\n**Evolutions:**\n {evo}")
             embed.color = await get_pokemon_color(ctx, mon=info)
             embed.set_image(url='attachment://pokemon.gif')
             await ctx.send(embed=embed, file=discord.File(open(image, 'rb'), filename='pokemon.gif'), delete_after=120)
@@ -474,8 +479,9 @@ class Pokemon(Menus):
             image = self.image_path.format('shiny', info['num'], 0)
 
             evo = await get_evolution_chain(ctx, info['num'])
-            embed = discord.Embed(description=wrap(f"__{info['name']}{get_star(info)}'s Information__",
-                                                   pokedex) + f"\n**Type:** {' & '.join(info['type'])}\n**Evolutions:**\n {evo}")
+            embed = discord.Embed(description=wrap(f"__{info['name']}{get_star(info)}'s Information__", pokedex) +
+                                              f"\n**ID:** {info['num']}"
+                                              f"\n**Type:** {' & '.join(info['type'])}\n**Evolutions:**\n {evo}")
             embed.color = await get_pokemon_color(ctx, mon=info)
             embed.set_image(url='attachment://pokemon.gif')
             await ctx.send(embed=embed, file=discord.File(open(image, 'rb'), filename='pokemon.gif'), delete_after=120)
