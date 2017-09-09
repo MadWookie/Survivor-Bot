@@ -333,7 +333,7 @@ class Pokemon(Menus):
     @checks.db
     @commands.group(invoke_without_command=True)
     @pokechannel()
-    async def pokedex(self, ctx, *, query):
+    async def pokedex(self, ctx, *, query=None):
         """Shows you your Pokedex through a reaction menu."""
         pokedex = self.bot.get_emoji_named('Pokedex')
 
