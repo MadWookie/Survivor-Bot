@@ -335,9 +335,9 @@ class Pokemon(Menus):
 
         user_or_num = poke_converter(ctx, user_or_num) or ctx.author
 
-        total_pokemon = len(await ctx.con.fetch("""
-                                      SELECT COUNT(*) FROM pokemon GROUP BY num
-                                      """))
+        total_pokemon = await ctx.con.fetchval("""
+                                      SELECT COUNT(DISTINCT num) FROM pokemon
+                                      """)
         if isinstance(user_or_num, discord.Member):
             found = await get_player_pokemon(ctx, user_or_num.id)
             found_sorted = sorted([mon['name'] for mon in found])
