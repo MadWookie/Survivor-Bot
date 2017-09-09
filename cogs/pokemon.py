@@ -150,27 +150,37 @@ async def get_evolution_chain(ctx, num):
     #                        ' | '.join(last for nxt in after for last in nxt['next'])))
 
 async def get_player(ctx, uid):
-    player_data = await ctx.con.fetchrow("""INSERT INTO trainers (user_id) VALUES ($1)
-                                            ON CONFLICT (user_id) DO UPDATE SET user_id=$1
-                                            RETURNING *""", uid)
+    player_data = await ctx.con.fetchrow("""
+                                INSERT INTO trainers (user_id) VALUES ($1)
+                                ON CONFLICT (user_id) DO UPDATE SET user_id=$1
+                                RETURNING *
+                                """, uid)
     return player_data
 
 async def get_player_pokemon(ctx, uid):
-    player_pokemon = await ctx.con.fetch("""SELECT * FROM found WHERE owner=$1""", uid)
+    player_pokemon = await ctx.con.fetch("""
+                                   SELECT * FROM found WHERE owner=$1
+                                   """, uid)
     return player_pokemon
 
 async def get_pokemon(ctx, num):
-    mon_info = await ctx.con.fetchrow("""SELECT * FROM pokemon WHERE num=$1""", num)
+    mon_info = await ctx.con.fetchrow("""
+                             SELECT * FROM pokemon WHERE num=$1
+                             """, num)
     return mon_info
 
 async def is_legendary(ctx, num, uid, id):
-    count = await ctx.con.fetch("""SELECT COUNT(*) FROM found WHERE owner=$1 AND id=$2 AND num=ANY(SELECT num 
-                                  FROM pokemon WHERE num=$3 AND legendary=True)""", uid, id, num)
+    count = await ctx.con.fetch("""
+                          SELECT COUNT(*) FROM found WHERE owner=$1 AND id=$2 AND num=ANY(SELECT num 
+                          FROM pokemon WHERE num=$3 AND legendary=True)
+                          """, uid, id, num)
     return count[0]['count'] > 0
 
 async def is_mythical(ctx, num, uid, id):
-    count = await ctx.con.fetch("""SELECT COUNT(*) FROM found WHERE owner=$1 AND id=$2 AND num=ANY(SELECT num 
-                                  FROM pokemon WHERE num=$3 AND mythical=True)""", uid, id, num)
+    count = await ctx.con.fetch("""
+                          SELECT COUNT(*) FROM found WHERE owner=$1 AND id=$2 AND num=ANY(SELECT num 
+                          FROM pokemon WHERE num=$3 AND mythical=True)
+                          """, uid, id, num)
     return count[0]['count'] > 0
 
 
@@ -325,15 +335,21 @@ class Pokemon(Menus):
 
         user_or_num = poke_converter(ctx, user_or_num) or ctx.author
 
-        total_pokemon = await ctx.con.fetchval("""SELECT COUNT(*) FROM pokemon""")
+        total_pokemon = await ctx.con.fetchval("""
+                                      SELECT COUNT(*) FROM pokemon GROUP BY num
+                                      """)
         if isinstance(user_or_num, discord.Member):
             found = await get_player_pokemon(ctx, user_or_num.id)
             found_sorted = sorted([mon['name'] for mon in found])
             total_found = len(set(found_sorted))
             remaining = total_pokemon - total_found
 
-            legendaries = await ctx.con.fetchval("""SELECT COUNT(*) FROM found WHERE owner=$1 AND num=ANY((SELECT num FROM pokemon WHERE legendary=True))""", user_or_num.id)
-            mythics = await ctx.con.fetchval("""SELECT COUNT(*) FROM found WHERE owner=$1 AND num=ANY((SELECT num FROM pokemon WHERE mythical=True))""", user_or_num.id)
+            legendaries = await ctx.con.fetchval("""
+                                        SELECT COUNT(*) FROM found WHERE owner=$1 AND num=ANY((SELECT num FROM pokemon WHERE legendary=True))
+                                        """, user_or_num.id)
+            mythics = await ctx.con.fetchval("""
+                                    SELECT COUNT(*) FROM found WHERE owner=$1 AND num=ANY((SELECT num FROM pokemon WHERE mythical=True))
+                                    """, user_or_num.id)
 
             header = f"__{user_or_num.name}'s Pokedex__"
             if total_found == 0:
@@ -355,6 +371,8 @@ class Pokemon(Menus):
                     count > 1 else ''))
             await self.reaction_menu(options, ctx.author, ctx.channel, 0, per_page=20, code=False, header=header)
         else:
+            print(user_or_num)
+            print(total_pokemon)
             if user_or_num > total_pokemon:
                 return await ctx.send(f'Pokemon {user_or_num} does not exist.')
 
@@ -385,7 +403,9 @@ class Pokemon(Menus):
         thumbnail = 'http://unitedsurvivorsgaming.com/shop.png'
         title = f'{player_name} | {inventory["money"]}\ua750'
         description = 'Select items to buy{}.'.format(f' in multiples of {multiple}' if multiple > 1 else '')
-        balls = await ctx.con.fetch("""SELECT name, price FROM items WHERE price != 0 AND name LIKE '%ball'""")
+        balls = await ctx.con.fetch("""
+                              SELECT name, price FROM items WHERE price != 0 AND name LIKE '%ball'
+                              """)
         display_dict = {}
         for ball in balls:
             display_dict[ball['name']] = discord.utils.get(self.bot.emojis, name=ball['name'])
@@ -460,7 +480,9 @@ class Pokemon(Menus):
                 total += 600
             else:
                 total += 100
-            await ctx.con.execute("""DELETE FROM found WHERE id=$1""", mon['id'])
+            await ctx.con.execute("""
+                          DELETE FROM found WHERE id=$1
+                          """, mon['id'])
             sold.append("**{}**{}".format(mon['name'], f' *x{count}*' if count > 1 else ''))
             inventory['money'] += total
         await set_inventory(ctx, ctx.author.id, inventory)
