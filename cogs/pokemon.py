@@ -378,7 +378,7 @@ class Pokemon(Menus):
             info = await get_pokemon(ctx, user_or_num)
 
             evo = await get_evolution_chain(ctx, user_or_num)
-            embed = discord.Embed(description=wrap(f"__{info['name']}{get_star(info)}'s Information__", pokedex) + f"\n**Type:** {' & '.join(info['type'])}\n**Evolutions:** {evo}")
+            embed = discord.Embed(description=wrap(f"__{info['name']}{get_star(info)}'s Information__", pokedex) + f"\n**Type:** {' & '.join(info['type'])}\n**Evolutions:**\n {evo}")
             embed.color = await get_pokemon_color(ctx, mon=info)
             embed.set_image(url='attachment://pokemon.gif')
             await ctx.send(embed=embed, file=discord.File(open(image, 'rb'), filename='pokemon.gif'), delete_after=120)
