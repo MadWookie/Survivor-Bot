@@ -75,25 +75,8 @@ async def get_pokemon_color(ctx, num=0, *, mon: asyncpg.Record=None):
         colors = await ctx.con.fetch('''
             SELECT color FROM types WHERE name = ANY($1)
             ''', mon['type'])
-        return sum(colors) / len(colors)
+        return sum(color['color'] for color in colors) / len(colors)
     return 0
-
-
-async def get_trainer(ctx, uid):
-    return await ctx.con.fetchval('''
-        INSERT INTO trainers (user_id) VALUES ($1)
-        ON CONFLICT (user_id) DO
-        UPDATE SET user_id = $1 RETURNING *
-        ''', uid)
-
-
-async def get_inventory(ctx, uid):
-    return dict(await ctx.con.fetchval('''
-        INSERT INTO trainers (user_id) VALUES ($1)
-        ON CONFLICT (user_id) DO
-        UPDATE SET user_id = $1 RETURNING inventory
-        ''', uid))
-
 
 async def set_inventory(ctx, uid, inv):
     return await ctx.con.execute('''
@@ -236,16 +219,14 @@ class Pokemon(Menus):
     async def reward(self, ctx):
         """Collect a reward for free every 3 hours!"""
         user = ctx.author
-        inv = await get_inventory(ctx, user.id)
+        player_data = await get_player(ctx, user.id)
+        inv = player_data['inventory']
         reward = await ctx.con.fetchrow('''
             SELECT * FROM rewards ORDER BY random() LIMIT 1
             ''')
         item, count = reward['name'], reward['num']
         inv[item] = inv.get(item, 0) + count
-        async with ctx.con.transaction():
-            await ctx.con.execute('''
-                UPDATE trainers SET inventory = $1 WHERE user_id = $2
-                ''', inv, user.id)
+        await set_inventory(ctx, user.id, inv)
         await ctx.send(f"{user.name} has recived {count} **{item}{'s' if count != 1 else ''}**!", delete_after=60)
 
 ###################
@@ -263,7 +244,7 @@ class Pokemon(Menus):
         player_name = ctx.author.name
         player_id = ctx.author.id
         mon = await ctx.con.fetchrow('''
-            SELECT num, name, form, form_id, legendary, mythical, rand(4294967295) as personality,
+            SELECT num, name, form, form_id, type, legendary, mythical, rand(4294967295) as personality,
             (SELECT form FROM pokemon p2 WHERE p2.num = pokemon.num AND p2.form_id = 0) AS base_form,
             (SELECT ARRAY(SELECT color FROM types WHERE types.name = ANY(type))) AS colors 
             FROM pokemon ORDER BY random() LIMIT 1''')
@@ -286,7 +267,7 @@ class Pokemon(Menus):
             form_id = mon['form_id']
         shine = SPARKLES if shiny else ''
         embed = discord.Embed(description=f'A wild {shine}**{form}{mon["name"]}**{star} appears!\nUse a {balls[0]} to catch it!')
-        #embed.color = sum(mon['colors']) / len(mon['colors'])
+        embed.color = await get_pokemon_color(ctx, mon=mon)
         embed.set_author(icon_url=ctx.author.avatar_url, name=player_name)
         embed.set_image(url='attachment://pokemon.gif')
         await ctx.con.execute('''
@@ -382,7 +363,7 @@ class Pokemon(Menus):
 
             evo = await get_evolution_chain(ctx, user_or_num)
             embed = discord.Embed(description=wrap(f"__{info['name']}{get_star(info)}'s Information__", pokedex) + f"\n**Type:** {' & '.join(info['type'])}\n**Evolutions:** {evo}")
-            #embed.color = await get_pokemon_color(ctx, mon=info)
+            embed.color = await get_pokemon_color(ctx, mon=info)
             embed.set_image(url='attachment://pokemon.gif')
             await ctx.send(embed=embed, file=discord.File(open(image, 'rb'), filename='pokemon.gif'), delete_after=120)
 
@@ -436,7 +417,7 @@ class Pokemon(Menus):
                 if count > 1:
                     display[-1] += f' x{count}'
             await ctx.send(f'{player_name} bought the following for {total}\ua750:\n' + '\n'.join(display), delete_after=60)
-            await ctx.con.execute("""UPDATE trainers SET inventory=$1 WHERE user_id=$2""", inventory, ctx.author.id)
+            await set_inventory(ctx, ctx.author.id, inventory)
 
 ###################
 #                 #
@@ -452,6 +433,7 @@ class Pokemon(Menus):
         player_name = ctx.author.name
         user_pokemon = await get_player_pokemon(ctx, ctx.author.id)
         player_data = await get_player(ctx, ctx.author.id)
+        inventory = player_data['inventory']
         found_names = [poke['name'] for poke in user_pokemon]
         header = f'**{player_name}**,\nSelect Pokemon to sell.\n' + wrap(f'**100**\ua750 Normal | **600**\ua750 Legendary {STAR} | **1000**\ua750 Mythical {GLOWING_STAR}', spacer, sep='\n')
         options = []
@@ -480,9 +462,8 @@ class Pokemon(Menus):
                 total += 100
             await ctx.con.execute("""DELETE FROM found WHERE id=$1""", mon['id'])
             sold.append("**{}**{}".format(mon['name'], f' *x{count}*' if count > 1 else ''))
-        player_data['inventory']['money'] += total
-        await ctx.con.execute("""UPDATE trainers SET inventory=$1 
-                                 WHERE user_id=$2""", player_data['inventory'], ctx.author.id)
+            inventory['money'] += total
+        await set_inventory(ctx, ctx.author.id, inventory)
         await ctx.send(f'{player_name} sold the following for {total}\ua750:\n' + '\n'.join(sold), delete_after=60)
 
 ###################
