@@ -8,11 +8,9 @@
 * **[MadWookie]** - *Creative Project Lead*
 * **[mikevb1]** - *Lead Developer*
 * **[Tyler]** - *Developer*
-* **[Mike Tung]** - *Advisor*
 * **randomdice101** - *Researcher*
 * **Everyone from USG who helped by giving us suggestions and ideas**
 
 [MadWookie]: https://github.com/MadWookie
 [mikevb1]: https://github.com/mikevb1
 [Tyler]: https://github.com/TheTrain2000
-[Mike Tung]: https://github.com/seekheart
