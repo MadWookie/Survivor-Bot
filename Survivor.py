@@ -125,7 +125,7 @@ for ext in initial_extensions:
     try:
         bot.load_extension(ext)
     except Exception as e:
-        print('Failed loading cog {ext} on startup.')
+        print(f'Failed loading cog {ext} on startup.')
         print(e)
 
 
