@@ -666,12 +666,12 @@ class Pokemon(Menus):
         for selections, found, member in zip(selected, (a_found, b_found), (author, user)):
             for mon in [k for k, v in groupby(selections)]:
                 if selections.count(mon) > found.count(mon):
-                    await ctx.send(f'{member.name} selected more {self.poke_info[mon]["name"]} than they have.',
+                    await ctx.send(f'{member.name} selected more {mon["name"]} than they have.',
                                    delete_after=60)
                     return
-        accept_msg = await ctx.send("**{.name}**'s offer: {}\n**{.name}**'s offer: {}\nDo you accept?".format(
-            author, ', '.join(fmt.format(mon, self.poke_info[mon], '') for mon in selected[0]) or 'None',
-            user, ', '.join(fmt.format(mon, self.poke_info[mon], '') for mon in selected[1]) or 'None'))
+        accept_msg = await ctx.send("**{}**'s offer: {}\n**{}**'s offer: {}\nDo you accept?".format(
+            author, ', '.join(fmt.format(mon['num'], mon['name'], '', '') for mon in selected[0]) or 'None',
+            user, ', '.join(fmt.format(mon['num'], mon['name'], '', '') for mon in selected[1]) or 'None'))
         await accept_msg.add_reaction(DONE)
         await accept_msg.add_reaction(CANCEL)
         accepted = {author.id: None, user.id: None}
@@ -714,17 +714,16 @@ class Pokemon(Menus):
             if not accepted[u.id]:
                 await ctx.send(f'**{u.name}** declined the trade.', delete_after=60)
                 return
+        await get_player(ctx, ctx.author.id)
+        await get_player(ctx, user.id)
         for mon in selected[0]:
-            a_data[mon] -= 1
-            if not a_data[mon]:
-                a_data.pop(mon)
-            b_data[mon] += 1
+            await ctx.con.execute("""
+                          UPDATE found SET owner=$1 WHERE id=$2 AND owner=$3
+                          """, user.id, mon['id'], ctx.author.id)
         for mon in selected[1]:
-            b_data[mon] -= 1
-            if not b_data[mon]:
-                b_data.pop(mon)
-            a_data[mon] += 1
-        await self.found_pokemon.save()
+            await ctx.con.execute("""
+                          UPDATE found SET owner=$1 WHERE id=$2 AND owner=$3
+                          """, ctx.author.id, mon['id'], user.id)
         await ctx.send(f'Completed trade between **{author.name}** and **{user.name}**.', delete_after=60)
 
 
