@@ -132,9 +132,6 @@ async def get_evolution_chain(ctx, num):
     start = '\N{BALLOT BOX WITH CHECK}'.join(r['name'] for r in chain[:cur_ind + 1])
     after = chain[cur_ind + 1:]
     chains = []
-    # Option 1
-    # A -> B -> D
-    # A -> C -> E
     if not after:
         chains.append(start)
     else:
@@ -146,11 +143,6 @@ async def get_evolution_chain(ctx, num):
                 for name in m['next']:
                     chains.append(ARROWS[1].join((start, m['name'], name)))
     return '\n'.join(chains)
-    # Option 2
-    # A -> B | C -> D | E
-    # return ARROWS[1].join((start,
-    #                        ' | '.join(nxt['name'] for nxt in after),
-    #                        ' | '.join(last for nxt in after for last in nxt['next'])))
 
 
 async def get_player(ctx, uid):
@@ -285,7 +277,7 @@ class Pokemon(Menus):
             form_id = mon['form_id']
         shine = SPARKLES if shiny else ''
         embed = discord.Embed(description=f'A wild {shine}**{form}{mon["name"]}**{star} appears!'
-                                          f'\nUse a {balls[0]} to catch it!')
+                              f'\nUse a {balls[0]} to catch it!')
         embed.color = await get_pokemon_color(ctx, mon=mon)
         embed.set_author(icon_url=ctx.author.avatar_url, name=player_name)
         embed.set_image(url='attachment://pokemon.gif')
@@ -406,7 +398,7 @@ class Pokemon(Menus):
             info = await get_pokemon(ctx, query)
 
             embed = await self.get_pokedex_embed(ctx, info)
-            await ctx.send(embed=embed, file=discord.File(open(image, 'rb'), filename='pokemon.gif'), delete_after=120)
+            await ctx.send(embed=embed, file=discord.File(image, filename='pokemon.gif'), delete_after=120)
         elif isinstance(query, str):
             pokemon_records = await ctx.con.fetch("""
                                           SELECT name FROM pokemon
@@ -422,7 +414,7 @@ class Pokemon(Menus):
             image = self.image_path.format('shiny' if 'shiny' in query.lower() else 'normal', info['num'], 0)
 
             embed = await self.get_pokedex_embed(ctx, info)
-            await ctx.send(embed=embed, file=discord.File(open(image, 'rb'), filename='pokemon.gif'), delete_after=120)
+            await ctx.send(embed=embed, file=discord.File(image, filename='pokemon.gif'), delete_after=120)
 
     @checks.db
     @pokedex.command(name='shiny')
@@ -481,7 +473,7 @@ class Pokemon(Menus):
             info = await get_pokemon(ctx, query)
 
             embed = await self.get_pokedex_embed(ctx, info, shiny=True)
-            await ctx.send(embed=embed, file=discord.File(open(image, 'rb'), filename='pokemon.gif'), delete_after=120)
+            await ctx.send(embed=embed, file=discord.File(image, filename='pokemon.gif'), delete_after=120)
         elif isinstance(query, str):
             pokemon_records = await ctx.con.fetch("""
                                           SELECT name FROM pokemon
@@ -497,7 +489,7 @@ class Pokemon(Menus):
             image = self.image_path.format('shiny', info['num'], 0)
 
             embed = await self.get_pokedex_embed(ctx, info, shiny=True)
-            await ctx.send(embed=embed, file=discord.File(open(image, 'rb'), filename='pokemon.gif'), delete_after=120)
+            await ctx.send(embed=embed, file=discord.File(image, filename='pokemon.gif'), delete_after=120)
 
 ###################
 #                 #
