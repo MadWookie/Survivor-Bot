@@ -5,6 +5,8 @@ import logging
 from discord.ext import commands
 import discord
 
+from utils import checks
+
 
 def pin_check(m):
     return not m.pinned
