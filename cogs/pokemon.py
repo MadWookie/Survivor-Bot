@@ -620,6 +620,7 @@ class Pokemon(Menus):
 #                 #
 ###################
 
+    @checks.db
     @commands.command()
     @pokechannel()
     async def trade(self, ctx, user: discord.Member):
@@ -629,22 +630,31 @@ class Pokemon(Menus):
             await ctx.send('You cannot trade with yourself.', delete_after=60)
             return
         channel = ctx.channel
-        cancelled = '**{.name}** cancelled the trade.'
-        fmt = '**{}.** {[name]}{}{}'
-        a_data = self.get_player(author.id)['pokemon']
-        a_found = {k: v for k, v in a_data.items() if v}
-        a_sorted = sorted(a_found)
-        a_names = [self.poke_info[num]['name'] for num in a_sorted]
-        a_options = [fmt.format(mon, self.poke_info[mon], GLOWING_STAR if self.poke_info[mon]['mythical']
-                                else STAR if self.poke_info[mon]['legendary'] else '', f' *x{a_found[mon]}*'
-                                if a_found[mon] > 1 else '') for mon in a_sorted]
-        b_data = self.get_player(user.id)['pokemon']
-        b_found = {k: v for k, v in b_data.items() if v}
-        b_sorted = sorted(b_found)
-        b_names = [self.poke_info[num]['name'] for num in b_sorted]
-        b_options = [fmt.format(mon, self.poke_info[mon], GLOWING_STAR if self.poke_info[mon]['mythical']
-                                else STAR if self.poke_info[mon]['legendary'] else '', f' *x{b_found[mon]}*'
-                                if b_found[mon] > 1 else '') for mon in b_sorted]
+        cancelled = '**{}** cancelled the trade.'
+        fmt = '**{}.** {}{}{}'
+        a_found = await get_player_pokemon(ctx, author.id)
+        a_sorted = sorted(a_found, key=lambda x: x['num'])
+        a_names = [found['name'] for found in a_sorted]
+        a_options = []
+        for mon in [k for k, v in groupby(a_sorted)]:
+            legendary = await is_legendary(ctx, mon['num'], ctx.author.id, mon['id'])
+            mythical = await is_mythical(ctx, mon['num'], ctx.author.id, mon['id'])
+            count = a_sorted.count(mon)
+            out = fmt.format(mon['id'], mon['name'], GLOWING_STAR if mythical else STAR if legendary else '',
+                             f' *x{count}' if count > 1 else '')
+            a_options.append(out)
+
+        b_found = await get_player_pokemon(ctx, user.id)
+        b_sorted = sorted(b_found, key=lambda x: x['num'])
+        b_names = [found['name'] for found in b_sorted]
+        b_options = []
+        for mon in [k for k, v in groupby(b_sorted)]:
+            legendary = await is_legendary(ctx, mon['num'], ctx.author.id, mon['id'])
+            mythical = await is_mythical(ctx, mon['num'], ctx.author.id, mon['id'])
+            count = b_sorted.count(mon)
+            out = fmt.format(mon['id'], mon['name'], GLOWING_STAR if mythical else STAR if legendary else '',
+                             f' *x{count}' if count > 1 else '')
+            b_options.append(out)
         header = '**{.name}**,\nSelect the pokemon you wish to trade with **{.name}**'
         selected = await asyncio.gather(self.reaction_menu(a_options, author, channel, -1, code=False,
                                                            header=header.format(author, user), return_from=a_sorted,
@@ -663,8 +673,8 @@ class Pokemon(Menus):
             await ctx.send(cancelled.format(user), delete_after=60)
             return
         for selections, found, member in zip(selected, (a_found, b_found), (author, user)):
-            for mon in set(selections):
-                if selections.count(mon) > found[mon]:
+            for mon in [k for k, v in groupby(selections)]:
+                if selections.count(mon) > found.count(mon):
                     await ctx.send(f'{member.name} selected more {self.poke_info[mon]["name"]} than they have.',
                                    delete_after=60)
                     return
