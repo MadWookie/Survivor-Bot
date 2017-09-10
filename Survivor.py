@@ -8,7 +8,6 @@ import time
 from discord.ext.commands.view import StringView
 from discord.ext import commands
 
-from utils.json import List
 from utils import errors
 import config
 
@@ -120,7 +119,6 @@ initial_extensions = [f'cogs.{ext}' for ext in
 description = 'Survivor Bot - Created by MadWookie & sgtlaggy.'
 bot = SurvivorBot(command_prefix=['!'], description=description, formatter=formatter, request_offline_members=True)
 bot.ready = False
-bot.plonks = List('plonk', loop=bot.loop, sync_load=True)
 bot.db_pool = bot.loop.run_until_complete(asyncpg.create_pool(config.dsn, init=set_codecs))
 
 for ext in initial_extensions:
