@@ -330,7 +330,7 @@ class Pokemon(Menus):
 #                 #
 ###################
 
-    async def get_pokedex_embed(self, ctx, mon):
+    async def get_pokedex_embed(self, ctx, mon, shiny=False):
         pokedex = self.bot.get_emoji_named('Pokedex')
         evo = await get_evolution_chain(ctx, mon['num'])
         embed = discord.Embed(description=wrap(f"__{mon['name']}{get_star(mon)}'s Information__", pokedex) +
@@ -474,7 +474,7 @@ class Pokemon(Menus):
             image = self.image_path.format('shiny', query, 0)
             info = await get_pokemon(ctx, query)
 
-            embed = await self.get_pokedex_embed(ctx, info)
+            embed = await self.get_pokedex_embed(ctx, info, shiny=True)
             await ctx.send(embed=embed, file=discord.File(open(image, 'rb'), filename='pokemon.gif'), delete_after=120)
         elif isinstance(query, str):
             pokemon_records = await ctx.con.fetch("""
@@ -490,7 +490,7 @@ class Pokemon(Menus):
             info = await get_pokemon(ctx, pokemon_number)
             image = self.image_path.format('shiny', info['num'], 0)
 
-            embed = await self.get_pokedex_embed(ctx, info)
+            embed = await self.get_pokedex_embed(ctx, info, shiny=True)
             await ctx.send(embed=embed, file=discord.File(open(image, 'rb'), filename='pokemon.gif'), delete_after=120)
 
 ###################
