@@ -30,7 +30,7 @@ def xp_to_level(level):
 
 
 def level_from_xp(xp):
-    return int((xp * 2) ** (1/3))
+    return int((xp * 2) ** (1 / 3))
 
 
 def catch(mon, ball):
@@ -78,6 +78,7 @@ async def get_pokemon_color(ctx, num=0, *, mon: asyncpg.Record=None):
         return round(sum(color['color'] for color in colors) / len(colors))
     return 0
 
+
 async def set_inventory(ctx, uid, inv):
     return await ctx.con.execute('''
         UPDATE trainers SET inventory = $1 WHERE user_id = $2
@@ -91,6 +92,7 @@ async def get_found_counts(ctx, uid):
         (SELECT form FROM pokemon WHERE pokemon.num = found.num AND pokemon.form_id = found.form_id)
         FROM found WHERE owner = $1 GROUP BY num, form_id ORDER BY num, form_id
         ''', uid, GLOWING_STAR, STAR)
+
 
 async def get_rewards(ctx):
     return await ctx.con.fetch('''
@@ -150,6 +152,7 @@ async def get_evolution_chain(ctx, num):
     #                        ' | '.join(nxt['name'] for nxt in after),
     #                        ' | '.join(last for nxt in after for last in nxt['next'])))
 
+
 async def get_player(ctx, uid):
     player_data = await ctx.con.fetchrow("""
                                 INSERT INTO trainers (user_id) VALUES ($1)
@@ -158,11 +161,13 @@ async def get_player(ctx, uid):
                                 """, uid)
     return player_data
 
+
 async def get_player_pokemon(ctx, uid):
     player_pokemon = await ctx.con.fetch("""
                                    SELECT * FROM found WHERE owner=$1
                                    """, uid)
     return player_pokemon
+
 
 async def get_pokemon(ctx, num):
     mon_info = await ctx.con.fetchrow("""
@@ -170,16 +175,18 @@ async def get_pokemon(ctx, num):
                              """, num)
     return mon_info
 
+
 async def is_legendary(ctx, num, uid, id):
     count = await ctx.con.fetch("""
-                          SELECT COUNT(*) FROM found WHERE owner=$1 AND id=$2 AND num=ANY(SELECT num 
+                          SELECT COUNT(*) FROM found WHERE owner=$1 AND id=$2 AND num=ANY(SELECT num
                           FROM pokemon WHERE num=$3 AND legendary=True)
                           """, uid, id, num)
     return count[0]['count'] > 0
 
+
 async def is_mythical(ctx, num, uid, id):
     count = await ctx.con.fetch("""
-                          SELECT COUNT(*) FROM found WHERE owner=$1 AND id=$2 AND num=ANY(SELECT num 
+                          SELECT COUNT(*) FROM found WHERE owner=$1 AND id=$2 AND num=ANY(SELECT num
                           FROM pokemon WHERE num=$3 AND mythical=True)
                           """, uid, id, num)
     return count[0]['count'] > 0
@@ -257,7 +264,7 @@ class Pokemon(Menus):
         mon = await ctx.con.fetchrow('''
             SELECT num, name, form, form_id, type, legendary, mythical, rand(4294967295) as personality,
             (SELECT form FROM pokemon p2 WHERE p2.num = pokemon.num AND p2.form_id = 0) AS base_form,
-            (SELECT ARRAY(SELECT color FROM types WHERE types.name = ANY(type))) AS colors 
+            (SELECT ARRAY(SELECT color FROM types WHERE types.name = ANY(type))) AS colors
             FROM pokemon ORDER BY random() LIMIT 1''')
         trainer = await get_player(ctx, player_id)
         inv = trainer['inventory']
@@ -333,8 +340,8 @@ class Pokemon(Menus):
         pokedex = self.bot.get_emoji_named('Pokedex')
         evo = await get_evolution_chain(ctx, mon['num'])
         embed = discord.Embed(description=wrap(f"__{mon['name']}{get_star(mon)}'s Information__", pokedex) +
-                                          f"\n**ID:** {mon['num']}\n**Type:** {' & '.join(mon['type'])}"
-                                          f"\n**Evolutions:**\n {evo}")
+                              f"\n**ID:** {mon['num']}\n**Type:** {' & '.join(mon['type'])}"
+                              f"\n**Evolutions:**\n {evo}")
         embed.color = await get_pokemon_color(ctx, mon=mon)
         embed.set_image(url='attachment://pokemon.gif')
 
