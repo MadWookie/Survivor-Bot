@@ -330,6 +330,17 @@ class Pokemon(Menus):
 #                 #
 ###################
 
+    async def get_pokedex_embed(self, ctx, mon):
+        pokedex = self.bot.get_emoji_named('Pokedex')
+        evo = await get_evolution_chain(ctx, mon['num'])
+        embed = discord.Embed(description=wrap(f"__{mon['name']}{get_star(mon)}'s Information__", pokedex) +
+                                          f"\n**ID:** {mon['num']}\n**Type:** {' & '.join(mon['type'])}"
+                                          f"\n**Evolutions:**\n {evo}")
+        embed.color = await get_pokemon_color(ctx, mon=mon)
+        embed.set_image(url='attachment://pokemon.gif')
+
+        return embed
+
     @checks.db
     @commands.group(invoke_without_command=True)
     @pokechannel()
@@ -388,12 +399,7 @@ class Pokemon(Menus):
             image = self.image_path.format('normal', query, 0)
             info = await get_pokemon(ctx, query)
 
-            evo = await get_evolution_chain(ctx, info['num'])
-            embed = discord.Embed(description=wrap(f"__{info['name']}{get_star(info)}'s Information__", pokedex) +
-                                              f"\n**ID:** {info['num']}"
-                                              f"\n**Type:** {' & '.join(info['type'])}\n**Evolutions:**\n {evo}")
-            embed.color = await get_pokemon_color(ctx, mon=info)
-            embed.set_image(url='attachment://pokemon.gif')
+            embed = await self.get_pokedex_embed(ctx, info)
             await ctx.send(embed=embed, file=discord.File(open(image, 'rb'), filename='pokemon.gif'), delete_after=120)
         elif isinstance(query, str):
             pokemon_records = await ctx.con.fetch("""
@@ -409,12 +415,7 @@ class Pokemon(Menus):
             info = await get_pokemon(ctx, pokemon_number)
             image = self.image_path.format('shiny' if 'shiny' in query.lower() else 'normal', info['num'], 0)
 
-            evo = await get_evolution_chain(ctx, info['num'])
-            embed = discord.Embed(description=wrap(f"__{info['name']}{get_star(info)}'s Information__", pokedex) +
-                                              f"\n**ID:** {info['num']}"
-                                              f"\n**Type:** {' & '.join(info['type'])}\n**Evolutions:**\n {evo}")
-            embed.color = await get_pokemon_color(ctx, mon=info)
-            embed.set_image(url='attachment://pokemon.gif')
+            embed = await self.get_pokedex_embed(ctx, info)
             await ctx.send(embed=embed, file=discord.File(open(image, 'rb'), filename='pokemon.gif'), delete_after=120)
 
     @checks.db
@@ -473,12 +474,7 @@ class Pokemon(Menus):
             image = self.image_path.format('shiny', query, 0)
             info = await get_pokemon(ctx, query)
 
-            evo = await get_evolution_chain(ctx, info['num'])
-            embed = discord.Embed(description=wrap(f"__{info['name']}{get_star(info)}'s Information__", pokedex) +
-                                              f"\n**ID:** {info['num']}\n**Type:** {' & '.join(info['type'])}"
-                                              f"\n**Evolutions:**\n {evo}")
-            embed.color = await get_pokemon_color(ctx, mon=info)
-            embed.set_image(url='attachment://pokemon.gif')
+            embed = await self.get_pokedex_embed(ctx, info)
             await ctx.send(embed=embed, file=discord.File(open(image, 'rb'), filename='pokemon.gif'), delete_after=120)
         elif isinstance(query, str):
             pokemon_records = await ctx.con.fetch("""
@@ -494,12 +490,7 @@ class Pokemon(Menus):
             info = await get_pokemon(ctx, pokemon_number)
             image = self.image_path.format('shiny', info['num'], 0)
 
-            evo = await get_evolution_chain(ctx, info['num'])
-            embed = discord.Embed(description=wrap(f"__{info['name']}{get_star(info)}'s Information__", pokedex) +
-                                              f"\n**ID:** {info['num']}"
-                                              f"\n**Type:** {' & '.join(info['type'])}\n**Evolutions:**\n {evo}")
-            embed.color = await get_pokemon_color(ctx, mon=info)
-            embed.set_image(url='attachment://pokemon.gif')
+            embed = await self.get_pokedex_embed(ctx, info)
             await ctx.send(embed=embed, file=discord.File(open(image, 'rb'), filename='pokemon.gif'), delete_after=120)
 
 ###################
