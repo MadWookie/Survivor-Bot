@@ -168,20 +168,18 @@ async def get_pokemon(ctx, num):
     return mon_info
 
 
-async def is_legendary(ctx, num, uid, id):
-    count = await ctx.con.fetch("""
-                          SELECT COUNT(*) FROM found WHERE owner=$1 AND id=$2 AND num=ANY(SELECT num
-                          FROM pokemon WHERE num=$3 AND legendary=True)
-                          """, uid, id, num)
-    return count[0]['count'] > 0
+async def is_legendary(ctx, num):
+    legendary = await ctx.con.fetchval("""
+                               SELECT EXISTS(SELECT * FROM pokemon WHERE num=$1 AND legendary AND NOT mythical)
+                               """, num)
+    return legendary
 
 
-async def is_mythical(ctx, num, uid, id):
-    count = await ctx.con.fetch("""
-                          SELECT COUNT(*) FROM found WHERE owner=$1 AND id=$2 AND num=ANY(SELECT num
-                          FROM pokemon WHERE num=$3 AND mythical=True)
-                          """, uid, id, num)
-    return count[0]['count'] > 0
+async def is_mythical(ctx, num):
+    mythical = await ctx.con.fetchval("""
+                              SELECT EXISTS(SELECT * FROM pokemon WHERE num=$1 and mythical)
+                              """, num)
+    return mythical
 
 
 class Pokemon(Menus):
@@ -358,10 +356,10 @@ class Pokemon(Menus):
             remaining = total_pokemon - total_found
 
             legendaries = await ctx.con.fetchval("""
-                                        SELECT COUNT(*) FROM found WHERE owner=$1 AND num=ANY((SELECT num FROM pokemon WHERE legendary=True))
+                                        SELECT COUNT(*) FROM found WHERE owner=$1 AND num=ANY((SELECT num FROM pokemon WHERE legendary AND NOT mythical))
                                         """, query.id)
             mythics = await ctx.con.fetchval("""
-                                    SELECT COUNT(*) FROM found WHERE owner=$1 AND num=ANY((SELECT num FROM pokemon WHERE mythical=True))
+                                    SELECT COUNT(*) FROM found WHERE owner=$1 AND num=ANY((SELECT num FROM pokemon WHERE mythical))
                                     """, query.id)
 
             header = f"__{query.name}'s Pokedex__"
@@ -383,8 +381,8 @@ class Pokemon(Menus):
 
             options = []
             for mon in found:
-                mythical = await is_mythical(ctx, mon['num'], ctx.author.id, mon['id'])
-                legendary = await is_legendary(ctx, mon['num'], ctx.author.id, mon['id'])
+                mythical = await is_mythical(ctx, mon['num'])
+                legendary = await is_legendary(ctx, mon['num'])
                 count = found.count(mon)
                 options.append("**{}.** {}{}{}".format(
                     mon['num'], mon['name'], GLOWING_STAR if mythical else STAR if legendary else '', count if
@@ -458,8 +456,8 @@ class Pokemon(Menus):
             header = '\n'.join([header, 'Use **!pokedex** ``#`` to take a closer look at your Pokémon!', key, counts])
             options = []
             for mon in found:
-                mythical = await is_mythical(ctx, mon['num'], ctx.author.id, mon['id'])
-                legendary = await is_legendary(ctx, mon['num'], ctx.author.id, mon['id'])
+                mythical = await is_mythical(ctx, mon['num'])
+                legendary = await is_legendary(ctx, mon['num'])
                 count = found.count(mon)
                 options.append("**{}.** {}{}{}".format(
                     mon['num'], mon['name'], GLOWING_STAR if mythical else STAR if legendary else '', count if
@@ -572,8 +570,8 @@ class Pokemon(Menus):
                                                                          f' Mythical {GLOWING_STAR}', spacer, sep='\n')
         options = []
         for mon in user_pokemon:
-            mythical = await is_mythical(ctx, mon['num'], ctx.author.id, mon['id'])
-            legendary = await is_legendary(ctx, mon['num'], ctx.author.id, mon['id'])
+            mythical = await is_mythical(ctx, mon['num'])
+            legendary = await is_legendary(ctx, mon['num'])
             count = user_pokemon.count(mon)
             options.append("**{}.** {}{}{}".format(
                 mon['num'], mon['name'], GLOWING_STAR if mythical else STAR if legendary else '', count if
@@ -589,9 +587,9 @@ class Pokemon(Menus):
         total = 0
         for mon in [k for k, v in groupby(sorted(selected))]:
             count = selected.count(mon)
-            if await is_mythical(ctx, mon['num'], ctx.author.id, mon['id']):
+            if await is_mythical(ctx, mon['num']):
                 total += 1000
-            elif await is_legendary(ctx, mon['num'], ctx.author.id, mon['id']):
+            elif await is_legendary(ctx, mon['num']):
                 total += 600
             else:
                 total += 100
@@ -626,8 +624,8 @@ class Pokemon(Menus):
         a_names = [found['name'] for found in a_sorted]
         a_options = []
         for mon in [k for k, v in groupby(a_sorted)]:
-            legendary = await is_legendary(ctx, mon['num'], ctx.author.id, mon['id'])
-            mythical = await is_mythical(ctx, mon['num'], ctx.author.id, mon['id'])
+            legendary = await is_legendary(ctx, mon['num'])
+            mythical = await is_mythical(ctx, mon['num'])
             count = a_sorted.count(mon)
             out = fmt.format(mon['id'], mon['name'], GLOWING_STAR if mythical else STAR if legendary else '',
                              f' *x{count}' if count > 1 else '')
@@ -638,8 +636,8 @@ class Pokemon(Menus):
         b_names = [found['name'] for found in b_sorted]
         b_options = []
         for mon in [k for k, v in groupby(b_sorted)]:
-            legendary = await is_legendary(ctx, mon['num'], ctx.author.id, mon['id'])
-            mythical = await is_mythical(ctx, mon['num'], ctx.author.id, mon['id'])
+            legendary = await is_legendary(ctx, mon['num'])
+            mythical = await is_mythical(ctx, mon['num'])
             count = b_sorted.count(mon)
             out = fmt.format(mon['id'], mon['name'], GLOWING_STAR if mythical else STAR if legendary else '',
                              f' *x{count}' if count > 1 else '')
