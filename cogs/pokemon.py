@@ -377,7 +377,7 @@ class Pokemon(Menus):
             key = f'{ARROWS[0]} Click to go back a page.\n{ARROWS[1]} Click to go forward a page.\n{CANCEL}' \
                   f' Click to exit your pokedex.'
 
-            counts = wrap(f'**{total_found}** collected out of {remaining} total Pokemon.'
+            counts = wrap(f'**{total_found}** collected out of {total_pokemon} total Pokemon. {remaining} left to go!'
                           f'\n**{total_found - mythics - legendaries}** Normal | **{legendaries}** Legendary {STAR}'
                           f' | **{mythics}** Mythical {GLOWING_STAR}', spacer, sep='\n')
 
@@ -453,7 +453,7 @@ class Pokemon(Menus):
             key = f'{ARROWS[0]} Click to go back a page.\n{ARROWS[1]} Click to go forward a page.' \
                   f'\n{CANCEL} Click to exit your pokedex.'
 
-            counts = wrap(f'**{total_found}** collected out of {remaining} total Pokemon.'
+            counts = wrap(f'**{total_found}** collected out of {total_pokemon} total Pokemon. {remaining} left to go!'
                           f'\n**{total_found - mythics - legendaries}** Normal | **{legendaries}** Legendary {STAR}'
                           f' | **{mythics}** Mythical {GLOWING_STAR}', spacer, sep='\n')
 
