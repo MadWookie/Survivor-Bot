@@ -277,7 +277,7 @@ class Pokemon(Menus):
                 form = ''
             form_id = mon['form_id']
         shine = SPARKLES if shiny else ''
-        embed = discord.Embed(description=f'A wild {shine}**{form}{mon["name"]}**{star} appears!'
+        embed = discord.Embed(description=f'A wild **{form}{mon["name"]}**{star}{shine} appears!'
                               f'\nUse a {balls[0]} to catch it!')
         embed.color = await get_pokemon_color(ctx, mon=mon)
         embed.set_author(icon_url=ctx.author.avatar_url, name=player_name)
@@ -297,14 +297,14 @@ class Pokemon(Menus):
                         user == ctx.author)
             reaction, _ = await self.bot.wait_for('reaction_add', check=check, timeout=20)
         except asyncio.TimeoutError:
-            embed.description = f'{shine}**{form}{mon["name"]}**{star} escaped because you took too long! :stopwatch:'
+            embed.description = f'**{form}{mon["name"]}**{star}{shine} escaped because you took too long! :stopwatch:'
             await msg.edit(embed=embed, delete_after=60)
             await msg.clear_reactions()
             return
         await msg.clear_reactions()
         if reaction.emoji in balls:
             if catch(mon, balls.index(reaction.emoji)):
-                embed.description = wrap(f'You caught {shine}**{form}{mon["name"]}**{star} successfully!',
+                embed.description = wrap(f'You caught **{form}{mon["name"]}**{star}{shine} successfully!',
                                          reaction.emoji)
                 await msg.edit(embed=embed, delete_after=60)
                 level = await ctx.con.fetchval('''
@@ -315,12 +315,12 @@ class Pokemon(Menus):
                         INSERT INTO found (num, name, form_id, ball, exp, owner, original_owner, personality) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
                         ''', mon['num'], mon['name'], form_id, reaction.emoji.name, xp_to_level(level), player_id, player_id, mon['personality'])
             else:
-                embed.description = f'{shine}**{form}{mon["name"]}**{star} has escaped!'
+                embed.description = f'**{form}{mon["name"]}**{star}{shine} has escaped!'
                 await msg.edit(embed=embed, delete_after=60)
             inv[reaction.emoji.name] -= 1
             await set_inventory(ctx, player_id, inv)
         else:
-            embed.description = wrap(f'You ran away from {shine}**{form}{mon["name"]}**{star}!', ':chicken:')
+            embed.description = wrap(f'You ran away from **{form}{mon["name"]}**{star}{shine}!', ':chicken:')
             await msg.edit(embed=embed, delete_after=60)
 
 ###################
@@ -334,7 +334,7 @@ class Pokemon(Menus):
         evo = await get_evolution_chain(ctx, mon['num'])
         embed = discord.Embed(description=wrap(f"__{mon['name']}{get_star(mon)}'s Information__", pokedex) +
                               f"\n**ID:** {mon['num']}\n**Type:** {' & '.join(mon['type'])}"
-                              f"\n**Evolutions:**\n {evo}")
+                              f"\n**Evolutions:**\n{evo}")
         embed.color = await get_pokemon_color(ctx, mon=mon)
         embed.set_image(url='attachment://pokemon.gif')
 
@@ -359,7 +359,6 @@ class Pokemon(Menus):
                                  WHERE user_id=$1 ORDER BY s.num
                                  """, query.id)
             total_found = len(seen)
-            remaining = total_pokemon - total_found
 
             legendaries = sum(1 for m in seen if m['legendary'] and not m['mythical'])
             mythicals = sum(1 for m in seen if m['mythical'])
@@ -376,10 +375,10 @@ class Pokemon(Menus):
             key = f'{ARROWS[0]} Click to go back a page.\n{ARROWS[1]} Click to go forward a page.\n{CANCEL}' \
                   f' Click to exit your pokedex.'
 
-            counts = wrap(f'**{total_found}** collected out of {total_pokemon} total Pokemon. {remaining} left to go!'
+            counts = wrap(f'**{total_found}** encountered out of {total_pokemon} total Pokemon.'
                           f'\n**{total_found - mythicals - legendaries}** Normal | **{legendaries}** Legendary {STAR}'
                           f' | **{mythicals}** Mythical {GLOWING_STAR}', spacer, sep='\n')
-            header = '\n'.join([header, 'Use **!pokedex** ``#`` to take a closer look at your Pokémon!', key, counts])
+            header = '\n'.join([header, 'Use **!pc** to see which Pokémon you own!\nUse **!pokedex** ``#`` to take a closer look at a Pokémon!', key, counts])
 
             options = []
             last = 1
