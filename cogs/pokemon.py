@@ -14,6 +14,9 @@ from utils import errors, checks
 from utils.utils import wrap
 
 
+converter = commands.MemberConverter()
+
+
 pokeballs = ('Pokeball', 'Greatball', 'Ultraball', 'Masterball')
 
 
@@ -45,16 +48,16 @@ def catch(mon, ball):
     return False
 
 
-def poke_converter(ctx, user_or_num):
+async def poke_converter(ctx, user_or_num):
     if user_or_num is None:
         return None
-    match = re.match(r'<@!?([0-9]*)>$', user_or_num)
-    if match is not None:
-        return ctx.guild.get_member(int(match.group(1)))
-    if user_or_num.isdigit():
-        return int(user_or_num)
-    else:
-        return user_or_num
+    try:
+        return await converter.convert(ctx, user_or_num)
+    except commands.BadArgument:
+        try:
+            return int(user_or_num)
+        except ValueError:
+            return user_or_num
 
 
 def is_shiny(trainer: asyncpg.Record, personality: int):
@@ -344,7 +347,7 @@ class Pokemon(Menus):
         """Shows you your Pokedex through a reaction menu."""
         pokedex = self.bot.get_emoji_named('Pokedex')
 
-        query = poke_converter(ctx, query) or ctx.author
+        query = await poke_converter(ctx, query) or ctx.author
 
         total_pokemon = await ctx.con.fetchval("""
                                       SELECT COUNT(DISTINCT num) FROM pokemon
