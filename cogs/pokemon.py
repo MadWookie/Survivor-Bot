@@ -3,7 +3,6 @@ from itertools import groupby
 from random import randint
 import asyncpg
 import asyncio
-import re
 
 from discord.ext import commands
 import aiohttp
@@ -332,51 +331,54 @@ class Pokemon(Menus):
     @checks.db
     @commands.group(invoke_without_command=True)
     @pokechannel()
-    async def pc(self, ctx, *, query=None):
+    async def pc(self, ctx, *, member: discord.Member = None):
         """Opens your PC."""
-        query = poke_converter(ctx, query) or ctx.author
+        member = member or ctx.author
 
         total_pokemon = await ctx.con.fetchval("""
                                       SELECT COUNT(DISTINCT num) FROM pokemon
                                       """)
-        if isinstance(query, discord.Member):
-            found = await get_player_pokemon(ctx, query.id)
-            found_sorted = sorted([mon['name'] for mon in found])
-            total_found = len(set(found_sorted))
-            remaining = total_pokemon - total_found
+        found = await ctx.con.fetch("""
+                             WITH p AS (SELECT num, name, form, form_id, legendary, mythical FROM pokemon)
+                             SELECT f.num, f.name, p.name AS base_name, p.form, legendary, mythical FROM found f
+                             JOIN p ON p.num = f.num AND p.form_id = f.form_id
+                             WHERE owner = $1 ORDER BY f.num, f.form_id;
+                             """, member.id)
+        total_found = len(found)
+        remaining = total_pokemon - total_found
 
-            legendaries = await ctx.con.fetchval("""
-                                        SELECT COUNT(*) FROM found WHERE owner=$1 AND num=ANY((SELECT num FROM pokemon WHERE legendary=True))
-                                        """, query.id)
-            mythics = await ctx.con.fetchval("""
-                                    SELECT COUNT(*) FROM found WHERE owner=$1 AND num=ANY((SELECT num FROM pokemon WHERE mythical=True))
-                                    """, query.id)
+        legendaries = await ctx.con.fetchval("""
+                                    SELECT COUNT(*) FROM found WHERE owner=$1 AND num=ANY((SELECT num FROM pokemon WHERE legendary=True))
+                                    """, member.id)
+        mythics = await ctx.con.fetchval("""
+                                SELECT COUNT(*) FROM found WHERE owner=$1 AND num=ANY((SELECT num FROM pokemon WHERE mythical=True))
+                                """, member.id)
 
-            header = f"__{query.name}'s PC__"
-            if total_found == 0:
-                header += " __is empty.__"
-            if total_found == 0:
-                return await ctx.send(header, delete_after=60)
-            spacer = SPACER * 21
+        header = f"__{member.name}'s PC__"
+        if total_found == 0:
+            header += " __is empty.__"
+        if total_found == 0:
+            return await ctx.send(header, delete_after=60)
+        spacer = SPACER * 21
 
-            key = f'{ARROWS[0]} Click to go back a page.\n{ARROWS[1]} Click to go forward a page.\n{CANCEL}' \
-                  f' Click to exit your pc.'
+        key = f'{ARROWS[0]} Click to go back a page.\n{ARROWS[1]} Click to go forward a page.\n{CANCEL}' \
+              f' Click to exit your pc.'
 
-            counts = wrap(f'**{total_found}** collected out of {total_pokemon} total Pokemon. {remaining} left to go!'
-                          f'\n**{total_found - mythics - legendaries}** Normal | **{legendaries}** Legendary {STAR}'
-                          f' | **{mythics}** Mythical {GLOWING_STAR}', spacer, sep='\n')
+        counts = wrap(f'**{total_found}** collected out of {total_pokemon} total Pokemon. {remaining} left to go!'
+                      f'\n**{total_found - mythics - legendaries}** Normal | **{legendaries}** Legendary {STAR}'
+                      f' | **{mythics}** Mythical {GLOWING_STAR}', spacer, sep='\n')
 
-            header = '\n'.join([header, 'Use **!pokedex** to see which Pokémon you\'ve encountered!\nUse **!pokedex** ``#`` to take a closer look at a Pokémon!', key, counts])
+        header = '\n'.join([header, 'Use **!pokedex** to see which Pokémon you\'ve encountered!\nUse **!pokedex** ``#`` to take a closer look at a Pokémon!', key, counts])
 
-            options = []
-            for mon in found:
-                mythical = await is_mythical(ctx, mon['num'], ctx.author.id, mon['id'])
-                legendary = await is_legendary(ctx, mon['num'], ctx.author.id, mon['id'])
-                count = found.count(mon)
-                options.append("**{}.** {}{}{}".format(
-                    mon['num'], mon['name'], GLOWING_STAR if mythical else STAR if legendary else '', count if
-                    count > 1 else ''))
-            await self.reaction_menu(options, ctx.author, ctx.channel, 0, per_page=20, code=False, header=header)
+        options = []
+        for mon in found:
+            mythical = await is_mythical(ctx, mon['num'], ctx.author.id, mon['id'])
+            legendary = await is_legendary(ctx, mon['num'], ctx.author.id, mon['id'])
+            count = found.count(mon)
+            options.append("**{}.** {}{}{}".format(
+                mon['num'], mon['name'], GLOWING_STAR if mythical else STAR if legendary else '', count if
+                count > 1 else ''))
+        await self.embed_reaction_menu(options, ctx.author, ctx.channel, 0, per_page=20, code=False, header=header)
 
 ###################
 #                 #
@@ -398,27 +400,27 @@ class Pokemon(Menus):
     @checks.db
     @commands.group(invoke_without_command=True)
     @pokechannel()
-    async def pokedex(self, ctx, *, query=None):
+    async def pokedex(self, ctx, *, member=None):
         """Shows you your Pokedex through a reaction menu."""
         pokedex = self.bot.get_emoji_named('Pokedex')
 
-        query = await poke_converter(ctx, query) or ctx.author
+        member = await poke_converter(ctx, member) or ctx.author
 
         total_pokemon = await ctx.con.fetchval("""
                                       SELECT COUNT(DISTINCT num) FROM pokemon
                                       """)
-        if isinstance(query, discord.Member):
+        if isinstance(member, discord.Member):
             seen = await ctx.con.fetch("""
                                  WITH p AS (SELECT num, name, mythical, legendary FROM pokemon WHERE form_id = 0)
                                  SELECT s.num, name, mythical, legendary FROM seen s JOIN p ON s.num = p.num
                                  WHERE user_id=$1 ORDER BY s.num
-                                 """, query.id)
+                                 """, member.id)
             total_found = len(seen)
 
             legendaries = sum(1 for m in seen if m['legendary'] and not m['mythical'])
             mythicals = sum(1 for m in seen if m['mythical'])
 
-            header = f"__{query.name}'s Pokedex__"
+            header = f"__{member.name}'s Pokedex__"
             if total_found == 0:
                 header += " __is empty.__"
             header = wrap(header, pokedex)
@@ -436,27 +438,25 @@ class Pokemon(Menus):
             header = '\n'.join([header, 'Use **!pc** to see which Pokémon you own!\nUse **!pokedex** ``#`` to take a closer look at a Pokémon!', key, counts])
 
             options = []
-            last = 1
             for mon in seen:
-                last = mon['num'] + 1
                 options.append("**{}.** {}{}".format(
                     mon['num'], mon['name'], GLOWING_STAR if mon['mythical'] else STAR if mon['legendary'] else ''))
             await self.reaction_menu(options, ctx.author, ctx.channel, 0, per_page=20, code=False, header=header)
             return
-        elif isinstance(query, int):
-            if 0 >= query or query > total_pokemon:
-                return await ctx.send(f'Pokemon {query} does not exist.')
+        elif isinstance(member, int):
+            if 0 >= member or member > total_pokemon:
+                return await ctx.send(f'Pokemon {member} does not exist.')
 
-            image = self.image_path.format('normal', query, 0)
-            info = await get_pokemon(ctx, query)
-        elif isinstance(query, str):
+            image = self.image_path.format('normal', member, 0)
+            info = await get_pokemon(ctx, member)
+        elif isinstance(member, str):
             pokemon_records = await ctx.con.fetch("""
                                           SELECT name FROM pokemon
                                           """)
             pokemon_names = [mon['name'] for mon in pokemon_records]
-            result = list(process.extractOne(query, pokemon_names))
+            result = list(process.extractOne(member, pokemon_names))
             if result[1] < 70:
-                return await ctx.send(f'Pokemon {query} does not exist.')
+                return await ctx.send(f'Pokemon {member} does not exist.')
             pokemon_number = await ctx.con.fetchval("""
                                            SELECT num FROM pokemon WHERE name=$1
                                            """, result[0])
@@ -468,31 +468,29 @@ class Pokemon(Menus):
     @checks.db
     @pokedex.command(name='shiny')
     @pokechannel()
-    async def pokedex_shiny(self, ctx, *, query):
-        pokedex = self.bot.get_emoji_named('Pokedex')
-
+    async def pokedex_shiny(self, ctx, *, member):
         try:
-            query = int(query)
+            member = int(member)
         except ValueError:
             pass
 
         total_pokemon = await ctx.con.fetchval("""
                                       SELECT COUNT(DISTINCT num) FROM pokemon
                                       """)
-        if isinstance(query, int):
-            if 0 >= query or query > total_pokemon:
-                return await ctx.send(f'Pokemon {query} does not exist.')
+        if isinstance(member, int):
+            if 0 >= member or member > total_pokemon:
+                return await ctx.send(f'Pokemon {member} does not exist.')
 
-            image = self.image_path.format('shiny', query, 0)
-            info = await get_pokemon(ctx, query)
-        elif isinstance(query, str):
+            image = self.image_path.format('shiny', member, 0)
+            info = await get_pokemon(ctx, member)
+        elif isinstance(member, str):
             pokemon_records = await ctx.con.fetch("""
                                           SELECT name FROM pokemon
                                           """)
             pokemon_names = [mon['name'] for mon in pokemon_records]
-            result = list(process.extractOne(query, pokemon_names))
+            result = list(process.extractOne(member, pokemon_names))
             if result[1] < 70:
-                return await ctx.send(f'Pokemon {query} does not exist.')
+                return await ctx.send(f'Pokemon {member} does not exist.')
 
             pokemon_number = await ctx.con.fetchval("""
                                            SELECT num FROM pokemon WHERE name=$1
