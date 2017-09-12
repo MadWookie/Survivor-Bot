@@ -576,7 +576,7 @@ class Pokemon(Menus):
         player_name = ctx.author.name
         user_pokemon = await ctx.con.fetch("""
                                  WITH p AS (SELECT num, name, form, form_id, legendary, mythical FROM pokemon)
-                                 SELECT f.num, f.name, p.name AS base_name, p.form, legendary, mythical FROM found f
+                                 SELECT f.id, f.num, f.name, p.name AS base_name, p.form, legendary, mythical FROM found f
                                  JOIN p ON p.num = f.num AND p.form_id = f.form_id
                                  WHERE owner = $1 ORDER BY f.num, f.form_id;
                                  """, ctx.author.id)
