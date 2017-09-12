@@ -354,9 +354,9 @@ class Pokemon(Menus):
                                 SELECT COUNT(*) FROM found WHERE owner=$1 AND num=ANY((SELECT num FROM pokemon WHERE mythical=True))
                                 """, member.id)
 
-        header = f"__{member.name}'s PC__"
+        header = f"__**{member.name}'s PC**__"
         if total_found == 0:
-            header += " __is empty.__"
+            header += " __**is empty.**__"
         if total_found == 0:
             return await ctx.send(header, delete_after=60)
         spacer = SPACER * 21
@@ -422,9 +422,9 @@ class Pokemon(Menus):
             legendaries = sum(1 for m in seen if m['legendary'] and not m['mythical'])
             mythicals = sum(1 for m in seen if m['mythical'])
 
-            header = f"__{member.name}'s Pokedex__"
+            header = f"__**{member.name}'s Pokedex**__"
             if total_found == 0:
-                header += " __is empty.__"
+                header += " __**is empty.**__"
             header = wrap(header, pokedex)
             if total_found == 0:
                 return await ctx.send(header, delete_after=60)
@@ -574,7 +574,11 @@ class Pokemon(Menus):
     async def sell(self, ctx):
         spacer = SPACER * 24
         player_name = ctx.author.name
-        user_pokemon = await get_player_pokemon(ctx, ctx.author.id)
+        user_pokemon = await ctx.con.fetch("""
+                                 WITH p AS (SELECT num, name, mythical, legendary FROM pokemon WHERE form_id = 0)
+                                 SELECT s.num, name, mythical, legendary FROM seen s JOIN p ON s.num = p.num
+                                 WHERE user_id=$1 ORDER BY s.num
+                                 """, ctx.author.id)
         player_data = await get_player(ctx, ctx.author.id)
         inventory = player_data['inventory']
         found_names = [poke['name'] for poke in user_pokemon]
@@ -583,12 +587,14 @@ class Pokemon(Menus):
                                                                          f' Mythical {GLOWING_STAR}', spacer, sep='\n')
         options = []
         for mon in user_pokemon:
-            mythical = await is_mythical(ctx, mon['num'])
-            legendary = await is_legendary(ctx, mon['num'])
-            count = user_pokemon.count(mon)
-            options.append("**{}.** {}{}{}".format(
-                mon['num'], mon['name'], GLOWING_STAR if mythical else STAR if legendary else '', count if
-                count > 1 else ''))
+            if mon['form'] is not None:
+                name = f"{mon['form']} {mon['base_name']}"
+            else:
+                name = mon['base_name']
+            if mon['name']:
+                name = f"{mon['name']} ({name})"
+            options.append("**{}.** {}{}".format(
+                mon['num'], name, GLOWING_STAR if mon['mythical'] else STAR if mon['legendary'] else ''))
         if not options:
             await ctx.send("You don't have any pokemon to sell.", delete_after=60)
             return
@@ -632,36 +638,47 @@ class Pokemon(Menus):
         channel = ctx.channel
         cancelled = '**{}** cancelled the trade.'
         fmt = '**{}.** {}{}{}'
-        a_found = await get_player_pokemon(ctx, author.id)
-        a_sorted = sorted(a_found, key=lambda x: x['num'])
-        a_names = [found['name'] for found in a_sorted]
+        a_found = await ctx.con.fetch("""
+                                 WITH p AS (SELECT num, name, mythical, legendary FROM pokemon WHERE form_id = 0)
+                                 SELECT s.num, name, mythical, legendary FROM seen s JOIN p ON s.num = p.num
+                                 WHERE user_id=$1 ORDER BY s.num
+                                 """, author.id)
+        a_names = [found['name'] for found in a_found]
         a_options = []
-        for mon in [k for k, v in groupby(a_sorted)]:
-            legendary = await is_legendary(ctx, mon['num'])
-            mythical = await is_mythical(ctx, mon['num'])
-            count = a_sorted.count(mon)
-            out = fmt.format(mon['id'], mon['name'], GLOWING_STAR if mythical else STAR if legendary else '',
-                             f' *x{count}' if count > 1 else '')
-            a_options.append(out)
+        for mon in a_found:
+            if mon['form'] is not None:
+                name = f"{mon['form']} {mon['base_name']}"
+            else:
+                name = mon['base_name']
+            if mon['name']:
+                name = f"{mon['name']} ({name})"
+            a_options.append("**{}.** {}{}".format(
+                mon['num'], name, GLOWING_STAR if mon['mythical'] else STAR if mon['legendary'] else ''))
 
-        b_found = await get_player_pokemon(ctx, user.id)
-        b_sorted = sorted(b_found, key=lambda x: x['num'])
-        b_names = [found['name'] for found in b_sorted]
+        b_found = await ctx.con.fetch("""
+                                 WITH p AS (SELECT num, name, mythical, legendary FROM pokemon WHERE form_id = 0)
+                                 SELECT s.num, name, mythical, legendary FROM seen s JOIN p ON s.num = p.num
+                                 WHERE user_id=$1 ORDER BY s.num
+                                 """, user.id)
+        b_names = [found['name'] for found in b_found]
         b_options = []
-        for mon in [k for k, v in groupby(b_sorted)]:
-            legendary = await is_legendary(ctx, mon['num'])
-            mythical = await is_mythical(ctx, mon['num'])
-            count = b_sorted.count(mon)
-            out = fmt.format(mon['id'], mon['name'], GLOWING_STAR if mythical else STAR if legendary else '',
-                             f' *x{count}' if count > 1 else '')
-            b_options.append(out)
+        for mon in a_found:
+            if mon['form'] is not None:
+                name = f"{mon['form']} {mon['base_name']}"
+            else:
+                name = mon['base_name']
+            if mon['name']:
+                name = f"{mon['name']} ({name})"
+            a_options.append("**{}.** {}{}".format(
+                mon['num'], name, GLOWING_STAR if mon['mythical'] else STAR if mon['legendary'] else ''))
+
         header = '**{.name}**,\nSelect the pokemon you wish to trade with **{.name}**'
         selected = await asyncio.gather(self.reaction_menu(a_options, author, channel, -1, code=False,
-                                                           header=header.format(author, user), return_from=a_sorted,
+                                                           header=header.format(author, user), return_from=a_found,
                                                            allow_none=True, multi=True, display=a_names),
 
                                         self.reaction_menu(b_options, user, channel, -1, code=False,
-                                                           header=header.format(user, author), return_from=b_sorted,
+                                                           header=header.format(user, author), return_from=b_found,
                                                            allow_none=True, multi=True, display=b_names))
         if all(s is None for s in selected):
             await ctx.send('No one responded to the trade.', delete_after=60)
