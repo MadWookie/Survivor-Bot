@@ -325,6 +325,60 @@ class Pokemon(Menus):
 
 ###################
 #                 #
+# PC              #
+#                 #
+###################
+
+    @checks.db
+    @commands.group(invoke_without_command=True)
+    @pokechannel()
+    async def pc(self, ctx, *, query=None):
+        """Opens your PC."""
+        query = poke_converter(ctx, query) or ctx.author
+
+        total_pokemon = await ctx.con.fetchval("""
+                                      SELECT COUNT(DISTINCT num) FROM pokemon
+                                      """)
+        found = await get_player_pokemon(ctx, query.id)
+        found_sorted = sorted([mon['name'] for mon in found])
+        total_found = len(set(found_sorted))
+        remaining = total_pokemon - total_found
+
+        legendaries = await ctx.con.fetchval("""
+                                    SELECT COUNT(*) FROM found WHERE owner=$1 AND num=ANY((SELECT num FROM pokemon WHERE legendary=True))
+                                    """, query.id)
+        mythics = await ctx.con.fetchval("""
+                                SELECT COUNT(*) FROM found WHERE owner=$1 AND num=ANY((SELECT num FROM pokemon WHERE mythical=True))
+                                """, query.id)
+
+        header = f"__{query.name}'s PC__"
+        if total_found == 0:
+            header += " __is empty.__"
+        if total_found == 0:
+            return await ctx.send(header, delete_after=60)
+        spacer = SPACER * 21
+
+        key = f'{ARROWS[0]} Click to go back a page.\n{ARROWS[1]} Click to go forward a page.\n{CANCEL}' \
+              f' Click to exit your pc.'
+
+        counts = wrap(f'**{total_found}** collected out of {total_pokemon} total Pokemon. {remaining} left to go!'
+                      f'\n**{total_found - mythics - legendaries}** Normal | **{legendaries}** Legendary {STAR}'
+                      f' | **{mythics}** Mythical {GLOWING_STAR}', spacer, sep='\n')
+
+        header = '\n'.join([header, 'Use **!pokedex** to see which Pokémon you\'ve encountered!\nUse **!pokedex** ``#`` to take a closer look at a Pokémon!', key, counts])
+
+        options = []
+        for mon in found:
+            mythical = await is_mythical(ctx, mon['num'], ctx.author.id, mon['id'])
+            legendary = await is_legendary(ctx, mon['num'], ctx.author.id, mon['id'])
+            count = found.count(mon)
+            options.append("**{}.** {}{}{}".format(
+                mon['num'], mon['name'], GLOWING_STAR if mythical else STAR if legendary else '', count if
+                count > 1 else ''))
+        await self.reaction_menu(options, ctx.author, ctx.channel, 0, per_page=20, code=False, header=header)
+
+###################
+#                 #
 # POKEDEX         #
 #                 #
 ###################
