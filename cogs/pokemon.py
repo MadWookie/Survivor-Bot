@@ -372,13 +372,15 @@ class Pokemon(Menus):
 
         options = []
         for mon in found:
-            mythical = await is_mythical(ctx, mon['num'], ctx.author.id, mon['id'])
-            legendary = await is_legendary(ctx, mon['num'], ctx.author.id, mon['id'])
-            count = found.count(mon)
-            options.append("**{}.** {}{}{}".format(
-                mon['num'], mon['name'], GLOWING_STAR if mythical else STAR if legendary else '', count if
-                count > 1 else ''))
-        await self.embed_reaction_menu(options, ctx.author, ctx.channel, 0, per_page=20, code=False, header=header)
+            if mon['form'] is not None:
+                name = f"{mon['form']} {mon['base_name']}"
+            else:
+                name = mon['base_name']
+            if mon['name']:
+                name = f"{mon['name']} ({name})"
+            options.append("**{}.** {}{}".format(
+                mon['num'], name, GLOWING_STAR if mon['mythical'] else STAR if mon['legendary'] else ''))
+        await self.reaction_menu(options, ctx.author, ctx.channel, 0, per_page=20, code=False, header=header)
 
 ###################
 #                 #
