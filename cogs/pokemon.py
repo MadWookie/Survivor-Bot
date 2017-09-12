@@ -604,20 +604,20 @@ class Pokemon(Menus):
         if not selected:
             return
         sold = []
+        sold_ids = []
         total = 0
         for mon in [k for k, v in groupby(sorted(selected))]:
-            count = selected.count(mon)
-            if await is_mythical(ctx, mon['num']):
+            if mon['mythical']:
                 total += 1000
-            elif await is_legendary(ctx, mon['num']):
+            elif mon['legendary']:
                 total += 600
             else:
                 total += 100
-            await ctx.con.execute("""
-                          DELETE FROM found WHERE id=$1
-                          """, mon['id'])
-            sold.append("**{}**{}".format(mon['name'], f' *x{count}*' if count > 1 else ''))
-            inventory['money'] += total
+            sold_ids.append(mon['id'])
+        await ctx.con.execute("""
+                    DELETE FROM found WHERE id = ANY($1)
+                    """, sold_ids)
+        inventory['money'] += total
         await set_inventory(ctx, ctx.author.id, inventory)
         await ctx.send(f'{player_name} sold the following for {total}\ua750:\n' + '\n'.join(sold), delete_after=60)
 
