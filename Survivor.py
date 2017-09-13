@@ -34,7 +34,7 @@ class SurvivorBot(commands.Bot):
 
         def check(prefix):
             view = StringView(message.content)
-            return view.skip_string(prefix) and view.get_word() in cmds
+            return view.skip_string(prefix) and view.get_word().lower() in cmds
         if callable(self.command_prefix):
             prefixes = self.command_prefix(self, message)
             if asyncio.iscoroutine(prefixes):
