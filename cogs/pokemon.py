@@ -69,6 +69,25 @@ def get_star(mon: asyncpg.Record):
     return GLOWING_STAR if mon['mythical'] else STAR if mon['legendary'] else ''
 
 
+def get_name(mon: asyncpg.Record):
+    """mon argument must have:
+        name      : custom name
+        base_name : pokemon's name
+        form      : form name
+
+       Returns:
+       Speed Deoxys
+       Sonic (Speed Deoxys)
+    """
+    if mon['form'] is not None:
+        name = f"{mon['form']} {mon['base_name']}"
+    else:
+        name = mon['base_name']
+    if mon['name']:
+        name = f"{mon['name']} ({name})"
+    return name
+
+
 async def get_pokemon_color(ctx, num=0, *, mon: asyncpg.Record=None):
     if num:
         mon = await ctx.con.fetch('''
@@ -94,6 +113,20 @@ async def get_found_counts(ctx, uid):
         (SELECT form FROM pokemon WHERE pokemon.num = found.num AND pokemon.form_id = found.form_id)
         FROM found WHERE owner = $1 GROUP BY num, form_id ORDER BY num, form_id
         ''', uid, GLOWING_STAR, STAR)
+
+
+async def see(ctx, uid, num):
+    """num can be int or list"""
+    if isinstance(num, int):
+        await ctx.con.execute("""
+                      INSERT INTO seen (user_id, num) VALUES ($1, $2)
+                      ON CONFLICT DO NOTHING
+                      """, uid, num)
+    else:
+        await ctx.con.executemany("""
+                      INSERT INTO seen (user_id, num) VALUES ($1, $2)
+                      ON CONFLICT DO NOTHING
+                      """, [(uid, n) for n in num])
 
 
 async def get_rewards(ctx):
@@ -281,11 +314,8 @@ class Pokemon(Menus):
         embed.color = await get_pokemon_color(ctx, mon=mon)
         embed.set_author(icon_url=ctx.author.avatar_url, name=player_name)
         embed.set_image(url='attachment://pokemon.gif')
-        await ctx.con.execute('''
-            INSERT INTO seen (user_id, num) VALUES ($1, $2)
-            ON CONFLICT DO NOTHING
-            ''', player_id, mon['num'])
         msg = await ctx.send(embed=embed, file=discord.File(self.image_path.format('normal', mon['num'], 0), filename='pokemon.gif'))
+        await see(ctx, player_id, mon['num'])
         can_react_with = [*balls, CANCEL]
         for emoji in can_react_with:
             await msg.add_reaction(emoji)
@@ -381,12 +411,7 @@ class Pokemon(Menus):
                 done.append(mon['num'])
             else:
                 count = ''
-            if mon['form'] is not None:
-                name = f"{mon['form']} {mon['base_name']}"
-            else:
-                name = mon['base_name']
-            if mon['name']:
-                name = f"{mon['name']} ({name})"
+            name = get_name(mon)
             options.append("**{}.** {}{}{}".format(
                 mon['num'], name, GLOWING_STAR if mon['mythical'] else STAR if mon['legendary'] else '', count))
         await self.reaction_menu(options, ctx.author, ctx.channel, 0, per_page=20, code=False, header=header)
@@ -479,29 +504,29 @@ class Pokemon(Menus):
     @checks.db
     @pokedex.command(name='shiny')
     @pokechannel()
-    async def pokedex_shiny(self, ctx, *, member):
+    async def pokedex_shiny(self, ctx, *, pokemon):
         try:
-            member = int(member)
+            pokemon = int(pokemon)
         except ValueError:
             pass
 
         total_pokemon = await ctx.con.fetchval("""
                                       SELECT COUNT(DISTINCT num) FROM pokemon
                                       """)
-        if isinstance(member, int):
-            if 0 >= member or member > total_pokemon:
-                return await ctx.send(f'Pokemon {member} does not exist.')
+        if isinstance(pokemon, int):
+            if 0 >= pokemon or pokemon > total_pokemon:
+                return await ctx.send(f'Pokemon {pokemon} does not exist.')
 
-            image = self.image_path.format('shiny', member, 0)
-            info = await get_pokemon(ctx, member)
-        elif isinstance(member, str):
+            image = self.image_path.format('shiny', pokemon, 0)
+            info = await get_pokemon(ctx, pokemon)
+        elif isinstance(pokemon, str):
             pokemon_records = await ctx.con.fetch("""
                                           SELECT name FROM pokemon
                                           """)
             pokemon_names = [mon['name'] for mon in pokemon_records]
-            result = list(process.extractOne(member, pokemon_names))
+            result = list(process.extractOne(pokemon, pokemon_names))
             if result[1] < 70:
-                return await ctx.send(f'Pokemon {member} does not exist.')
+                return await ctx.send(f'Pokemon {pokemon} does not exist.')
 
             pokemon_number = await ctx.con.fetchval("""
                                            SELECT num FROM pokemon WHERE name=$1
@@ -597,12 +622,7 @@ class Pokemon(Menus):
         names = []
         options = []
         for mon in user_pokemon:
-            if mon['form'] is not None:
-                name = f"{mon['form']} {mon['base_name']}"
-            else:
-                name = mon['base_name']
-            if mon['name']:
-                name = f"{mon['name']} ({name})"
+            name = get_name(mon)
             options.append("**{}.** {}{}".format(
                 mon['num'], name, GLOWING_STAR if mon['mythical'] else STAR if mon['legendary'] else ''))
             names.append(name)
@@ -645,7 +665,7 @@ class Pokemon(Menus):
     @checks.db
     @commands.command()
     @pokechannel()
-    async def trade(self, ctx, user: discord.Member):
+    async def trade(self, ctx, *, user: discord.Member):
         """Trade pokemon with another user."""
         author = ctx.author
         if author.id == user.id:
@@ -654,38 +674,28 @@ class Pokemon(Menus):
         channel = ctx.channel
         cancelled = '**{}** cancelled the trade.'
         fmt = '**{}.** {}{}{}'
-        a_found = await ctx.con.fetch("""
-                                 WITH p AS (SELECT num, name, mythical, legendary FROM pokemon WHERE form_id = 0)
-                                 SELECT s.num, name, mythical, legendary FROM seen s JOIN p ON s.num = p.num
-                                 WHERE user_id=$1 ORDER BY s.num
-                                 """, author.id)
-        a_names = [found['name'] for found in a_found]
+        get_found = await ctx.con.prepare("""
+                               WITH p AS (SELECT num, name, form, form_id, legendary, mythical FROM pokemon)
+                               SELECT f.id, f.num, f.name, p.name AS base_name, p.form, legendary, mythical FROM found f
+                               JOIN p ON p.num = f.num AND p.form_id = f.form_id
+                               WHERE owner = $1 ORDER BY f.num, f.form_id;
+                               """)
+        a_found = await get_found.fetch(author.id)
+        a_names = []
         a_options = []
         for mon in a_found:
-            if mon['form'] is not None:
-                name = f"{mon['form']} {mon['base_name']}"
-            else:
-                name = mon['base_name']
-            if mon['name']:
-                name = f"{mon['name']} ({name})"
+            name = get_name(mon)
+            a_names.append(name)
             a_options.append("**{}.** {}{}".format(
                 mon['num'], name, GLOWING_STAR if mon['mythical'] else STAR if mon['legendary'] else ''))
 
-        b_found = await ctx.con.fetch("""
-                                 WITH p AS (SELECT num, name, mythical, legendary FROM pokemon WHERE form_id = 0)
-                                 SELECT s.num, name, mythical, legendary FROM seen s JOIN p ON s.num = p.num
-                                 WHERE user_id=$1 ORDER BY s.num
-                                 """, user.id)
-        b_names = [found['name'] for found in b_found]
+        b_found = await get_found.fetch(user.id)
+        b_names = []
         b_options = []
-        for mon in a_found:
-            if mon['form'] is not None:
-                name = f"{mon['form']} {mon['base_name']}"
-            else:
-                name = mon['base_name']
-            if mon['name']:
-                name = f"{mon['name']} ({name})"
-            a_options.append("**{}.** {}{}".format(
+        for mon in b_found:
+            name = get_name(mon)
+            b_names.append(name)
+            b_options.append("**{}.** {}{}".format(
                 mon['num'], name, GLOWING_STAR if mon['mythical'] else STAR if mon['legendary'] else ''))
 
         header = '**{.name}**,\nSelect the pokemon you wish to trade with **{.name}**'
@@ -706,14 +716,16 @@ class Pokemon(Menus):
             await ctx.send(cancelled.format(user), delete_after=60)
             return
         for selections, found, member in zip(selected, (a_found, b_found), (author, user)):
-            for mon in [k for k, v in groupby(selections)]:
-                if selections.count(mon) > found.count(mon):
-                    await ctx.send(f'{member.name} selected more {mon["name"]} than they have.',
+            added_ids = []
+            for mon in selections:
+                if mon['id'] in added_ids:
+                    await ctx.send(f'{member.name} selected more {get_name(mon)} than they have.',
                                    delete_after=60)
                     return
+                added_ids.append(mon['id'])
         accept_msg = await ctx.send("**{}**'s offer: {}\n**{}**'s offer: {}\nDo you accept?".format(
-            author, ', '.join(fmt.format(mon['num'], mon['name'], '', '') for mon in selected[0]) or 'None',
-            user, ', '.join(fmt.format(mon['num'], mon['name'], '', '') for mon in selected[1]) or 'None'))
+            author, '**,** '.join(get_name(mon) for mon in selected[0]) or 'None',
+            user, '**,** '.join(get_name(mon) for mon in selected[1]) or 'None'))
         await accept_msg.add_reaction(DONE)
         await accept_msg.add_reaction(CANCEL)
         accepted = {author.id: None, user.id: None}
@@ -758,14 +770,11 @@ class Pokemon(Menus):
                 return
         await get_player(ctx, ctx.author.id)
         await get_player(ctx, user.id)
-        for mon in selected[0]:
+        for selection, old, new in zip(selected, (author, user), (user, author)):
+            await see(ctx, new.id, (m['num'] for m in selection))
             await ctx.con.execute("""
-                          UPDATE found SET owner=$1 WHERE id=$2 AND owner=$3
-                          """, user.id, mon['id'], ctx.author.id)
-        for mon in selected[1]:
-            await ctx.con.execute("""
-                          UPDATE found SET owner=$1 WHERE id=$2 AND owner=$3
-                          """, ctx.author.id, mon['id'], user.id)
+                          UPDATE found SET owner=$1 WHERE id=ANY($2) AND owner=$3
+                          """, new.id, [mon['id'] for mon in selection], old.id)
         await ctx.send(f'Completed trade between **{author.name}** and **{user.name}**.', delete_after=60)
 
 
