@@ -311,7 +311,7 @@ class Pokemon(Menus):
                     ''', mon['num']) or 0
                 async with ctx.con.transaction():
                     await ctx.con.execute('''
-                        INSERT INTO found (num, form_id, ball, exp, owner, original_owner, personality) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
+                        INSERT INTO found (num, form_id, ball, exp, owner, original_owner, personality) VALUES ($1, $2, $3, $4, $5, $6, $7)
                         ''', mon['num'], form_id, reaction.emoji.name, xp_to_level(level), player_id, player_id, mon['personality'])
             else:
                 embed.description = f'**{form}{mon["name"]}**{star}{shine} has escaped!'
@@ -339,11 +339,11 @@ class Pokemon(Menus):
                                       SELECT COUNT(DISTINCT num) FROM pokemon
                                       """)
         found = await ctx.con.fetch("""
-                             WITH p AS (SELECT num, name, form, form_id, legendary, mythical FROM pokemon)
-                             SELECT f.num, f.name, p.name AS base_name, p.form, legendary, mythical FROM found f
-                             JOIN p ON p.num = f.num AND p.form_id = f.form_id
-                             WHERE owner = $1 ORDER BY f.num, f.form_id;
-                             """, member.id)
+                              WITH p AS (SELECT num, name, form, form_id, legendary, mythical FROM pokemon)
+                              SELECT f.num, f.name, p.name AS base_name, p.form, legendary, mythical FROM found f
+                              JOIN p ON p.num = f.num AND p.form_id = f.form_id
+                              WHERE owner = $1 ORDER BY f.num, f.form_id;
+                              """, member.id)
         total_found = len(found)
         remaining = total_pokemon - total_found
 
@@ -371,15 +371,24 @@ class Pokemon(Menus):
         header = '\n'.join([header, 'Use **!pokedex** to see which Pokémon you\'ve encountered!\nUse **!pokedex** ``#`` to take a closer look at a Pokémon!', key, counts])
 
         options = []
+        done = []
         for mon in found:
+            if mon['name'] is None and mon['num'] in done:
+                continue
+            if mon['name'] is None:
+                counter = sum(1 for m in found if m['num'] == mon['num'] and m['name'] is None)
+                count = f"x{counter}" if counter > 1 else ''
+                done.append(mon['num'])
+            else:
+                count = ''
             if mon['form'] is not None:
                 name = f"{mon['form']} {mon['base_name']}"
             else:
                 name = mon['base_name']
             if mon['name']:
                 name = f"{mon['name']} ({name})"
-            options.append("**{}.** {}{}".format(
-                mon['num'], name, GLOWING_STAR if mon['mythical'] else STAR if mon['legendary'] else ''))
+            options.append("**{}.** {}{}{}".format(
+                mon['num'], name, GLOWING_STAR if mon['mythical'] else STAR if mon['legendary'] else '', count))
         await self.reaction_menu(options, ctx.author, ctx.channel, 0, per_page=20, code=False, header=header)
 
 ###################
