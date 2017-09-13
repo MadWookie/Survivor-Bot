@@ -584,17 +584,17 @@ class Pokemon(Menus):
         spacer = SPACER * 24
         player_name = ctx.author.name
         user_pokemon = await ctx.con.fetch("""
-                                 WITH p AS (SELECT num, name, form, form_id, legendary, mythical FROM pokemon)
-                                 SELECT f.id, f.num, f.name, p.name AS base_name, p.form, legendary, mythical FROM found f
-                                 JOIN p ON p.num = f.num AND p.form_id = f.form_id
-                                 WHERE owner = $1 ORDER BY f.num, f.form_id;
-                                 """, ctx.author.id)
+                                     WITH p AS (SELECT num, name, form, form_id, legendary, mythical FROM pokemon)
+                                     SELECT f.id, f.num, f.name, p.name AS base_name, p.form, legendary, mythical FROM found f
+                                     JOIN p ON p.num = f.num AND p.form_id = f.form_id
+                                     WHERE owner = $1 ORDER BY f.num, f.form_id;
+                                     """, ctx.author.id)
         player_data = await get_player(ctx, ctx.author.id)
         inventory = player_data['inventory']
-        found_names = [poke['name'] for poke in user_pokemon]
         header = f'**{player_name}**,\nSelect Pokemon to sell.\n' + wrap(f'**100**\ua750 Normal | **600**\ua750'
                                                                          f' Legendary {STAR} | **1000**\ua750'
                                                                          f' Mythical {GLOWING_STAR}', spacer, sep='\n')
+        names = []
         options = []
         for mon in user_pokemon:
             if mon['form'] is not None:
@@ -605,17 +605,19 @@ class Pokemon(Menus):
                 name = f"{mon['name']} ({name})"
             options.append("**{}.** {}{}".format(
                 mon['num'], name, GLOWING_STAR if mon['mythical'] else STAR if mon['legendary'] else ''))
+            names.append(name)
         if not options:
             await ctx.send("You don't have any pokemon to sell.", delete_after=60)
             return
         selected = await self.reaction_menu(options, ctx.author, ctx.channel, -1, per_page=20, header=header,
-                                            code=False, multi=True, return_from=user_pokemon, display=found_names)
+                                            code=False, multi=True, return_from=user_pokemon, display=names)
         if not selected:
             return
+        named = []
         sold = []
         sold_ids = []
         total = 0
-        for mon in [k for k, v in groupby(sorted(selected))]:
+        for mon in sorted(selected, key=lambda m: m['num']):
             if mon['mythical']:
                 total += 1000
             elif mon['legendary']:
@@ -623,6 +625,10 @@ class Pokemon(Menus):
             else:
                 total += 100
             sold_ids.append(mon['id'])
+            if mon['num'] not in named:
+                count = sum(1 for m in selected if m['num'] == mon['num'])
+                sold.append(f"{mon['base_name']}{f' x{count}' if count > 1 else ''}")
+                named.append(mon['num'])
         await ctx.con.execute("""
                     DELETE FROM found WHERE id = ANY($1)
                     """, sold_ids)
