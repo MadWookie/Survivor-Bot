@@ -79,6 +79,8 @@ class SurvivorBot(commands.Bot):
                 ''', message.author.id, message.guild.id)
             if plonked:
                 return
+        split = message.content.split(' ')
+        message.content = ' '.join([split[0].lower(), *split[1:]])
         await bot.process_commands(message)
 
     async def on_command_error(self, ctx, error):
