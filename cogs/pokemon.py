@@ -270,7 +270,7 @@ class Pokemon(Menus):
         item, count = reward['name'], reward['num']
         inv[item] = inv.get(item, 0) + count
         await set_inventory(ctx, user.id, inv)
-        await ctx.send(f"{user.name} has recived {count} **{item}{'s' if count != 1 else ''}**!", delete_after=60)
+        await ctx.send(f"{user.name} has received {count} **{item}{'s' if count != 1 else ''}**!", delete_after=60)
 
 ###################
 #                 #
