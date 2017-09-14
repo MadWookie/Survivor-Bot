@@ -268,9 +268,10 @@ class Pokemon(Menus):
             SELECT * FROM rewards ORDER BY random() LIMIT 1
             ''')
         item, count = reward['name'], reward['num']
+        item_name = 'Pokédollar' if item == 'money' else item
         inv[item] = inv.get(item, 0) + count
         await set_inventory(ctx, user.id, inv)
-        await ctx.send(f"{user.name} has received {count} **{item}{'s' if count != 1 else ''}**!", delete_after=60)
+        await ctx.send(f"{user.name} has received {count} **{item_name}{'s' if count != 1 else ''}**!", delete_after=60)
 
 ###################
 #                 #
