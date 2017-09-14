@@ -1,6 +1,6 @@
 from fuzzywuzzy import process
-from itertools import groupby
 from random import randint
+import itertools
 import asyncpg
 import asyncio
 
@@ -9,8 +9,8 @@ import aiohttp
 import discord
 
 from cogs.menus import Menus, STAR, GLOWING_STAR, SPARKLES, SPACER, ARROWS, DONE, CANCEL
+from utils.utils import wrap, unique
 from utils import errors, checks
-from utils.utils import wrap
 
 
 converter = commands.MemberConverter()
@@ -61,8 +61,9 @@ async def poke_converter(ctx, user_or_num):
 
 def is_shiny(trainer: asyncpg.Record, personality: int):
     b = bin(personality)[2:].zfill(32)
-    upper, lower = map(int, (b[:16], b[16:]))
-    return (((trainer['user_id'] % 65536) ^ trainer['secret_id']) ^ (upper ^ lower)) <= (65536 / 400)
+    upper, lower = int(b[:16], 2), int(b[16:], 2)
+    shiny = (((trainer['user_id'] % 65536) ^ trainer['secret_id']) ^ (upper ^ lower)) <= (65536 / 400)
+    return SPARKLES if shiny else ''
 
 
 def get_star(mon: asyncpg.Record):
@@ -294,7 +295,7 @@ class Pokemon(Menus):
         trainer = await get_player(ctx, player_id)
         inv = trainer['inventory']
         balls = [self.bot.get_emoji_named(ball) for ball in pokeballs if inv.get(ball)]
-        star = GLOWING_STAR if mon['mythical'] else STAR if mon['legendary'] else ''
+        star = get_star(mon)
         shiny = is_shiny(trainer, mon['personality'])
         if shiny:
             if mon['base_form']:
@@ -308,8 +309,7 @@ class Pokemon(Menus):
             else:
                 form = ''
             form_id = mon['form_id']
-        shine = SPARKLES if shiny else ''
-        embed = discord.Embed(description=f'A wild **{form}{mon["name"]}**{star}{shine} appears!'
+        embed = discord.Embed(description=f'A wild **{form}{mon["name"]}**{star}{shiny} appears!'
                               f'\nUse a {balls[0]} to catch it!')
         embed.color = await get_pokemon_color(ctx, mon=mon)
         embed.set_author(icon_url=ctx.author.avatar_url, name=player_name)
@@ -326,14 +326,14 @@ class Pokemon(Menus):
                         user == ctx.author)
             reaction, _ = await self.bot.wait_for('reaction_add', check=check, timeout=20)
         except asyncio.TimeoutError:
-            embed.description = f'**{form}{mon["name"]}**{star}{shine} escaped because you took too long! :stopwatch:'
+            embed.description = f'**{form}{mon["name"]}**{star}{shiny} escaped because you took too long! :stopwatch:'
             await msg.edit(embed=embed, delete_after=60)
             await msg.clear_reactions()
             return
         await msg.clear_reactions()
         if reaction.emoji in balls:
             if catch(mon, balls.index(reaction.emoji)):
-                embed.description = wrap(f'You caught **{form}{mon["name"]}**{star}{shine} successfully!',
+                embed.description = wrap(f'You caught **{form}{mon["name"]}**{star}{shiny} successfully!',
                                          reaction.emoji)
                 await msg.edit(embed=embed, delete_after=60)
                 level = await ctx.con.fetchval('''
@@ -344,12 +344,12 @@ class Pokemon(Menus):
                         INSERT INTO found (num, form_id, ball, exp, owner, original_owner, personality) VALUES ($1, $2, $3, $4, $5, $6, $7)
                         ''', mon['num'], form_id, reaction.emoji.name, xp_to_level(level), player_id, player_id, mon['personality'])
             else:
-                embed.description = f'**{form}{mon["name"]}**{star}{shine} has escaped!'
+                embed.description = f'**{form}{mon["name"]}**{star}{shiny} has escaped!'
                 await msg.edit(embed=embed, delete_after=60)
             inv[reaction.emoji.name] -= 1
             await set_inventory(ctx, player_id, inv)
         else:
-            embed.description = wrap(f'You ran away from **{form}{mon["name"]}**{star}{shine}!', ':chicken:')
+            embed.description = wrap(f'You ran away from **{form}{mon["name"]}**{star}{shiny}!', ':chicken:')
             await msg.edit(embed=embed, delete_after=60)
 
 ###################
@@ -370,7 +370,7 @@ class Pokemon(Menus):
                                       """)
         found = await ctx.con.fetch("""
                               WITH p AS (SELECT num, name, form, form_id, legendary, mythical FROM pokemon)
-                              SELECT f.num, f.name, p.name AS base_name, p.form, legendary, mythical FROM found f
+                              SELECT f.num, f.name, original_owner, personality, p.name AS base_name, p.form, legendary, mythical FROM found f
                               JOIN p ON p.num = f.num AND p.form_id = f.form_id
                               WHERE owner = $1 ORDER BY f.num, f.form_id;
                               """, member.id)
@@ -400,20 +400,28 @@ class Pokemon(Menus):
 
         header = '\n'.join([header, 'Use **!pokedex** to see which Pokémon you\'ve encountered!\nUse **!pokedex** ``#`` to take a closer look at a Pokémon!', key, counts])
 
+        trainers = {t['user_id']: t for t in await ctx.con.fetch("""
+                                                           SELECT * FROM trainers WHERE user_id = ANY($1)
+                                                           """, set(m['original_owner'] for m in found))}
         options = []
         done = []
         for mon in found:
             if mon['name'] is None and mon['num'] in done:
                 continue
+            counter = 0
             if mon['name'] is None:
-                counter = sum(1 for m in found if m['num'] == mon['num'] and m['name'] is None)
-                count = f"x{counter}" if counter > 1 else ''
+                shiny = False
+                for m in found:
+                    if m['num'] == mon['num'] and m['name'] is None:
+                        counter += 1
+                        if not shiny:
+                            shiny = is_shiny(trainers[m['original_owner']], m['personality'])
                 done.append(mon['num'])
             else:
-                count = ''
+                shiny = is_shiny(trainers[mon['original_owner']], m['personality'])
+            count = f" x{counter}" if counter > 1 else ''
             name = get_name(mon)
-            options.append("**{}.** {}{}{}".format(
-                mon['num'], name, GLOWING_STAR if mon['mythical'] else STAR if mon['legendary'] else '', count))
+            options.append("**{}.** {}{}{}{}".format(mon['num'], name, get_star(mon), shiny, count))
         await self.reaction_menu(options, ctx.author, ctx.channel, 0, per_page=20, code=False, header=header)
 
 ###################
@@ -476,7 +484,7 @@ class Pokemon(Menus):
             options = []
             for mon in seen:
                 options.append("**{}.** {}{}".format(
-                    mon['num'], mon['name'], GLOWING_STAR if mon['mythical'] else STAR if mon['legendary'] else ''))
+                    mon['num'], mon['name'], get_star(mon)))
             await self.reaction_menu(options, ctx.author, ctx.channel, 0, per_page=20, code=False, header=header)
             return
         elif isinstance(member, int):
@@ -610,10 +618,12 @@ class Pokemon(Menus):
         player_name = ctx.author.name
         user_pokemon = await ctx.con.fetch("""
                                      WITH p AS (SELECT num, name, form, form_id, legendary, mythical FROM pokemon)
-                                     SELECT f.id, f.num, f.name, p.name AS base_name, p.form, legendary, mythical FROM found f
+                                     SELECT f.id, f.num, f.name, original_owner, personality,
+                                            p.name AS base_name, p.form, legendary, mythical FROM found f
                                      JOIN p ON p.num = f.num AND p.form_id = f.form_id
                                      WHERE owner = $1 ORDER BY f.num, f.form_id;
                                      """, ctx.author.id)
+        user_pokemon = [dict(mon) for mon in user_pokemon]
         player_data = await get_player(ctx, ctx.author.id)
         inventory = player_data['inventory']
         header = f'**{player_name}**,\nSelect Pokemon to sell.\n' + wrap(f'**100**\ua750 Normal | **600**\ua750'
@@ -621,10 +631,14 @@ class Pokemon(Menus):
                                                                          f' Mythical {GLOWING_STAR}', spacer, sep='\n')
         names = []
         options = []
+        trainers = {t['user_id']: t for t in await ctx.con.fetch("""
+                                                           SELECT * FROM trainers WHERE user_id = ANY($1)
+                                                           """, set(m['original_owner'] for m in user_pokemon))}
         for mon in user_pokemon:
             name = get_name(mon)
-            options.append("**{}.** {}{}".format(
-                mon['num'], name, GLOWING_STAR if mon['mythical'] else STAR if mon['legendary'] else ''))
+            mon['shiny'] = is_shiny(trainers[mon['original_owner']], mon['personality'])
+            options.append("**{}.** {}{}{}".format(
+                mon['num'], name, get_star(mon), mon['shiny']))
             names.append(name)
         if not options:
             await ctx.send("You don't have any pokemon to sell.", delete_after=60)
@@ -637,7 +651,10 @@ class Pokemon(Menus):
         sold = []
         sold_ids = []
         total = 0
+        selected = unique(selected, key=lambda m: m['id'])
         for mon in sorted(selected, key=lambda m: m['num']):
+            if mon['shiny']:
+                total += 1000
             if mon['mythical']:
                 total += 1000
             elif mon['legendary']:
@@ -645,9 +662,14 @@ class Pokemon(Menus):
             else:
                 total += 100
             sold_ids.append(mon['id'])
+            shiny = False
             if mon['num'] not in named:
-                count = sum(1 for m in selected if m['num'] == mon['num'])
-                sold.append(f"{mon['base_name']}{f' x{count}' if count > 1 else ''}")
+                count = 0
+                for m in selected:
+                    if m['num'] == mon['num']:
+                        count += 1
+                        shiny = shiny or m['shiny']
+                sold.append(f"{mon['base_name']}{shiny}{f' x{count}' if count > 1 else ''}")
                 named.append(mon['num'])
         await ctx.con.execute("""
                     DELETE FROM found WHERE id = ANY($1)
@@ -673,30 +695,37 @@ class Pokemon(Menus):
             return
         channel = ctx.channel
         cancelled = '**{}** cancelled the trade.'
-        fmt = '**{}.** {}{}{}'
         get_found = await ctx.con.prepare("""
-                               WITH p AS (SELECT num, name, form, form_id, legendary, mythical FROM pokemon)
-                               SELECT f.id, f.num, f.name, p.name AS base_name, p.form, legendary, mythical FROM found f
-                               JOIN p ON p.num = f.num AND p.form_id = f.form_id
-                               WHERE owner = $1 ORDER BY f.num, f.form_id;
-                               """)
-        a_found = await get_found.fetch(author.id)
+                                  WITH p AS (SELECT num, name, form, form_id, legendary, mythical FROM pokemon)
+                                  SELECT f.id, f.num, f.name, original_owner, personality,
+                                         p.name AS base_name, p.form, legendary, mythical FROM found f
+                                  JOIN p ON p.num = f.num AND p.form_id = f.form_id
+                                  WHERE owner = $1 ORDER BY f.num, f.form_id;
+                                  """)
+        a_found = [dict(m) for m in await get_found.fetch(author.id)]
+        b_found = [dict(m) for m in await get_found.fetch(user.id)]
+        trainer_ids = set(m['original_owner'] for m in itertools.chain(a_found, b_found))
+        trainers = {t['user_id']: t for t in await ctx.con.fetch("""
+                                                           SELECT * FROM trainers WHERE user_id = ANY($1)
+                                                           """, trainer_ids)}
+
         a_names = []
         a_options = []
         for mon in a_found:
-            name = get_name(mon)
-            a_names.append(name)
-            a_options.append("**{}.** {}{}".format(
-                mon['num'], name, GLOWING_STAR if mon['mythical'] else STAR if mon['legendary'] else ''))
+            mon['fname'] = get_name(mon)
+            mon['shiny'] = is_shiny(trainers[mon['original_owner']], mon['personality'])
+            a_names.append(mon['fname'] + mon['shiny'])
+            a_options.append("**{}.** {}{}{}".format(
+                mon['num'], mon['fname'], get_star(mon), mon['shiny']))
 
-        b_found = await get_found.fetch(user.id)
         b_names = []
         b_options = []
         for mon in b_found:
-            name = get_name(mon)
-            b_names.append(name)
-            b_options.append("**{}.** {}{}".format(
-                mon['num'], name, GLOWING_STAR if mon['mythical'] else STAR if mon['legendary'] else ''))
+            mon['fname'] = get_name(mon)
+            mon['shiny'] = is_shiny(trainers[mon['original_owner']], mon['personality'])
+            b_names.append(mon['fname'] + mon['shiny'])
+            b_options.append("**{}.** {}{}{}".format(
+                mon['num'], mon['fname'], get_star(mon), mon['shiny']))
 
         header = '**{.name}**,\nSelect the pokemon you wish to trade with **{.name}**'
         selected = await asyncio.gather(self.reaction_menu(a_options, author, channel, -1, code=False,
@@ -724,8 +753,8 @@ class Pokemon(Menus):
                     return
                 added_ids.append(mon['id'])
         accept_msg = await ctx.send("**{}**'s offer: {}\n**{}**'s offer: {}\nDo you accept?".format(
-            author, '**,** '.join(get_name(mon) for mon in selected[0]) or 'None',
-            user, '**,** '.join(get_name(mon) for mon in selected[1]) or 'None'))
+            author.name, '**,** '.join(mon['fname'] for mon in selected[0]) or 'None',
+            user.name, '**,** '.join(mon['fname'] for mon in selected[1]) or 'None'))
         await accept_msg.add_reaction(DONE)
         await accept_msg.add_reaction(CANCEL)
         accepted = {author.id: None, user.id: None}
