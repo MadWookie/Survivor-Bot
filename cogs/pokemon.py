@@ -308,8 +308,8 @@ class Pokemon(Menus):
             else:
                 form = ''
             form_id = mon['form_id']
-        embed = discord.Embed(description=f'A wild **{form}{mon["name"]}**{star}{shiny} appears!'
-                              f'\nUse a {balls[0]} to catch it!')
+        embed = discord.Embed(description=f'A wild **{form}{mon["name"]}**{star}{shiny} appears!' +
+                              (f'\nUse a {balls[0]} to catch it!' if balls else ''))
         embed.color = await get_pokemon_color(ctx, mon=mon)
         embed.set_author(icon_url=ctx.author.avatar_url, name=player_name)
         embed.set_image(url='attachment://pokemon.gif')
