@@ -222,7 +222,6 @@ class Pokemon(Menus):
     def __init__(self, bot):
         self.bot = bot
         self.image_path = 'data/pokemon/images/{}/{}-{}.gif'
-        self.trades = {}
 
 ###################
 #                 #
@@ -563,18 +562,18 @@ class Pokemon(Menus):
         title = f'{player_name} | {inventory["money"]}\ua750'
         description = 'Select items to buy{}.'.format(f' in multiples of {multiple}' if multiple > 1 else '')
         balls = await ctx.con.fetch("""
-                              SELECT name, price FROM items WHERE price != 0 AND name LIKE '%ball'
+                              SELECT name, price FROM items WHERE price != 0 AND name LIKE '%ball' ORDER BY price
                               """)
-        display_dict = {}
+        balls = [dict(ball) for ball in balls]
         for ball in balls:
-            display_dict[ball['name']] = discord.utils.get(self.bot.emojis, name=ball['name'])
-        options = ['{} {[price]}\ua750 **|** Inventory: {}'.format(display_dict[data['name']], data,
-                                                                   inventory[data['name']]) for data in balls]
+            ball['emoji'] = self.bot.get_emoji_named(ball['name'])
+        options = ['{} {}\ua750 **|** Inventory: {}'.format(ball['emoji'], ball['price'],
+                                                            inventory.get(ball['name'], 0)) for ball in balls]
 
         selected = await self.embed_menu(options, 'Shop', ctx.author, ctx.channel, -1,
                                          description=description, title=title, thumbnail=thumbnail,
                                          return_from=list(range(len(balls))), multi=True,
-                                         display=list(display_dict.values()))
+                                         display=[ball['emoji'] for ball in balls])
         if not selected:
             return
         bought = []
@@ -596,7 +595,7 @@ class Pokemon(Menus):
         else:
             display = []
             for item in set(bought):
-                display.append(str(list(display_dict.values())[item]))
+                display.append(str(balls[item]['emoji']))
                 count = bought.count(item)
                 if count > 1:
                     display[-1] += f' x{count}'
@@ -789,6 +788,7 @@ class Pokemon(Menus):
 
         if all(accepted[u.id] is None for u in (author, user)):
             await ctx.send('No one responded to the trade.', delete_after=60)
+            await accept_msg.delete()
             return
 
         for u in (author, user):
@@ -796,6 +796,7 @@ class Pokemon(Menus):
                 accepted[u.id] = False
             if not accepted[u.id]:
                 await ctx.send(f'**{u.name}** declined the trade.', delete_after=60)
+                await accept_msg.delete()
                 return
         await get_player(ctx, ctx.author.id)
         await get_player(ctx, user.id)
@@ -804,6 +805,7 @@ class Pokemon(Menus):
             await ctx.con.execute("""
                           UPDATE found SET owner=$1 WHERE id=ANY($2) AND owner=$3
                           """, new.id, [mon['id'] for mon in selection], old.id)
+        await accept_msg.delete()
         await ctx.send(f'Completed trade between **{author.name}** and **{user.name}**.', delete_after=60)
 
 
