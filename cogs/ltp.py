@@ -33,7 +33,7 @@ class LTP(Menus):
             'Roblox': ("ROBLOX", "KIDSGAME"),
             'Project Reality': ("PROJECTREALITY", "PR", "PR:BF2"),
             'World of Warcraft': ("WOW", "WORLDOFWARCRAFT", "WARCRAFT"),
-            'D&D': ("DUNGEONS&DRAGONS", "DND", "D&D"),
+            'Divinity: Orginal Sin 2': ("DUNGEONS&DRAGONS", "DND", "D&D", "DIVINITY", "DIVINITY2", "DIVINITY:ORGINALSIN", "DIVINITY:ORGINALSIN2", "DIVINITYORIGINALSIN", "DIVINITYORIGINALSIN2"),
             'RimWorld': ("RIMWORLD"),
             'Battlefield 1': ("BF1", "BATTLEFIELD 1", "BATTLEFIELDONE"),
             'Hypixel': ("HYPIXEL"),
