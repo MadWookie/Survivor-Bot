@@ -1,3 +1,5 @@
+![intro](https://i.imgur.com/GWGthkH.png)
+
 # Survivor-Bot
 
 [![Discord](https://img.shields.io/badge/discord-join%20us-brightgreen.svg)](https://discord.gg/USbMMCf) 
