@@ -114,7 +114,7 @@ class Exp(Menus):
             ''', uid, gid) or {'exp': 0, 'level': 0, 'prestige': 0}
         exp, level, prestige = rec['exp'], rec['level'], rec['prestige']
         to_next_level = level_req(level + 1)
-        thumbnail = f'http://unitedsurvivorsgaming.com/P{prestige}.png'
+        thumbnail = f'http://pokebot.xyz/static/img/prestige/P{prestige}.png'
         embed = discord.Embed(colour=0xffffff)
         embed.set_author(name=name, icon_url=user.avatar_url)
         embed.set_thumbnail(url=thumbnail)
