@@ -280,7 +280,7 @@ class Pokemon(Menus):
 ###################
 
     @checks.db
-    @commands.group(invoke_without_command=True, aliases=['pokemen', 'pokermon'])
+    @commands.group(invoke_without_command=True, aliases=['pokemen', 'pokermon', 'digimon'])
     @commands.cooldown(1, 150, commands.BucketType.user)
     @pokechannel()
     async def pokemon(self, ctx):
