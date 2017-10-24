@@ -223,6 +223,57 @@ class Main:
 
 ###################
 #                 #
+# BUMPS           #
+#                 #
+###################
+
+    @checks.db
+    @commands.command()
+    @commands.no_pm()
+    async def bump(self, ctx):
+        """Bump server through ServerHound and get points for it."""
+        hound = 222853335877812224
+        hidden_channel = discord.utils.get(ctx.guild.channels, name='logs')
+        if not hidden_channel:
+            await ctx.send('Hidden channel does not exist, just use `=bump`')
+            return
+
+        def check(m):
+            return m.author.id == hound and m.channel.id == hidden_channel.id
+
+        await hidden_channel.send('=bump')
+        try:
+            msg = await self.bot.wait_for('message', check=check, timeout=5)
+        except asyncio.TimeoutError:
+            reply = 'There is an issue with ServerHound. Please try again in a bit.'
+        else:
+            if 'Bumped' in msg.content:
+                reply = f'{msg.content} *+1 point*'
+                await ctx.con.execute('''
+                    INSERT INTO bumps (guild_id, user_id, total, current) VALUES
+                    ($1, $2, 1, 1) ON CONFLICT (guild_id, user_id) DO
+                    UPDATE SET total = total + 1, current = current + 1
+                    ''', ctx.guild.id, ctx.author.id)
+            elif 'wait' in msg.content:
+                reply = f'{msg.content}.'
+                time = msg.content[23:-26]
+            else:
+                reply = msg.content
+        await ctx.send(reply)
+
+    @checks.db
+    @commands.command(aliases=['bumps'])
+    @commands.no_pm()
+    async def balance(self, ctx):
+        """See how many times you've bumped the server through ServerHound."""
+        row = await ctx.con.fetchrow('''
+            SELECT total, current FROM bumps WHERE guild_id = $1 AND user_id = $2
+            ''', ctx.guild.id, ctx.author.id) or 0
+        total, current = row['total'], row['current']
+        await ctx.send(f'You have bumped this server {total} times, and have a balance of {current}.')
+
+###################
+#                 #
 # MISCELLANEOUS   #
 #                 #
 ###################

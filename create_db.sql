@@ -146,3 +146,11 @@ CREATE TABLE experience (
     prestige integer DEFAULT 0,
     PRIMARY KEY (guild_id, user_id)
 );
+
+CREATE TABLE bumps (
+    guild_id bigint,
+    user_id bigint,
+    total bigint,
+    current bigint,
+    PRIMARY KEY (guild_id, user_id)
+);
