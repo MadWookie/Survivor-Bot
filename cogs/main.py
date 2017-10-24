@@ -229,7 +229,7 @@ class Main:
 
     @checks.db
     @commands.command()
-    @commands.no_pm()
+    @commands.guild_only()
     async def bump(self, ctx):
         """Bump server through ServerHound and get points for it."""
         hound = 222853335877812224
@@ -263,7 +263,7 @@ class Main:
 
     @checks.db
     @commands.command(aliases=['bumps'])
-    @commands.no_pm()
+    @commands.guild_only()
     async def balance(self, ctx):
         """See how many times you've bumped the server through ServerHound."""
         row = await ctx.con.fetchrow('''
