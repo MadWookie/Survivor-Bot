@@ -102,8 +102,9 @@ class Exp(Menus):
 
     @checks.db
     @checks.no_delete
-    @commands.command(hidden=True)
+    @commands.command()
     async def level(self, ctx, user: discord.Member = None):
+        """Shows your or another persons level."""
         if user is None:
             user = ctx.author
         name = user.name
@@ -131,6 +132,7 @@ class Exp(Menus):
     @checks.db
     @commands.command()
     async def rank(self, ctx):
+        """Shows the EXP leaderboard."""
         ordered = await ctx.con.fetch('''
             SELECT * FROM experience WHERE guild_id = $1 ORDER BY prestige DESC, level DESC, exp DESC
             ''', ctx.guild.id)
@@ -163,7 +165,7 @@ class Exp(Menus):
 ###################
 
     @checks.db
-    @commands.command()
+    @commands.command(hidden=True)
     @commands.has_permissions(administrator=True)
     async def cleanxp(self, ctx):
         in_guild = [r['user_id'] for r in await ctx.con.fetch('''
