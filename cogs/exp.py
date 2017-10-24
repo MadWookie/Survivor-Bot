@@ -90,9 +90,9 @@ class Exp(Menus):
                     else:
                         break
             if prestiged:
-                await message.channel.send(f'**{message.author.name}** has prestiged and is now prestige level **{prestige}**!')
+                await message.channel.send(f'**{message.author.name}** has prestiged and is now prestige level **{prestige}**!', delete_after=120)
             elif leveled:
-                await message.channel.send(f'**{message.author.name}** has reached level **{level}**!')
+                await message.channel.send(f'**{message.author.name}** has reached level **{level}**!', delete_after=120)
 
 ###################
 #                 #
@@ -120,7 +120,7 @@ class Exp(Menus):
         embed.set_thumbnail(url=thumbnail)
         embed.add_field(name='LEVEL', value=level)
         embed.add_field(name='EXP', value=f'{exp}/{to_next_level}')
-        await ctx.send(embed=embed)
+        await ctx.send(embed=embed, delete_after=60)
 
 ###################
 #                 #
@@ -178,7 +178,7 @@ class Exp(Menus):
                 DELETE FROM experience WHERE user_id = ANY($1)
                 ''', remove)
         removed = res.split()[-1]
-        await ctx.send(f':white_check_mark: {removed} removed members purged.')
+        await ctx.send(f':white_check_mark: {removed} removed members purged.', delete_after=60)
 
 
 def setup(bot):
