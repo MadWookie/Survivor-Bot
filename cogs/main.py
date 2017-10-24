@@ -268,8 +268,11 @@ class Main:
         """See how many times you've bumped the server through ServerHound."""
         row = await ctx.con.fetchrow('''
             SELECT total, current FROM bumps WHERE guild_id = $1 AND user_id = $2
-            ''', ctx.guild.id, ctx.author.id) or 0
-        total, current = row['total'], row['current']
+            ''', ctx.guild.id, ctx.author.id)
+        if row is None:
+            total, current = 0, 0
+        else:
+            total, current = row['total'], row['current']
         await ctx.send(f'You have bumped this server {total} times, and have a balance of {current}.')
 
 ###################
