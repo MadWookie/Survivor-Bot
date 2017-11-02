@@ -96,7 +96,7 @@ class Main:
     @commands.guild_only()
     async def bump(self, ctx):
         """Bump the server through ServerHound and get points for it."""
-        user = ctx.author
+        user = ctx.author.name
         hound = 222853335877812224
         hidden_channel = discord.utils.get(ctx.guild.channels, name='logs')
         if not hidden_channel:
@@ -130,7 +130,7 @@ class Main:
     @commands.guild_only()
     async def balance(self, ctx):
         """See how many times you've bumped the server through ServerHound."""
-        user = ctx.author
+        user = ctx.author.name
         row = await ctx.con.fetchrow('''
             SELECT total, current FROM bumps WHERE guild_id = $1 AND user_id = $2
             ''', ctx.guild.id, ctx.author.id)
