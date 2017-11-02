@@ -160,7 +160,7 @@ class Main:
     @commands.guild_only()
     async def rankup(self, ctx):
         """Allows users to rank up using points."""
-        member = ctx.member
+        member = ctx.message.author
         member_role = discord.utils.get(ctx.guild.roles, id=185182567648067584)
         dedicated_role = discord.utils.get(ctx.guild.roles, id=374441904286334976)
         veteran_role = discord.utils.get(ctx.guild.roles, id=374441810438914059)
