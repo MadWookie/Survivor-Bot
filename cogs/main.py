@@ -146,14 +146,52 @@ class Main:
     @commands.command()
     @commands.guild_only()
     @commands.has_permissions(administrator=True)
-    async def pay(self, ctx, member, amount):
+    async def pay(self, ctx, member: discord.Member, amount: int):
         """Allows admins to give people points."""
-        await ctx.send(f'**{ctx.message.member.name}** has been given {amount} points.')
         await ctx.con.execute('''
             INSERT INTO bumps (guild_id, user_id, total, current) VALUES
-            ($1, $2, 1, 1) ON CONFLICT (guild_id, user_id) DO
-            UPDATE SET current = current + {amount}
-            ''', ctx.guild.id, ctx.message.member.id)
+            ($1, $2, $3, $3) ON CONFLICT (guild_id, user_id) DO
+            UPDATE SET current = current + $3
+            ''', ctx.guild.id, member.id, amount)
+        await ctx.send(f'**{member.name}** has been given {amount} points.')
+
+    @checks.db
+    @commands.command()
+    @commands.guild_only()
+    async def rankup(self, ctx):
+        """Allows users to rank up using points."""
+        member = ctx.member
+        member_role = discord.utils.get(ctx.guild.roles, id=185182567648067584)
+        dedicated_role = discord.utils.get(ctx.guild.roles, id=374441904286334976)
+        veteran_role = discord.utils.get(ctx.guild.roles, id=374441810438914059)
+        survivor_role = discord.utils.get(ctx.guild.roles, id=374444597620899840)
+        current = await ctx.con.fetchval('''
+            SELECT current FROM bumps WHERE guild_id = $1 AND user_id = $2
+            ''', ctx.guild.id, ctx.author.id)
+        if member_role in member.roles:
+            cost = 10
+            new_role = dedicated_role
+            old_role = member_role
+        elif dedicated_role in member.roles:
+            cost = 25
+            new_role = veteran_role
+            old_role = dedicated_role
+        elif veteran_role in member.roles:
+            cost = 50
+            new_role = survivor_role
+            old_role = veteran_role
+        else:
+            await ctx.send('You don\'t have any roles, please contact a staff member to get this fixed.')
+            return
+        if current >= cost:
+            await ctx.con.execute('''
+                UPDATE bumps SET current = current - $3 WHERE guild_id = $1 AND user_id = $2
+                ''', ctx.guild.id, member.id, cost)
+            await member.add_roles(new_role)
+            await member.remove_roles(old_role)
+            await ctx.send(f'**{member.name}** has ranked up and is now a {new_role}.')
+        else:
+            await ctx.send(f'Sorry, you don\'t have enough points to upgrade.\nYou still need {cost - current} points to rank up.')
 
 ###################
 #                 #
@@ -275,9 +313,7 @@ class Main:
             con = await self.bot.db_pool.acquire()
         try:
             channel = await self.get_welcome_channel(guild, con=con)
-            message = await con.fetchval('''
-                SELECT message FROM greetings WHERE guild_id = $1
-                ''', guild.id)
+            message = self.settings[guild.id]['GREETING']
         finally:
             if local:
                 await self.bot.db_pool.release(con)
