@@ -182,6 +182,7 @@ class Main:
             old_role = veteran_role
         elif survivor_role in member.roles:
             await ctx.send('You already have the highest rank avalible.')
+            return
         else:
             await ctx.send('You don\'t have any roles, please contact a staff member to get this fixed.')
             return
