@@ -1,3 +1,5 @@
+import asyncio
+
 import datetime
 import time
 
@@ -139,6 +141,19 @@ class Main:
         else:
             total, current = row['total'], row['current']
         await ctx.send(f'**{user}**, you have bumped this server **{total}** times, and have a balance of **{current}**.', delete_after=120)
+
+    @checks.db
+    @commands.command()
+    @commands.guild_only()
+    @commands.has_permissions(administrator=True)
+    async def pay(self, ctx, member, amount):
+        """Allows admins to give people points."""
+        await ctx.send(f'**{ctx.mentions.name}** has been given {amount} points.')
+        await ctx.con.execute('''
+            INSERT INTO bumps (guild_id, user_id, total, current) VALUES
+            ($1, $2, 1, 1) ON CONFLICT (guild_id, user_id) DO
+            UPDATE SET current = current + {amount}
+            ''', ctx.guild.id, ctx.mentions.id)
 
 ###################
 #                 #
