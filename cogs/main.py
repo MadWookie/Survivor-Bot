@@ -118,7 +118,7 @@ class Main:
                 reply = f'**{user}** has bumped the server! *+2 point!*'
                 await ctx.con.execute('''
                     INSERT INTO bumps (guild_id, user_id, total, current) VALUES
-                    ($1, $2, 1, 1) ON CONFLICT (guild_id, user_id) DO
+                    ($1, $2, 1, 2) ON CONFLICT (guild_id, user_id) DO
                     UPDATE SET total = bumps.total + 1, current = bumps.current + 2
                     ''', ctx.guild.id, ctx.author.id)
             elif 'wait' in msg.content:
