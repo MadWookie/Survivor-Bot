@@ -180,6 +180,8 @@ class Main:
             cost = 100
             new_role = survivor_role
             old_role = veteran_role
+        elif survivor_role in member.roles:
+            await ctx.send('You already have the highest rank avalible.')
         else:
             await ctx.send('You don\'t have any roles, please contact a staff member to get this fixed.')
             return
