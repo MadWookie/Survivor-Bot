@@ -151,7 +151,7 @@ class Main:
         await ctx.con.execute('''
             INSERT INTO bumps (guild_id, user_id, total, current) VALUES
             ($1, $2, $3, $3) ON CONFLICT (guild_id, user_id) DO
-            UPDATE SET current = current + $3
+            UPDATE SET current = bumps.current + $3
             ''', ctx.guild.id, member.id, amount)
         await ctx.send(f'**{member.name}** has been given {amount} points.')
 
@@ -169,15 +169,15 @@ class Main:
             SELECT current FROM bumps WHERE guild_id = $1 AND user_id = $2
             ''', ctx.guild.id, ctx.author.id)
         if member_role in member.roles:
-            cost = 10
+            cost = 25
             new_role = dedicated_role
             old_role = member_role
         elif dedicated_role in member.roles:
-            cost = 25
+            cost = 50
             new_role = veteran_role
             old_role = dedicated_role
         elif veteran_role in member.roles:
-            cost = 50
+            cost = 100
             new_role = survivor_role
             old_role = veteran_role
         else:
@@ -191,7 +191,7 @@ class Main:
             await member.remove_roles(old_role)
             await ctx.send(f'**{member.name}** has ranked up and is now a {new_role}.')
         else:
-            await ctx.send(f'Sorry, you don\'t have enough points to upgrade.\nYou still need {cost - current} points to rank up.')
+            await ctx.send(f'*Sorry*, you don\'t have enough points to rank up.\nYou still need **{cost - current}** points to rank up.')
 
 ###################
 #                 #
