@@ -56,7 +56,7 @@ class LTP(Menus):
             'World of Warplanes': ("WORLDOFWARPLANES", "WARPLANES"),
             'Geometry Dash': ("GEOMETRYDASH", "GD"),
             'osu!': ("OSU", "OSU!"),
-            'Runescape': ("RUNESCAPE", "RS"),
+            'Runescape': ("RUNESCAPE", "RS", "OSRS", "RS3"),
             'Paragon': ("PARAGON"),
             'Dont Starve Together': ("DST", "DONTSTARVE", "DONTSTARVETOGETHER"),
             'Hearts of Iron IV': ("HOI4" "HEARTSOFIRON IV", "HEARTSOFIRON4", "HEARTSOFIRON"),
@@ -72,7 +72,7 @@ class LTP(Menus):
             'Paladins': ("PALADINS"),
             'GTAV': ("GTAV", "GTA5", "GRANDTHEFTAUTOFIVE", "GRANDTHEFTAUTOV" "GRANDTHEFTAUTO5"),
             'PUBG': ("PUBG", "PLAYERUNKNOWNBATTLEGROUND", "PLAYERUNKNOWNBATTLEGROUNDS", "PLAYERUNKNOWN", "BATTLEGROUND"),
-            'Destiny 2': ("DESTINY2")
+            'Destiny 2': ("DESTINY2"),
         }
 
 ###################
