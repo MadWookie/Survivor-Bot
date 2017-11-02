@@ -167,7 +167,7 @@ class Main:
         survivor_role = discord.utils.get(ctx.guild.roles, id=374444597620899840)
         current = await ctx.con.fetchval('''
             SELECT current FROM bumps WHERE guild_id = $1 AND user_id = $2
-            ''', ctx.guild.id, ctx.author.id)
+            ''', ctx.guild.id, ctx.author.id) or 0
         if member_role in member.roles:
             cost = 25
             new_role = dedicated_role
