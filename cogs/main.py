@@ -181,10 +181,10 @@ class Main:
             new_role = survivor_role
             old_role = veteran_role
         elif survivor_role in member.roles:
-            await ctx.send('You already have the highest rank avalible.')
+            await ctx.send(f'**{member.name}**, you already have the highest rank avalible.', delete_after=120)
             return
         else:
-            await ctx.send('You don\'t have any roles, please contact a staff member to get this fixed.')
+            await ctx.send(f'**{member.name}**, you don\'t have any roles, please contact a staff member to get this fixed.', delete_after=120)
             return
         if current >= cost:
             await ctx.con.execute('''
@@ -192,9 +192,9 @@ class Main:
                 ''', ctx.guild.id, member.id, cost)
             await member.add_roles(new_role)
             await member.remove_roles(old_role)
-            await ctx.send(f'**{member.name}** has ranked up and is now a {new_role}.')
+            await ctx.send(f'**{member.name}** has ranked up and is now a {new_role}.', delete_after=120)
         else:
-            await ctx.send(f'*Sorry*, you don\'t have enough points to rank up.\nYou still need **{cost - current}** points to rank up.')
+            await ctx.send(f'*Sorry* **{member.name}**, you don\'t have enough points to rank up.\nYou still need **{cost - current}** points to rank up.', delete_after=120)
 
 ###################
 #                 #
