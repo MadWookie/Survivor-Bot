@@ -315,20 +315,22 @@ class Main:
         if local:
             con = await self.bot.db_pool.acquire()
         try:
-            channel = await self.get_welcome_channel(guild, con=con)
-            message = self.settings[guild.id]['GREETING']
+            settings = await con.fetchrow('''
+                SELECT * FROM greetings WHERE guild_id = $1
+                ''', guild.id)
+            channel = discord.utils.get(guild.channels, id=settings['channel_id'])
         finally:
             if local:
                 await self.bot.db_pool.release(con)
 
         if channel is not None:
-            await ctx.channel.send(f'Sending a testing message to {channel.mention}')
+            await ctx.send(f'Sending a testing message to {channel.mention}')
             try:
-                await channel.send(self.settings[guild.id]['GREETING'].format(ctx.author, guild))
+                await channel.send(settings['message'].format(ctx.author, guild))
             except discord.DiscordException as e:
-                await ctx.channel.send(f'`{e}`')
+                await ctx.send(f'`{e}`')
         else:
-            await ctx.channel.send('Neither the set channel nor channel named "welcome" exists.')
+            await ctx.send('Neither the set channel nor channel named "welcome" exists.')
 
 ###################
 #                 #
