@@ -35,6 +35,7 @@ class LTP(Menus):
             'Dont Starve Together': ("DST", "DONTSTARVE", "DONTSTARVETOGETHER"),
             'Dota 2': ("DOTA", "DOTA 2", "DOTA TWO", "DOTA2"),
             'Divinity: Orginal Sin 2': ("DUNGEONS&DRAGONS", "DND", "D&D", "DIVINITY", "DIVINITY2", "DIVINITY:ORGINALSIN", "DIVINITY:ORGINALSIN2", "DIVINITYORIGINALSIN", "DIVINITYORIGINALSIN2"),
+            'Fortnite': ("FORTNITE", "BATTLE ROYAL", "POOR MANS PUBG"),
             'Garrys Mod': ("GMOD", "GARRYSMOD"),
             'Geometry Dash': ("GEOMETRYDASH", "GD"),
             'GTAV': ("GTAV", "GTA5", "GRANDTHEFTAUTOFIVE", "GRANDTHEFTAUTOV" "GRANDTHEFTAUTO5"),
