@@ -89,7 +89,7 @@ class LTP(Menus):
                          ':white_check_mark: Assigned **{role}** role.',
                          ':x: **Invalid Game**.\nWant a game added? Ask *__MadWookie__* to add it.')
         else:
-            say_temps = (':x: You\' not assigned to the **{role}** role.',
+            say_temps = (':x: You\'re not assigned to the **{role}** role.',
                          ':white_check_mark: Removed **{role}** role.',
                          ':x: **Invalid Game**.\nWant a game added? Ask *__MadWookie__* to add it.')
         changed = False
