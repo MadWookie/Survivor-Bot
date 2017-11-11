@@ -108,11 +108,11 @@ class Main:
         def check(m):
             return m.author.id == hound and m.channel.id == hidden_channel.id
 
-        await hidden_channel.send('=bump')
+        await hidden_channel.send('=bump', delete_after=5)
         try:
             msg = await self.bot.wait_for('message', check=check, timeout=5)
         except asyncio.TimeoutError:
-            reply = 'There is an issue with ServerHound. Please try again in a bit.'
+            reply = 'There is an issue with ServerHound. Please try again in a bit.',
         else:
             if 'Bumped' in msg.content:
                 reply = f'**{user}** has bumped the server! *+2 point!*'
