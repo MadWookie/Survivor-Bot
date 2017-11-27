@@ -233,7 +233,7 @@ class Pokemon(Menus):
     @commands.command(aliases=['inv'])
     @pokechannel()
     async def inventory(self, ctx):
-        thumbnail = 'http://unitedsurvivorsgaming.com/backpack.png'
+        thumbnail = 'http://pokebot.xyz/botdata/images/misc/backpack.png'
         player_data = await get_player(ctx, ctx.author.id)
         inv = player_data['inventory']
         all_items = await ctx.con.fetch('''
@@ -559,7 +559,7 @@ class Pokemon(Menus):
         player_name = ctx.author.name
         player_data = await get_player(ctx, ctx.author.id)
         inventory = player_data['inventory']
-        thumbnail = 'http://unitedsurvivorsgaming.com/shop.png'
+        thumbnail = 'http://pokebot.xyz/botdata/images/misc/shop.png'
         title = f'{player_name} | {inventory["money"]}\ua750'
         description = 'Select items to buy{}.'.format(f' in multiples of {multiple}' if multiple > 1 else '')
         balls = await ctx.con.fetch("""
