@@ -228,6 +228,7 @@ class Main:
 
     @commands.command()
     async def uptime(self, ctx):
+        """Shows the uptime of the bot."""
         up = abs(self.bot.uptime - int(time.perf_counter()))
         up = datetime.timedelta(seconds=up)
         await ctx.send(f'`Uptime: {up}`', delete_after=60)
