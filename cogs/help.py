@@ -83,7 +83,7 @@ class Help(formatter.HelpFormatter):
         if len(embeds) == 1:
             embed = embeds[0]
             embed.set_author(name='{0} Help Manual'.format(self.bot.user.name), icon_url=self.avatar)
-            return await dest.send(content=content, embed=embed, delete_after=60)
+            return await dest.send(content=content, embed=embed)
 
         help_msg = await dest.send(content=content, embed=embeds[0])
         page_msg = await dest.send("There are {} help pages. Send a number to see the corresponding page. Send any other message to exit.".format(len(embeds)))
@@ -291,7 +291,7 @@ class Help(formatter.HelpFormatter):
         embeds.append(embed)
 
         embed.set_footer(**emb['footer'])
-        await self.send(self.destination, embeds=embeds, delete_after=60)
+        await self.send(self.destination, embeds=embeds)
 
     def simple_embed(self, title=None, description=None, color=None, author=None):
         # Shortcut
