@@ -83,7 +83,7 @@ class Help(formatter.HelpFormatter):
         if len(embeds) == 1:
             embed = embeds[0]
             embed.set_author(name='{0} Help Manual'.format(self.bot.user.name), icon_url=self.avatar)
-            return await dest.send(content=content, embed=embed)
+            return await dest.send(content=content, embed=embed, delete_after=60)
 
         help_msg = await dest.send(content=content, embed=embeds[0])
         page_msg = await dest.send("There are {} help pages. Send a number to see the corresponding page. Send any other message to exit.".format(len(embeds)))
@@ -291,7 +291,7 @@ class Help(formatter.HelpFormatter):
         embeds.append(embed)
 
         embed.set_footer(**emb['footer'])
-        await self.send(self.destination, embeds=embeds)
+        await self.send(self.destination, embeds=embeds, delete_after=60)
 
     def simple_embed(self, title=None, description=None, color=None, author=None):
         # Shortcut
@@ -336,7 +336,7 @@ class Help(formatter.HelpFormatter):
             else:
                 command = self.bot_all_commands.get(name)
                 if command is None:
-                    await self.send(self.destination, embeds=[self.cmd_not_found(name, self.color)])
+                    await self.send(self.destination, embeds=[self.cmd_not_found(name, self.color)], delete_after=60)
                     return
 
             await self.bot.formatter.format_help_for(ctx, command)
@@ -344,7 +344,7 @@ class Help(formatter.HelpFormatter):
             name = _mention_pattern.sub(repl, cmds[0])
             command = self.bot_all_commands.get(name)
             if command is None:
-                await self.send(self.destination, embeds=[self.cmd_not_found(name, self.color)])
+                await self.send(self.destination, embeds=[self.cmd_not_found(name, self.color)], delete_after=60)
                 return
 
             for key in cmds[1:]:
@@ -352,11 +352,10 @@ class Help(formatter.HelpFormatter):
                     key = _mention_pattern.sub(repl, key)
                     command = command.all_commands.get(key)
                     if command is None:
-                        await self.send(self.destination, embeds=[self.cmd_not_found(key, self.color)])
+                        await self.send(self.destination, embeds=[self.cmd_not_found(key, self.color)], delete_after=60)
                         return
                 except AttributeError:
-                    await self.send(self.destination,
-                                    embeds=[self.simple_embed(title='Command "{0.name}" has no subcommands.'.format(command), color=self.color, author=self.author)])
+                    await self.send(self.destination, embeds=[self.simple_embed(title='Command "{0.name}" has no subcommands.'.format(command), color=self.color, author=self.author)], delete_after=60)
                     return
 
             await self.bot.formatter.format_help_for(ctx, command)
