@@ -44,6 +44,7 @@ class LTP(Menus):
             'Heroes & Generals': ("H&G", "HEROES&GENERALS"),
             'Heroes of The Storm': ("HOTS", "HEROESOFTHESTORM"),
             'Hypixel': ("HYPIXEL"),
+            'Insurgency': ("INSURGENCY"),
             'League of Legends': ("LEAGUEOFLEGENDS", "LOL", "LEAGUE", "IMFUCKINGTILTED", "TILTED"),
             'Left 4 Dead 2': ("LEFTFORDEAD2", "LEFT4DEAD2", "L4D2", "LEFT4DEAD", "LEFTFORDEAD"),
             'Men of War: Assault Squad 2': ("MOW:AS2", "MOW", "MENOFWAR", "MENOFWAR:ASSAULTSQUAD2", "MOWAS2", "AS2", "ASSAULTSQUAD", "ASSAULTSQUAD2"),
