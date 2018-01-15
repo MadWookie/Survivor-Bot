@@ -51,7 +51,7 @@ class Giveaway(Menus):
         """List the members that have joined the giveaway."""
         entrants = await get_entrants(ctx.guild, remove=False)
         mentions = [e.mention for e in entrants]
-        await self.embed_reaction_menu(mentions, ctx.author, ctx, count=0)
+        await self.embed_menu(mentions, f'{len(entrants)} Entrants', ctx.author, ctx, count=0, code=False)
 
     @giveaway.command()
     async def info(self, ctx):
