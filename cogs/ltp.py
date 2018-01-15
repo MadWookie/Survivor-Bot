@@ -20,7 +20,6 @@ class LTP(Menus):
     def __init__(self, bot):
         self.bot = bot
         self.game_aliases = {
-            'Giveaway': ("GIVEAWAY", "GIVE AWAY"),
             '.io Games': (".IO", "IO", ".IOGAMES", "IOGAMES", "BROWSERGAMES", "FLASHGAMES"),
             'Aberoth': ("ABEROTH"),
             'Battlefield 1': ("BF1", "BATTLEFIELD 1", "BATTLEFIELDONE"),
