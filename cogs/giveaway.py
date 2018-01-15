@@ -85,7 +85,7 @@ class Giveaway(Menus):
         await ctx.send(f'{member.display_name} has been entered into the giveaway.')
 
     @commands.has_permissions(administrator=True)
-    @giveaway.command(aliases='kick')
+    @giveaway.command(aliases=['kick'])
     async def boot(self, ctx, member: discord.Member):
         """Boot someone from the giveaway."""
         if ctx.guild.id not in self.giveaways:
