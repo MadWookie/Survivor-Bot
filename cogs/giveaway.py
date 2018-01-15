@@ -3,7 +3,7 @@ import random
 from discord.ext import commands
 import discord
 
-from cogs.menu import Menus
+from cogs.menus import Menus
 
 
 def get_role(guild):
