@@ -7,7 +7,7 @@ from cogs.menus import Menus
 
 
 def get_role(guild):
-    return discord.utils.get(guild, name='Giveaway')
+    return discord.utils.get(guild.roles, name='Giveaway')
 
 
 async def get_entrants(guild, remove=True):
