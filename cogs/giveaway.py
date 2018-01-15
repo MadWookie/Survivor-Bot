@@ -128,3 +128,7 @@ class Giveaway(Menus):
         await get_entrants(ctx.guild)
         self.booted.pop(ctx.guild.id, None)
         await ctx.send(f"The giveaway for \"{giveaway['reward']}\" by {giveaway['creator'].mention} has been cancelled.")
+
+
+def setup(bot):
+    bot.add_cog(Giveaway(bot))
