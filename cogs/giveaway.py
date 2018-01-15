@@ -17,7 +17,10 @@ async def get_entrants(guild, remove=True):
         if role in m.roles:
             entrants.append(m)
             if remove:
-                await m.remove_roles(role)
+                try:
+                    await m.remove_roles(role)
+                except:
+                    pass
     return entrants
 
 
@@ -36,6 +39,10 @@ class Giveaway(Menus):
         """Enter the currently active giveaway."""
         if ctx.author.id in self.booted.get(ctx.guild.id, []):
             await ctx.send("You were booted from the current giveaway.")
+            return
+        elif ctx.guild.id not in self.giveaways:
+            await ctx.send('There is no active giveaway.')
+            return
         await ctx.author.add_roles(get_role(ctx.guild))
         await ctx.send(f'{ctx.author.display_name} has been entered into the giveaway.')
 
@@ -94,6 +101,8 @@ class Giveaway(Menus):
         await member.remove_roles(get_role(ctx.guild))
         if ctx.guild.id in self.booted:
             self.booted[ctx.guild.id].append(member.id)
+        else:
+            self.booted[ctx.guild.id] = [member.id]
         await ctx.send(f'{member.display_name} has been {ctx.invoked_with}ed from the giveaway.')
 
     @commands.has_permissions(administrator=True)
@@ -106,16 +115,28 @@ class Giveaway(Menus):
         elif ctx.guild.id not in self.giveaways:
             await ctx.send('No giveaway is currently active.')
             return
-        giveaway = self.giveaways.pop(ctx.guild.id)
-        entrants = await get_entrants(ctx.guild)
-        self.booted.pop(ctx.guild.id, None)
+        giveaway = self.giveaways[ctx.guild.id]
+        entrants = await get_entrants(ctx.guild, remove=False)
+        if ctx.guild.id not in self.booted:
+            self.booted[ctx.guild.id] = []
         if count == 1:
             winner = random.choice(entrants)
             await ctx.send(f"{winner.mention} won the giveaway for \"{giveaway['reward']}\" by {giveaway['creator'].mention}.")
+            try:
+                await winner.remove_roles(get_role(ctx.guild))
+            except:
+                pass
+            self.booted[ctx.guild.id].append(winner.id)
         else:
             winners = random.sample(entrants, count)
             await ctx.send(f"The winners of the giveaway for \"{giveaway['reward']}\" by {giveaway['creator'].mention} are " +
                            ' '.join(m.mention for m in winners))
+            for m in winners:
+                self.booted[ctx.guild.id].append(m.id)
+                try:
+                    await m.remove_roles(get_role(ctx.guild))
+                except:
+                    pass
 
     @commands.has_permissions(administrator=True)
     @giveaway.command(aliases=['cancel'])
@@ -125,8 +146,8 @@ class Giveaway(Menus):
             await ctx.send('No giveaway is currently active.')
             return
         giveaway = self.giveaways.pop(ctx.guild.id)
-        await get_entrants(ctx.guild)
         self.booted.pop(ctx.guild.id, None)
+        await get_entrants(ctx.guild)
         await ctx.send(f"The giveaway for \"{giveaway['reward']}\" by {giveaway['creator'].mention} has been cancelled.")
 
 
