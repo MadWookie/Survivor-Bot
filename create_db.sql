@@ -154,3 +154,8 @@ CREATE TABLE bumps (
     current bigint,
     PRIMARY KEY (guild_id, user_id)
 );
+
+CREATE TABLE ltp (
+    name text PRIMARY KEY,
+    aliases text[] DEFAULT '{}'
+)

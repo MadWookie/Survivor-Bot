@@ -5,7 +5,7 @@ import discord
 
 from cogs.menus import Menus, ARROWS, CANCEL
 from utils.utils import wrap
-from utils import errors
+from utils import checks, errors
 
 
 def ltpchannel():
@@ -19,69 +19,32 @@ def ltpchannel():
 class LTP(Menus):
     def __init__(self, bot):
         self.bot = bot
-        self.game_aliases = {
-            '.io Games': (".IO", "IO", ".IOGAMES", "IOGAMES", "BROWSERGAMES", "FLASHGAMES"),
-            'Aberoth': ("ABEROTH"),
-            'Battlefield 1': ("BF1", "BATTLEFIELD 1", "BATTLEFIELDONE"),
-            'Battlefield 4': ("BATTLEFIELD4", "BF4"),
-            'Brawlhalla': ("BRAWLHALLA"),
-            'Binding of Isaac': ("BINDING", "BINDINGOFISAAC", "BOI"),
-            'Civilization V': ("CIV", "CIVV", "CIV5", "CIVILIZATIONV", "CIVILIZATION5", "CIVILIZATION"),
-            'Civilization VI': ("NEWCIV", "CIVVI", "CIV6", "CIVILIZATIONVI", "CIVILIZATION6", "NEWCIVILIZATION"),
-            'CSGO': ("CS:GO", "CSGO", "COUNTERSTRIKEGO", "COUNTERSTRIKEGLOBALOFFENCIVE"),
-            'Destiny 2': ("DESTINY2"),
-            'Diablo 3': ("DIABLO3", "D3"),
-            'Dont Starve Together': ("DST", "DONTSTARVE", "DONTSTARVETOGETHER"),
-            'Dota 2': ("DOTA", "DOTATWO", "DOTA2"),
-            'Divinity: Orginal Sin 2': ("DUNGEONS&DRAGONS", "DND", "D&D", "DIVINITY", "DIVINITY2", "DIVINITY:ORGINALSIN", "DIVINITY:ORGINALSIN2", "DIVINITYORIGINALSIN", "DIVINITYORIGINALSIN2"),
-            'Fortnite': ("FORTNITE", "BATTLEROYAL", "POORMANSPUBG"),
-            'Garrys Mod': ("GMOD", "GARRYSMOD"),
-            'Geometry Dash': ("GEOMETRYDASH", "GD"),
-            'GTAV': ("GTAV", "GTA5", "GRANDTHEFTAUTOFIVE", "GRANDTHEFTAUTOV" "GRANDTHEFTAUTO5"),
-            'Guild Wars 2': ("GUILDWARS", "GW2", "GUILDWARS 2"),
-            'Hearts of Iron IV': ("HOI4" "HEARTSOFIRON IV", "HEARTSOFIRON4", "HEARTSOFIRON"),
-            'Heroes & Generals': ("H&G", "HEROES&GENERALS"),
-            'Heroes of The Storm': ("HOTS", "HEROESOFTHESTORM"),
-            'Hypixel': ("HYPIXEL"),
-            'Insurgency': ("INSURGENCY"),
-            'League of Legends': ("LEAGUEOFLEGENDS", "LOL", "LEAGUE", "IMFUCKINGTILTED", "TILTED"),
-            'Left 4 Dead 2': ("LEFTFORDEAD2", "LEFT4DEAD2", "L4D2", "LEFT4DEAD", "LEFTFORDEAD"),
-            'Men of War: Assault Squad 2': ("MOW:AS2", "MOW", "MENOFWAR", "MENOFWAR:ASSAULTSQUAD2", "MOWAS2", "AS2", "ASSAULTSQUAD", "ASSAULTSQUAD2"),
-            'Minecraft': ("MINECRAFT", "MC"),
-            'Mount & Blade: Warband': ("MOUNTANDBLADE", "MOUNTANDBLADE:WARBAND", "MOUNT&BLADE", "MOUNT&BLADE:WARBAND", "M&B", "WARBAND"),
-            'osu!': ("OSU", "OSU!"),
-            'Overwatch': ("OVERWATCH"),
-            'Paladins': ("PALADINS"),
-            'Paragon': ("PARAGON"),
-            'Path of Exile': ("PATHOFEXILE", "POE"),
-            'Payday': ("PAYDAY", "PAYDAY 2"),
-            'Project Reality': ("PROJECTREALITY", "PR", "PR:BF2"),
-            'PUBG': ("PUBG", "PLAYERUNKNOWNBATTLEGROUND", "PLAYERUNKNOWNBATTLEGROUNDS", "PLAYERUNKNOWN", "BATTLEGROUND"),
-            'RimWorld': ("RIMWORLD"),
-            'Roblox': ("ROBLOX", "KIDSGAME"),
-            'Rocket League': ("ROCKETLEAGUE", "ROCKETLEAGUE"),
-            'Runescape': ("RUNESCAPE", "RS", "OSRS", "RS3"),
-            'Rust': ("RUST", "NAKEDPEOPLEWITHROCKS"),
-            'Smash Bros': ("SMASHBROS", "SMASH"),
-            'Smite': ('SMITE'),
-            'Starbound': ("STARBOUND"),
-            'Team Fortress 2': ("TF2", "TEAMFORTRESS2"),
-            'Unturned': ("UNTURNED"),
-            'Verdun': ("VERDUN"),
-            'Warframe': ("WARFRAME", "WARFRAME"),
-            'War Thunder': ("WARTHUNDER", "WT"),
-            'Wikian': ("WIKIA", "WIKIAN", "FANDOM", "WIKI"),
-            'World of Tanks': ("WOT", "WORLDOFTANKS"),
-            'World of Warcraft': ("WOW", "WORLDOFWARCRAFT", "WARCRAFT"),
-            'World of Warplanes': ("WORLDOFWARPLANES", "WARPLANES"),
-            'World of Warships': ("WORLDOFWARSHIPS", "WARSHIPS")
-        }
 
 ###################
 #                 #
 # LTP             #
 #                 #
 ###################
+
+    async def get_game(self, ctx, game_name):
+        return await ctx.con.fetchval('''
+            SELECT name FROM ltp WHERE $1 = ANY(aliases)
+            ''', game_name.upper().replace(' ', ''))
+
+    async def get_all_games(self, ctx):
+        return await ctx.con.fetchval('''
+            SELECT ARRAY(SELECT name FROM ltp ORDER BY name)
+            ''')
+
+    async def get_role(self, ctx, game_name):
+        game = await self.get_game(ctx, game_name)
+        role = discord.utils.get(ctx.guild.roles, name=game)
+        return role
+
+    async def get_all_roles(self, ctx):
+        games = await self.get_all_games(ctx)
+        roles = [role for role in ctx.guild.roles if role.name in games]
+        return roles
 
     async def game_role_helper(self, ctx, member, game_name, toggle):
         if toggle:
@@ -92,25 +55,24 @@ class LTP(Menus):
             say_temps = (':x: You\'re not assigned to the **{role}** role.',
                          ':white_check_mark: Removed **{role}** role.',
                          ':x: **Invalid Game**.\nWant a game added? Ask *__MadWookie__* to add it.')
-        changed = False
+        changed = 0
         role_name = None
-        for game, aliases in self.game_aliases.items():
-            if game_name.upper().replace(' ', '') in aliases:
-                role = discord.utils.get(ctx.guild.roles, name=game)
-                role_name = game
-                if toggle:
-                    if role not in member.roles:
-                        await member.add_roles(role)
-                        changed = True
-                else:
-                    if role in member.roles:
-                        await member.remove_roles(role)
-                        changed = True
-                break
+        role = await self.get_role(ctx, game_name)
+        if role:
+            role_name = role.name
+            if toggle:
+                if role not in member.roles:
+                    await member.add_roles(role)
+                    changed = 1
+            else:
+                if role in member.roles:
+                    await member.remove_roles(role)
+                    changed = 1
         else:
             changed = 2
         await ctx.send(say_temps[int(changed)].format(role=role_name), delete_after=20)
 
+    @checks.db
     @ltpchannel()
     @commands.group(invoke_without_command=True)
     async def ltp(self, ctx, *, game_name: str):
@@ -126,22 +88,27 @@ class LTP(Menus):
     async def stop_all_helper(self, ctx, member):
         temp = ':clock{}: Removing roles.. *please wait*...'
         emsg = await ctx.send(temp.format(1))
-        for i, game in enumerate(self.game_aliases.keys()):  # Fix logic to only remove roles the member has
-            await asyncio.sleep(1)
+        roles = [role for role in await self.get_all_roles(ctx) if role in member.roles]
+        len_roles = len(roles)
+        await asyncio.sleep(1)
+        for i, role in enumerate(roles):
             try:
-                role = discord.utils.get(ctx.guild.roles, name=game)
                 await member.remove_roles(role)
             except discord.Forbidden:
                 pass
             await emsg.edit(content=temp.format(((i * 2) % 12) + 1))
+            if i != (len_roles - 1):
+                await asyncio.sleep(1)
         await emsg.edit(content=':white_check_mark: Removed **all** game roles.', delete_after=15)
 
+    @checks.db
     @ltpchannel()
     @ltp.command()
     async def stop(self, ctx, *, game_name: str):
         """Removes you from a specified game role."""
         await self.game_role_helper(ctx, ctx.author, game_name, False)
 
+    @checks.db
     @ltpchannel()
     @ltp.command()
     async def stopall(self, ctx):
@@ -154,10 +121,11 @@ class LTP(Menus):
 #                 #
 ###################
 
+    @checks.db
     @ltpchannel()
     @ltp.command(name='list')
     async def list_roles(self, ctx):
-        roles = sorted(self.game_aliases.keys())
+        roles = [role.name for role in await self.get_all_roles(ctx)]
         header = "**Game List**"
         spacer = '-=-=-=--=-=-=--=-=-=--=-=-=-=-=-=-=-=-=-=-=-=-=-=-'
         key = f'{ARROWS[0]} Click to go back a page.\n{ARROWS[1]} Click to go forward a page.\n{CANCEL} Click to exit the list.'
