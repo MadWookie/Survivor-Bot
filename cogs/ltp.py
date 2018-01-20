@@ -86,7 +86,7 @@ class LTP(Menus):
 
 ###################
 #                 #
-# Owner Control   #
+# OWNER CONTROL   #
 #                 #
 ###################
 
@@ -94,16 +94,16 @@ class LTP(Menus):
     @commands.is_owner()
     @ltp.command()
     async def new(self, ctx, role: discord.Role, *, aliases: alias_split):
-        """Create new LTP game entry. Aliases should be comma-separated."""
+        """Create new LTP role entry."""
         try:
             async with ctx.con.transaction():
                 await ctx.con.execute('''
                     INSERT INTO ltp (name, aliases) VALUES ($1, $2)
                     ''', role.name, aliases)
         except asyncpg.UniqueViolationError:
-            await ctx.send(f'An entry for {role.name} already exists.')
+            await ctx.send(f'An entry for **{role.name}** already exists.', delete_after=30)
         else:
-            await ctx.send(f'Entry created for {role.name}.')
+            await ctx.send(f'Entry created for **{role.name}**.', delete_after=30)
 
     @checks.db
     @commands.is_owner()
@@ -115,9 +115,9 @@ class LTP(Menus):
                 UPDATE ltp SET aliases = ARRAY_CAT(aliases, $2) WHERE name = $1
                 ''', role.name, aliases)
         if int(res[-1]):
-            await ctx.send(f'Added alias{"es" if len(aliases) > 1 else ""} to {role.name}.')
+            await ctx.send(f'Added alias{"es" if len(aliases) > 1 else ""} to **{role.name}**.', delete_after=30)
         else:
-            await ctx.send(f'LTP entry {role.name} does not exist.')
+            await ctx.send(f'LTP entry **{role.name}** does not exist.', delete_after=30)
 
     @checks.db
     @commands.is_owner()
@@ -129,9 +129,9 @@ class LTP(Menus):
                 UPDATE ltp SET aliases = $2 WHERE name = $1
                 ''', role.name, aliases)
         if int(res[-1]):
-            await ctx.send(f'Replaced aliases for {role.name}.')
+            await ctx.send(f'Replaced aliases for **{role.name}**.', delete_after=30)
         else:
-            await ctx.send(f'LTP entry {role.name} does not exist.')
+            await ctx.send(f'LTP entry **{role.name}** does not exist.', delete_after=30)
 
     @checks.db
     @commands.is_owner()
@@ -143,9 +143,9 @@ class LTP(Menus):
                 DELETE FROM ltp WHERE name = $1
                 ''', role.name)
         if int(res[-1]):
-            await ctx.send(f'Removed ltp entry {role.name}.')
+            await ctx.send(f'Removed ltp entry **{role.name}**.', delete_after=30)
         else:
-            await ctx.send(f'LTP entry {role.name} does not exist.')
+            await ctx.send(f'LTP entry **{role.name}** does not exist.', delete_after=30)
 
 ###################
 #                 #
@@ -167,7 +167,7 @@ class LTP(Menus):
             await emsg.edit(content=temp.format(((i * 2) % 12) + 1))
             if i != (len_roles - 1):
                 await asyncio.sleep(1)
-        await emsg.edit(content=':white_check_mark: Removed **all** game roles.', delete_after=15)
+        await emsg.edit(content=':white_check_mark: Removed **all** game roles.', delete_after=30)
 
     @checks.db
     @ltpchannel()
@@ -180,7 +180,7 @@ class LTP(Menus):
     @ltpchannel()
     @ltp.command()
     async def stopall(self, ctx):
-        """Remove all your game roles."""
+        """Removes all your game roles."""
         await self.stop_all_helper(ctx, ctx.author)
 
 ###################
@@ -193,6 +193,7 @@ class LTP(Menus):
     @ltpchannel()
     @ltp.command(name='list')
     async def list_roles(self, ctx):
+        """Displays a list of all available roles."""
         roles = [role.name for role in await self.get_all_roles(ctx)]
         header = "**Game List**"
         spacer = '-=-=-=--=-=-=--=-=-=--=-=-=-=-=-=-=-=-=-=-=-=-=-=-'
