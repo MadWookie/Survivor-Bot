@@ -2,10 +2,15 @@ import asyncio
 
 from discord.ext import commands
 import discord
+import asyncpg
 
 from cogs.menus import Menus, ARROWS, CANCEL
 from utils.utils import wrap
 from utils import checks, errors
+
+
+def alias_split(arg):
+    return [a.replace(' ', '').upper() for a in arg.split(',') if a]
 
 
 def ltpchannel():
@@ -78,6 +83,69 @@ class LTP(Menus):
     async def ltp(self, ctx, *, game_name: str):
         """Adds you to a specified game role."""
         await self.game_role_helper(ctx, ctx.author, game_name, True)
+
+###################
+#                 #
+# Owner Control   #
+#                 #
+###################
+
+    @checks.db
+    @commands.is_owner()
+    @ltp.command()
+    async def new(self, ctx, role: discord.Role, *, aliases: alias_split):
+        """Create new LTP game entry. Aliases should be comma-separated."""
+        try:
+            async with ctx.con.transaction():
+                await ctx.con.execute('''
+                    INSERT INTO ltp (name, aliases) VALUES ($1, $2)
+                    ''', role.name, aliases)
+        except asyncpg.UniqueViolationError:
+            await ctx.send(f'An entry for {role.name} already exists.')
+        else:
+            await ctx.send(f'Entry created for {role.name}.')
+
+    @checks.db
+    @commands.is_owner()
+    @ltp.command()
+    async def add(self, ctx, role: discord.Role, *, aliases: alias_split):
+        """Add new aliases to an existing entry."""
+        async with ctx.con.transaction():
+            res = await ctx.con.execute('''
+                UPDATE ltp SET aliases = ARRAY_CAT(aliases, $2) WHERE name = $1
+                ''', role.name, aliases)
+        if int(res[-1]):
+            await ctx.send(f'Added alias{"es" if len(aliases) > 1 else ""} to {role.name}.')
+        else:
+            await ctx.send(f'LTP entry {role.name} does not exist.')
+
+    @checks.db
+    @commands.is_owner()
+    @ltp.command()
+    async def edit(self, ctx, role: discord.Role, *, aliases: alias_split):
+        """Replace aliases of an existing entry."""
+        async with ctx.con.transaction():
+            res = await ctx.con.execute('''
+                UPDATE ltp SET aliases = $2 WHERE name = $1
+                ''', role.name, aliases)
+        if int(res[-1]):
+            await ctx.send(f'Replaced aliases for {role.name}.')
+        else:
+            await ctx.send(f'LTP entry {role.name} does not exist.')
+
+    @checks.db
+    @commands.is_owner()
+    @ltp.command()
+    async def remove(self, ctx, role: discord.Role):
+        """Remove LTP entry from the DB."""
+        async with ctx.con.transaction():
+            res = await ctx.con.execute('''
+                DELETE FROM ltp WHERE name = $1
+                ''', role.name)
+        if int(res[-1]):
+            await ctx.send(f'Removed ltp entry {role.name}.')
+        else:
+            await ctx.send(f'LTP entry {role.name} does not exist.')
 
 ###################
 #                 #
