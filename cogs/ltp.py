@@ -38,7 +38,7 @@ class LTP(Menus):
 
     async def get_all_games(self, ctx):
         return await ctx.con.fetchval('''
-            SELECT ARRAY(SELECT name FROM ltp ORDER BY name)
+            SELECT ARRAY(SELECT name FROM ltp)
             ''')
 
     async def get_role(self, ctx, game_name):
@@ -48,7 +48,7 @@ class LTP(Menus):
 
     async def get_all_roles(self, ctx):
         games = await self.get_all_games(ctx)
-        roles = [role for role in ctx.guild.roles if role.name in games]
+        roles = sorted((role for role in ctx.guild.roles if role.name in games), key=lambda r: r.name)
         return roles
 
     async def game_role_helper(self, ctx, member, game_name, toggle):
