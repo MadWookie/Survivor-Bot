@@ -103,4 +103,3 @@ ENV/
 ## local
 config.py
 data/*.json
-data/pokemon/found_pokemon.json

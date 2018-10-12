@@ -116,7 +116,7 @@ class SurvivorBot(commands.Bot):
 formatter = commands.HelpFormatter(show_check_failure=True)
 
 initial_extensions = [f'cogs.{ext}' for ext in
-                      ('main', 'utility', 'points', 'exp', 'pokemon', 'ltp', 'help', 'giveaway')]
+                      ('main', 'utility', 'points', 'exp', 'ltp', 'help', 'giveaway')]
 
 description = 'Survivor Bot - Created by MadWookie & sgtlaggy.'
 bot = SurvivorBot(command_prefix=['!'], description=description, formatter=formatter, request_offline_members=True)
