@@ -237,7 +237,7 @@ class Main:
     async def credits(self, ctx):
         """Thank you. <3"""
         guild = self.bot.get_guild(185177261169836033)
-        thumbnail = self.bot.user.avatar
+        thumbnail = self.bot.user.avatar_url
         title = '**Survivor Bot**'
         description = 'Credits'
         footer = 'Thank you to everyone who has made this bot possible.'
