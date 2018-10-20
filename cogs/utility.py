@@ -16,7 +16,7 @@ class Utility:
     def __init__(self, bot):
         self.bot = bot
         self.purge_task = self.bot.loop.create_task(self.purge())
-        self.log_ignore = ['pokemon', 'role-assigning', 'bot-spam']
+        self.log_ignore = ['pokemon']
 
     def __unload(self):
         self.purge_task.cancel()
@@ -29,10 +29,10 @@ class Utility:
 
     async def purge(self):
         await self.bot.wait_until_ready()
-        channels = [chan for chan in self.bot.get_all_channels() if chan.name in ('role-assigning', 'music', 'pokemon')]
+        channels = [chan for chan in self.bot.get_all_channels() if chan.name in ('war-room', 'music', 'pokemon')]
         while not self.bot.is_closed():
             await asyncio.gather(*[chan.purge(limit=300, check=pin_check) for chan in channels], loop=self.bot.loop)
-            await asyncio.sleep(10800, loop=self.bot.loop)
+            await asyncio.sleep(3600, loop=self.bot.loop)
 
 ###################
 #                 #

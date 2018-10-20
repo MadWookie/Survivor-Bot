@@ -233,6 +233,28 @@ class Main:
         up = datetime.timedelta(seconds=up)
         await ctx.send(f'`Uptime: {up}`', delete_after=60)
 
+    @commands.command()
+    async def credits(self, ctx):
+        """Thank you. <3"""
+        guild = 185177261169836033
+        thumbnail = self.bot.user.avatar
+        title = '**Survivor Bot**'
+        description = 'Credits'
+        footer = 'Thank you to everyone who has made this bot possible.'
+        embed = discord.Embed(colour=discord.Colour(0xffffff), title=title, description=description)
+        developer_role = discord.utils.get(guild.roles, name="Developer")
+        developers = [m for m in guild.members if developer_role in m.roles]
+        sponsor_role = discord.utils.get(guild.roles, name="Sponsor")
+        sponsors = [m for m in guild.members if sponsor_role in m.roles]
+        contributors_role = discord.utils.get(guild.roles, name="Contributor")
+        contributors = [m for m in guild.members if contributors_role in m.roles]
+        embed.set_thumbnail(url=thumbnail)
+        embed.add_field(name='Developers', value='\n'.join(p.display_name for p in developers))
+        embed.add_field(name='Sponsors', value='\n'.join(p.display_name for p in sponsors))
+        embed.add_field(name='Contributors', value='\n'.join(p.display_name for p in contributors))
+        embed.set_footer(text=footer)
+        await ctx.send(embed=embed)
+
 
 def setup(bot):
     bot.add_cog(Main(bot))
