@@ -236,7 +236,7 @@ class Main:
     @commands.command()
     async def credits(self, ctx):
         """Thank you. <3"""
-        guild = 185177261169836033
+        guild = self.bot.get_guild(185177261169836033)
         thumbnail = self.bot.user.avatar
         title = '**Survivor Bot**'
         description = 'Credits'
