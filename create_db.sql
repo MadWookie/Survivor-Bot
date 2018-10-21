@@ -28,7 +28,10 @@ CREATE TABLE bumps (
     PRIMARY KEY (guild_id, user_id)
 );
 
-CREATE TABLE ltp (
-    name text PRIMARY KEY,
-    aliases text[] DEFAULT '{}'
-)
+CREATE TABLE rolesoptout (
+    user_id bigint PRIMARY KEY
+);
+
+CREATE TABLE rolesblacklist (
+    role_id bigint PRIMARY KEY
+);

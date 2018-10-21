@@ -61,6 +61,10 @@ class Utility:
         await self.log(discord.Colour(0x5b0506), '**[USER LEAVE]**', member)
 
     async def on_message_delete(self, message):
+        if isinstance(message.channel, discord.DMChannel):
+            return
+        if message.author.bot:
+            return
         if message.channel.name in self.log_ignore or await self.bot.is_command(message):
             return
         logging_channel = self.get_logging_channel(message)
@@ -69,8 +73,6 @@ class Utility:
         if message.channel.id == logging_channel.id:
             embed = discord.Embed.from_data(message.embeds[0])
             await logging_channel.send('Someone deleted this!', embed=embed)
-            return
-        if message.author.bot:
             return
         if not message.content and message.attachments:
             content = 'Attachments:'
