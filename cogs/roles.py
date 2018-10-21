@@ -75,6 +75,13 @@ class Roles(Menus):
             ''', [(r.id,) for r in roles])
         await ctx.send('Removed roles from blacklist.')
 
+    async def on_ready(self):
+        message = await self.bot.get_guild(185177261169836033).get_channel(242963464115585024).get_message(503352007390658562)
+        reacted = [r.emoji.name for r in message.reactions]
+        for emoji in ('\N{NO ENTRY SIGN}', '\N{WHITE QUESTION MARK ORNAMENT}'):
+            if emoji not in reacted:
+                await message.add_reaction(emoji)
+
     async def on_member_update(self, before, after):
         if before.activity != after.activity and after.activity is not None:
             role = discord.utils.get(after.guild.roles, name=after.activity.name)
@@ -91,12 +98,15 @@ class Roles(Menus):
                 await after.add_roles(role)
 
     async def on_raw_reaction_add(self, payload):
-        if payload.message_id != 503361951737577482 or payload.emoji.name not in ('\N{NO ENTRY SIGN}', '\N{WHITE QUESTION MARK ORNAMENT}'):
+        if payload.message_id != 503352007390658562 or payload.emoji.name not in ('\N{NO ENTRY SIGN}', '\N{WHITE QUESTION MARK ORNAMENT}'):
             return
         user = self.bot.get_guild(payload.guild_id).get_member(payload.user_id)
+        if user.bot:
+            return
         async with self.bot.db_pool.acquire() as con:
             blacklisted = await self.get_blacklisted_roles(DummyCTX(user, con))
             if payload.emoji.name == '\N{WHITE QUESTION MARK ORNAMENT}':
+                await (await user.guild.get_channel(242963464115585024).get_message(503352007390658562)).remove_reaction(payload.emoji, user)
                 games = sorted(r.name for r in user.guild.roles if r not in blacklisted and r.name != '@everyone')
                 await self.reaction_menu(games, user, user, count=0, header='**__Available Game Roles__**')
             else:
@@ -108,7 +118,7 @@ class Roles(Menus):
                     await user.remove_roles(*to_remove)
 
     async def on_raw_reaction_remove(self, payload):
-        if payload.message_id != 503361951737577482 or payload.emoji.name != '\N{NO ENTRY SIGN}':
+        if payload.message_id != 503352007390658562 or payload.emoji.name != '\N{NO ENTRY SIGN}':
             return
         user = self.bot.get_guild(payload.guild_id).get_member(payload.user_id)
         async with self.bot.db_pool.acquire() as con:
@@ -118,4 +128,4 @@ class Roles(Menus):
 
 
 def setup(bot):
-    bot.add_cog(LTP(bot))
+    bot.add_cog(Roles(bot))
